@@ -26,6 +26,7 @@ class AccountRepo:
                     record = {}
                     for i, column in enumerate(db.description):
                         record[column.name] = row[i]
+
                 return record
 
     def get(self, username):
@@ -33,12 +34,20 @@ class AccountRepo:
             with conn.cursor() as db:
                 db.execute(
                     """
-                    SELECT %s FROM accounts
-
+                    SELECT id, username, hashed_password FROM accounts
+                    WHERE username = %s
                     """,
                     [username],
                 )
-                db.fetchone()
+                record = None
+                row = db.fetchone()
+
+                if row is not None:
+                    record = {}
+                    for i, column in enumerate(db.description):
+                        record[column.name] = row[i]
+
+                return record
 
     def delete(self, user_id):
         with pool.connection() as conn:
