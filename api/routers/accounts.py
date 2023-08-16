@@ -1,6 +1,13 @@
-from fastapi import APIRouter, Depends, Request, Response
+from fastapi import (
+    APIRouter,
+    Depends,
+    Request,
+    Response,
+    HTTPException,
+    status,
+)
 from models import AccountToken, AccountIn, AccountForm
-from queries.accounts import AccountRepo
+from queries.accounts import AccountRepo, DuplicateAccountError
 from authenticator import authenticator
 
 router = APIRouter()
@@ -14,7 +21,13 @@ async def create_account(
     repo: AccountRepo = Depends(),
 ):
     hashed_password = authenticator.hash_password(info.password)
-    account = repo.create(info, hashed_password)
+    try:
+        account = repo.create(info, hashed_password)
+    except DuplicateAccountError:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Cannot create an account with those credentials",
+        )
     form = AccountForm(username=info.username, password=info.password)
     token = await authenticator.login(response, request, form, repo)
     return AccountToken(account=account, **token.dict())

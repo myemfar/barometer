@@ -6,8 +6,14 @@ class AccountQueries:
     pass
 
 
+class DuplicateAccountError(ValueError):
+    pass
+
+
 class AccountRepo:
     def create(self, info: AccountIn, hashed_pass):
+        if self.get(info.username):
+            raise DuplicateAccountError
         with pool.connection() as conn:
             with conn.cursor() as db:
                 db.execute(
