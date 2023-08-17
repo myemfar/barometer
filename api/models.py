@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 from jwtdown_fastapi.authentication import Token
+from typing import List
 
 
 class AccountIn(BaseModel):
@@ -23,3 +24,17 @@ class AccountToken(Token):
 class AccountForm(BaseModel):
     username: str
     password: str
+
+
+class IngredientsIn(BaseModel):
+    name: str
+    image_url: str
+
+
+class IngredientsOut(BaseModel):
+    id: str
+    name: str
+
+
+class IngredientsList(BaseModel):
+    ingredients: List[IngredientsOut]
