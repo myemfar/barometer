@@ -16,8 +16,3 @@ router = APIRouter()
 @router.get("/api/ingredients")
 def get_ingredients(repo: IngredientsRepo = Depends()):
     return IngredientsList(ingredients=repo.get())
-
-
-@router.post("/api/ingredients")
-async def populate(repo: IngredientsRepo = Depends()):
-    return repo.api_populate()
