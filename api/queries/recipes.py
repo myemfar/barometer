@@ -21,7 +21,6 @@ class RecipesRepo:
                 for row in db.fetchall():
                     record = {}
                     for i, column in enumerate(db.description):
-                        print("col", column)
                         record[column.name] = row[i]
                     result.append(record)
 
