@@ -4,18 +4,6 @@ volumes:
   pg-admin:
     external: true
 services:
-  fastapi:
-    environment:
-      CORS_HOST: http://localhost:3000
-      DATABASE_URL: postgresql://example_user:secret@postgres/example_db
-      SIGNING_KEY: ${SIGNING_KEY}
-    build:
-      context: api
-      dockerfile: Dockerfile.dev
-    ports:
-      - 8000:8000
-    volumes:
-      - ./api:/app
   postgres:
     image: postgres:14.5-bullseye
     volumes:
@@ -51,3 +39,19 @@ services:
       HOST: "0.0.0.0"
       PUBLIC_URL: http://localhost:3000
       REACT_APP_API_HOST: ${REACT_APP_API_HOST}
+
+  fastapi:
+    environment:
+      CORS_HOST: http://localhost:3000
+      DATABASE_URL: postgresql://example_user:secret@postgres/example_db
+      SIGNING_KEY: ${SIGNING_KEY}
+    build:
+      context: api
+      dockerfile: Dockerfile.dev
+    ports:
+      - 8000:8000
+    volumes:
+      - ./api:/app
+    restart: on-failure
+    depends_on:
+      - postgres
