@@ -71,3 +71,19 @@ class RecipesOut(BaseModel):
 
 class RecipesList(BaseModel):
     recipes: List[RecipesOut]
+
+
+class InventoryIn(BaseModel):
+    id: str
+    quantity: str
+
+
+class InventoryOut(BaseModel):
+    id: str
+    user_id: str
+    ingredient_id: str
+    quantity: str
+
+
+class InventoryList(BaseModel):
+    inventory: List[InventoryOut]
