@@ -7,6 +7,30 @@ class InventoryNotFound(ValueError):
 
 
 class InventoryRepo:
+    def add_ingredient(self, user_id, ingredient_id, quantity):
+        # if self.get(ingredient_id):
+        #     raise DuplicateIngredientError
+        with pool.connection() as conn:
+            with conn.cursor() as db:
+                db.execute(
+                    """
+                    INSERT INTO inventory
+                        (user_id, ingredient_id, quantity)
+                    VALUES
+                        (%s, %s, %s)
+                    RETURNING user_id, ingredient_id, quantity;
+                    """,
+                    [user_id, ingredient_id, quantity],
+                )
+                record = None
+                row = db.fetchone()
+                if row is not None:
+                    record = {}
+                    for i, column in enumerate(db.description):
+                        record[column.name] = row[i]
+
+                return record
+
     def get_all(self):
         with pool.connection() as conn:
             with conn.cursor() as db:
@@ -29,7 +53,7 @@ class InventoryRepo:
     def get(self, user_id):
         test_user = self.get_all()
         for item in test_user:
-            if int(user_id) == int(item["id"]):
+            if int(user_id) == int(item["user_id"]):
                 break
             raise InventoryNotFound
 
@@ -52,3 +76,16 @@ class InventoryRepo:
                     result.append(record)
 
                 return result
+
+    def delete_ingredient(self, user_id, ingredient_id):
+        with pool.connection() as conn:
+            with conn.cursor() as db:
+                db.execute(
+                    """
+                    DELETE FROM inventory
+                    WHERE user_id = %s AND
+                    ingredient_id = %s;
+                    """,
+                    [user_id, ingredient_id],
+                )
+        # return True

@@ -28,3 +28,26 @@ def get_user_inventory(
         )
 
     return InventoryList(inventory=inventory)
+
+
+@router.post("/api/inventory")
+def create_user_inventory(
+    user_id: str,
+    ingredient_id: str,
+    quantity: str,
+    repo: InventoryRepo = Depends(),
+):
+    repo.add_ingredient(user_id, ingredient_id, quantity)
+    inventory = repo.get(user_id)
+    return InventoryList(inventory=inventory)
+
+
+@router.delete("/api/inventory")
+def delete_user_ingredient(
+    user_id: str,
+    ingredient_id: str,
+    repo: InventoryRepo = Depends(),
+):
+    repo.delete_ingredient(user_id, ingredient_id)
+    inventory = repo.get(user_id)
+    return InventoryList(inventory=inventory)
