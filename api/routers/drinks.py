@@ -33,3 +33,12 @@ def get_drink(
         )
 
     return DrinksList(drinks=drinks)
+
+
+@router.post("/api/drinks", response_model=DrinksOut)
+def add_drink(
+    info: DrinksIn,
+    repo: DrinksRepo = Depends(),
+):
+    added_drink = repo.add_drink(info)
+    return added_drink

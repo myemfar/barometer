@@ -42,7 +42,9 @@ class IngredientsList(BaseModel):
 
 class DrinksIn(BaseModel):
     name: str
-    image_url: str
+    image_url: str | None
+    description: str | None
+    instructions: str | None
 
 
 class DrinksOut(BaseModel):

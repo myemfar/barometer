@@ -6,6 +6,10 @@ class DrinkNotFound(ValueError):
     pass
 
 
+class DrinkAlreadyExists(ValueError):
+    pass
+
+
 class DrinksRepo:
     def get_all(self):
         with pool.connection() as conn:
@@ -58,3 +62,34 @@ class DrinksRepo:
                 result.append(record)
 
                 return result
+
+    def add_drink(self, info: DrinksIn):
+        test_drink = self.get_all()
+        for item in test_drink:
+            if info.name == item["name"]:
+                raise DrinkAlreadyExists
+        with pool.connection() as conn:
+            with conn.cursor() as db:
+                db.execute(
+                    """
+                    INSERT INTO drinks
+                        (name, image_url, description, instructions)
+                    VALUES
+                        (%s, %s, %s, %s)
+                    RETURNING id, name, image_url, description, instructions;
+                    """,
+                    [
+                        info.name,
+                        info.image_url,
+                        info.description,
+                        info.instructions,
+                    ],
+                )
+                record = None
+                row = db.fetchone()
+                if row is not None:
+                    record = {}
+                    for i, column in enumerate(db.description):
+                        record[column.name] = row[i]
+
+                return record
