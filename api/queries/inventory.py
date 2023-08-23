@@ -8,8 +8,6 @@ class InventoryNotFound(ValueError):
 
 class InventoryRepo:
     def add_ingredient(self, user_id, ingredient_id, quantity):
-        # if self.get(ingredient_id):
-        #     raise DuplicateIngredientError
         with pool.connection() as conn:
             with conn.cursor() as db:
                 db.execute(
@@ -88,4 +86,16 @@ class InventoryRepo:
                     """,
                     [user_id, ingredient_id],
                 )
-        # return True
+
+    def update_ingredient(self, user_id, ingredient_id, quantity):
+        with pool.connection() as conn:
+            with conn.cursor() as db:
+                db.execute(
+                    """
+                    UPDATE inventory
+                    SET quantity = %s
+                    WHERE user_id = %s AND
+                    ingredient_id = %s;
+                    """,
+                    [quantity, user_id, ingredient_id],
+                )

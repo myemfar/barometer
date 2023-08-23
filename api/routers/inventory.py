@@ -51,3 +51,15 @@ def delete_user_ingredient(
     repo.delete_ingredient(user_id, ingredient_id)
     inventory = repo.get(user_id)
     return InventoryList(inventory=inventory)
+
+
+@router.put("/api/inventory")
+def update_user_ingredient(
+    user_id: str,
+    ingredient_id: str,
+    quantity: str,
+    repo: InventoryRepo = Depends(),
+):
+    repo.update_ingredient(user_id, ingredient_id, quantity)
+    inventory = repo.get(user_id)
+    return InventoryList(inventory=inventory)
