@@ -87,3 +87,16 @@ class InventoryOut(BaseModel):
 
 class InventoryList(BaseModel):
     inventory: List[InventoryOut]
+
+
+class TagsIn(BaseModel):
+    tag_name: str
+
+
+class TagsOut(BaseModel):
+    id: str
+    tag_name: str
+
+
+class TagsList(BaseModel):
+    tags: List[TagsOut]
