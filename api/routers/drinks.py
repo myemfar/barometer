@@ -7,7 +7,7 @@ from fastapi import (
     status,
 )
 from models import DrinksIn, DrinksOut, DrinksList
-from queries.drinks import DrinksRepo, DrinkNotFound
+from queries.drinks import DrinksRepo, DrinkNotFound, DrinkAlreadyExists
 
 
 router = APIRouter()
@@ -40,5 +40,20 @@ def add_drink(
     info: DrinksIn,
     repo: DrinksRepo = Depends(),
 ):
-    added_drink = repo.add_drink(info)
+    try:
+        added_drink = repo.add_drink(info)
+    except DrinkAlreadyExists:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Drink already exists",
+        )
     return added_drink
+
+
+@router.put("/api/drinks/", response_model=DrinksOut)
+def update_drink(
+    info: DrinksIn,
+    repo: DrinksRepo = Depends(),
+):
+    updated_drink = repo.update_drink(info)
+    return updated_drink
