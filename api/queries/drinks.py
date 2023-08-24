@@ -64,35 +64,7 @@ class DrinksRepo:
 
                 return result
 
-    # def _get_by_name(self, drink_name):
-    #     with pool.connection() as conn:
-    #         with conn.cursor() as db:
-    #             db.execute(
-    #                 """
-    #                 SELECT *
-    #                 FROM drinks
-    #                 WHERE name = %s;
-    #                 """,
-    #                 [drink_name],
-    #             )
-    #             result = []
-    #             row = db.fetchone()
-
-    #             record = {
-    #                 "id": row[0],
-    #                 "name": row[1],
-    #                 "image_url": row[2],
-    #                 "description": row[3],
-    #                 "instructions": row[4],
-    #             }
-
-    #             result.append(record)
-
-    #             return result
-
     def add_drink(self, info: DrinksIn):
-        # if self._get_by_name(info.name):
-        #     raise DrinkAlreadyExists
         test_drink = self.get_all()
         exists = False
         for item in test_drink:
@@ -153,3 +125,21 @@ class DrinksRepo:
                         record[column.name] = row[i]
 
                 return record
+
+    def delete_drink(self, drink_id):
+        test_drink = self.get_all()
+        exists = False
+        for item in test_drink:
+            if int(drink_id) == int(item["id"]):
+                exists = True
+        if exists == False:
+            raise DrinkNotFound
+        with pool.connection() as conn:
+            with conn.cursor() as db:
+                db.execute(
+                    """
+                    DELETE FROM drinks
+                    WHERE id = %s;
+                    """,
+                    [drink_id],
+                )

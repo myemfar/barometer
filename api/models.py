@@ -60,7 +60,8 @@ class DrinksList(BaseModel):
 
 
 class RecipesIn(BaseModel):
-    id: str
+    drink_id: str
+    ingredient_id: str
     quantity: str
 
 

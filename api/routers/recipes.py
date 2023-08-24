@@ -7,8 +7,8 @@ from fastapi import (
     status,
 )
 from models import RecipesIn, RecipesOut, RecipesList
-from queries.recipes import RecipesRepo, RecipeNotFound
-
+from queries.recipes import RecipesRepo, RecipeNotFound, RecipeAlreadyExists
+from psycopg.errors import ForeignKeyViolation
 
 router = APIRouter()
 
@@ -33,3 +33,38 @@ def get_recipe(
         )
 
     return RecipesList(recipes=recipes)
+
+
+@router.post("/api/recipes", response_model=RecipesOut)
+def add_recipe(
+    info: RecipesIn,
+    repo: RecipesRepo = Depends(),
+):
+    try:
+        added_recipe = repo.add_recipe(info)
+    except RecipeAlreadyExists:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Recipe already exists",
+        )
+    except ForeignKeyViolation as e:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"ingredient or drink do not exist, full error message is: ${e}",
+        )
+    return added_recipe
+
+
+@router.put("/api/recipes/", response_model=RecipesOut)
+def update_recipe(
+    info: RecipesIn,
+    repo: RecipesRepo = Depends(),
+):
+    try:
+        updated_recipe = repo.update_recipe(info)
+    except RecipeNotFound:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="ingredient or drink do not exist",
+        )
+    return updated_recipe
