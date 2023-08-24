@@ -103,3 +103,20 @@ class TagsOut(BaseModel):
 
 class TagsList(BaseModel):
     tags: List[TagsOut]
+
+
+class DrinkTagsIn(BaseModel):
+    user_id: str
+    drink_id: str
+    tag_id: str
+
+
+class DrinkTagsOut(BaseModel):
+    id: str
+    user_id: str
+    drink_id: str
+    tag_id: str
+
+
+class DrinkTagsList(BaseModel):
+    drink_tags: List[DrinkTagsOut]
