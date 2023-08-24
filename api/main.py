@@ -14,7 +14,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(authenticator.router)
+app.include_router(authenticator.router, tags=["Tokens"])
 app.include_router(accounts.router, tags=["Accounts"])
 app.include_router(ingredients.router, tags=["Ingredients"])
 app.include_router(drinks.router, tags=["Drinks"])
