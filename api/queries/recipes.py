@@ -138,20 +138,20 @@ class RecipesRepo:
 
                 return record
 
-    # def delete_drink(self, drink_id):
-    #     test_drink = self.get_all()
-    #     exists = False
-    #     for item in test_drink:
-    #         if int(drink_id) == int(item["id"]):
-    #             exists = True
-    #     if exists == False:
-    #         raise DrinkNotFound
-    #     with pool.connection() as conn:
-    #         with conn.cursor() as db:
-    #             db.execute(
-    #                 """
-    #                 DELETE FROM drinks
-    #                 WHERE id = %s;
-    #                 """,
-    #                 [drink_id],
-    #             )
+    def delete_recipe(self, recipe_id):
+        test_recipe = self.get_all()
+        exists = False
+        for item in test_recipe:
+            if int(recipe_id) == int(item["id"]):
+                exists = True
+        if exists == False:
+            raise RecipeNotFound
+        with pool.connection() as conn:
+            with conn.cursor() as db:
+                db.execute(
+                    """
+                    DELETE FROM recipes
+                    WHERE id = %s;
+                    """,
+                    [recipe_id],
+                )
