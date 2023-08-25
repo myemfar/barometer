@@ -7,7 +7,7 @@ class InventoryNotFound(ValueError):
 
 
 class InventoryRepo:
-    def add_ingredient(self, user_id, ingredient_id, quantity):
+    def add_ingredient(self, info: InventoryIn):
         with pool.connection() as conn:
             with conn.cursor() as db:
                 db.execute(
@@ -18,7 +18,7 @@ class InventoryRepo:
                         (%s, %s, %s)
                     RETURNING user_id, ingredient_id, quantity;
                     """,
-                    [user_id, ingredient_id, quantity],
+                    [info.user_id, info.ingredient_id, info.quantity],
                 )
                 record = None
                 row = db.fetchone()
@@ -26,7 +26,6 @@ class InventoryRepo:
                     record = {}
                     for i, column in enumerate(db.description):
                         record[column.name] = row[i]
-
                 return record
 
     def get_all(self):
@@ -49,12 +48,6 @@ class InventoryRepo:
                 return result
 
     def get(self, user_id):
-        test_user = self.get_all()
-        for item in test_user:
-            if int(user_id) == int(item["user_id"]):
-                break
-            raise InventoryNotFound
-
         with pool.connection() as conn:
             with conn.cursor() as db:
                 db.execute(
@@ -72,10 +65,11 @@ class InventoryRepo:
                     for i, column in enumerate(db.description):
                         record[column.name] = row[i]
                     result.append(record)
-
+                if result == []:
+                    raise InventoryNotFound
                 return result
 
-    def delete_ingredient(self, user_id, ingredient_id):
+    def delete_ingredient(self, info):
         with pool.connection() as conn:
             with conn.cursor() as db:
                 db.execute(
@@ -84,10 +78,10 @@ class InventoryRepo:
                     WHERE user_id = %s AND
                     ingredient_id = %s;
                     """,
-                    [user_id, ingredient_id],
+                    [info.user_id, info.ingredient_id],
                 )
 
-    def update_ingredient(self, user_id, ingredient_id, quantity):
+    def update_ingredient(self, info):
         with pool.connection() as conn:
             with conn.cursor() as db:
                 db.execute(
@@ -97,5 +91,5 @@ class InventoryRepo:
                     WHERE user_id = %s AND
                     ingredient_id = %s;
                     """,
-                    [quantity, user_id, ingredient_id],
+                    [info.quantity, info.user_id, info.ingredient_id],
                 )

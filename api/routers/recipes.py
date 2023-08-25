@@ -13,12 +13,12 @@ from psycopg.errors import ForeignKeyViolation
 router = APIRouter()
 
 
-@router.get("/api/recipes")
+@router.get("/api/recipes", response_model=RecipesList)
 def get_recipes(repo: RecipesRepo = Depends()):
     return RecipesList(recipes=repo.get_all())
 
 
-@router.get("/api/recipes/{recipe_id}")
+@router.get("/api/recipes/{recipe_id}", response_model=RecipesList)
 def get_recipe(
     recipe_id: str,
     repo: RecipesRepo = Depends(),

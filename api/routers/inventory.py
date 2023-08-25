@@ -8,12 +8,12 @@ from fastapi import (
 )
 from models import InventoryIn, InventoryOut, InventoryList
 from queries.inventory import InventoryRepo, InventoryNotFound
-
+from psycopg.errors import ForeignKeyViolation
 
 router = APIRouter()
 
 
-@router.get("/api/inventory/{user_id}")
+@router.get("/api/inventory/{user_id}", response_model=InventoryList)
 def get_user_inventory(
     user_id: str,
     repo: InventoryRepo = Depends(),
@@ -30,36 +30,49 @@ def get_user_inventory(
     return InventoryList(inventory=inventory)
 
 
-@router.post("/api/inventory")
+@router.post("/api/inventory", response_model=InventoryList)
 def create_user_inventory(
-    user_id: str,
-    ingredient_id: str,
-    quantity: str,
+    info: InventoryIn,
     repo: InventoryRepo = Depends(),
 ):
-    repo.add_ingredient(user_id, ingredient_id, quantity)
-    inventory = repo.get(user_id)
+    try:
+        repo.add_ingredient(info)
+    except ForeignKeyViolation as error:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Ingredient does not exist, error code details: {error}",
+        )
+    inventory = repo.get(info.user_id)
     return InventoryList(inventory=inventory)
 
 
-@router.delete("/api/inventory")
+@router.delete("/api/inventory", response_model=InventoryList)
 def delete_user_ingredient(
-    user_id: str,
-    ingredient_id: str,
+    info: InventoryIn,
     repo: InventoryRepo = Depends(),
 ):
-    repo.delete_ingredient(user_id, ingredient_id)
-    inventory = repo.get(user_id)
+    repo.delete_ingredient(info)
+    try:
+        inventory = repo.get(info.user_id)
+    except InventoryNotFound:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Inventory is empty",
+        )
     return InventoryList(inventory=inventory)
 
 
-@router.put("/api/inventory")
+@router.put("/api/inventory", response_model=InventoryList)
 def update_user_ingredient(
-    user_id: str,
-    ingredient_id: str,
-    quantity: str,
+    info: InventoryIn,
     repo: InventoryRepo = Depends(),
 ):
-    repo.update_ingredient(user_id, ingredient_id, quantity)
-    inventory = repo.get(user_id)
+    repo.update_ingredient(info)
+    try:
+        inventory = repo.get(info.user_id)
+    except InventoryNotFound:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Inventory is empty",
+        )
     return InventoryList(inventory=inventory)

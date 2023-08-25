@@ -44,11 +44,3 @@ async def get_token(
             "type": "Bearer",
             "account": account,
         }
-
-
-# @router.delete("/api/accounts/{account_id}", response_model=bool)
-# def delete_account(
-#     account_id: str
-#     repo: AccountRepo
-
-# )

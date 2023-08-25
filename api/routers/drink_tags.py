@@ -35,7 +35,7 @@ def get_drink_tag(
     return DrinkTagsList(drink_tags=drink_tags)
 
 
-@router.post("/api/drink_tags")
+@router.post("/api/drink_tags", response_model=DrinkTagsList)
 def create_drink_tag(
     info: DrinkTagsIn,
     repo: DrinkTagsRepo = Depends(),

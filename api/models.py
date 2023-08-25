@@ -77,7 +77,8 @@ class RecipesList(BaseModel):
 
 
 class InventoryIn(BaseModel):
-    id: str
+    user_id: str
+    ingredient_id: str
     quantity: str
 
 

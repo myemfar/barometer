@@ -13,12 +13,12 @@ from queries.tags import TagsRepo, TagNotFound
 router = APIRouter()
 
 
-@router.get("/api/tags")
+@router.get("/api/tags", response_model=TagsList)
 def get_tags(repo: TagsRepo = Depends()):
     return TagsList(tags=repo.get_tags())
 
 
-@router.post("/api/tags")
+@router.post("/api/tags", response_model=TagsList)
 def create_user_Tags(
     tag_name: str,
     repo: TagsRepo = Depends(),
@@ -28,7 +28,7 @@ def create_user_Tags(
     return TagsList(tags=tags)
 
 
-@router.delete("/api/tags")
+@router.delete("/api/tags", response_model=TagsList)
 def delete_tag(
     tag_id: str,
     repo: TagsRepo = Depends(),
@@ -38,7 +38,7 @@ def delete_tag(
     return TagsList(tags=tags)
 
 
-@router.put("/api/tags")
+@router.put("/api/tags", response_model=TagsList)
 def update_tag(
     tag_id: str,
     tag_name: str,

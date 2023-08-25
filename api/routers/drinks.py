@@ -18,7 +18,7 @@ def get_drinks(repo: DrinksRepo = Depends()):
     return DrinksList(drinks=repo.get_all())
 
 
-@router.get("/api/drinks/{drink_id}")
+@router.get("/api/drinks/{drink_id}", response_model=DrinksList)
 def get_drink(
     drink_id: str,
     repo: DrinksRepo = Depends(),
