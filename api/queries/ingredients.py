@@ -2,6 +2,10 @@ from models import IngredientsIn, IngredientsOut
 from queries.pool import pool
 
 
+class IngredientNotFound(ValueError):
+    pass
+
+
 class IngredientsRepo:
     def get(self):
         with pool.connection() as conn:
@@ -35,7 +39,8 @@ class IngredientsRepo:
                 )
                 record = None
                 row = db.fetchone()
-
+                if row is None:
+                    raise IngredientNotFound
                 if row is not None:
                     record = {}
                     for i, column in enumerate(db.description):

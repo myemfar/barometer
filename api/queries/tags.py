@@ -27,6 +27,27 @@ class TagsRepo:
 
                 return result
 
+    def _get_tag(self, id):
+        with pool.connection() as conn:
+            with conn.cursor() as db:
+                db.execute(
+                    """
+                    SELECT *
+                    FROM tags
+                    WHERE id = %s;
+                    """,
+                    [id],
+                )
+                record = None
+                row = db.fetchone()
+                if row is None:
+                    raise TagNotFound
+                if row is not None:
+                    record = {}
+                    for i, column in enumerate(db.description):
+                        record[column.name] = row[i]
+                return record
+
     def add_tag(self, info: TagsIn):
         with pool.connection() as conn:
             with conn.cursor() as db:
@@ -50,6 +71,7 @@ class TagsRepo:
                 return record
 
     def delete_tag(self, id):
+        self._get_tag(id)
         with pool.connection() as conn:
             with conn.cursor() as db:
                 db.execute(
@@ -61,6 +83,7 @@ class TagsRepo:
                 )
 
     def update_tags(self, info: TagsInWithID):
+        self._get_tag(info.id)
         with pool.connection() as conn:
             with conn.cursor() as db:
                 db.execute(

@@ -32,15 +32,6 @@ class RecipesRepo:
                 return result
 
     def get(self, recipe_id):
-        test_recipe = self.get_all()
-        exists = False
-        for item in test_recipe:
-            if int(recipe_id) == int(item["id"]):
-                exists = True
-                break
-        if exists == False:
-            raise RecipeNotFound
-
         with pool.connection() as conn:
             with conn.cursor() as db:
                 db.execute(
@@ -53,6 +44,28 @@ class RecipesRepo:
                 )
                 record = None
                 row = db.fetchone()
+                if row is None:
+                    raise RecipeNotFound
+                if row is not None:
+                    record = {}
+                    for i, column in enumerate(db.description):
+                        record[column.name] = row[i]
+                return record
+
+    def _get_specific(self, info: RecipesIn):
+        with pool.connection() as conn:
+            with conn.cursor() as db:
+                db.execute(
+                    """
+                    SELECT *
+                    FROM recipes
+                    WHERE drink_id = %s AND
+                    ingredient_id = %s;
+                    """,
+                    [info.drink_id, info.ingredient_id],
+                )
+                record = None
+                row = db.fetchone()
                 if row is not None:
                     record = {}
                     for i, column in enumerate(db.description):
@@ -60,15 +73,8 @@ class RecipesRepo:
                 return record
 
     def add_recipe(self, info: RecipesIn):
-        test_recipe = self.get_all()
-        exists = False
-        for item in test_recipe:
-            if (
-                int(info.drink_id) == item["drink_id"]
-                and int(info.ingredient_id) == item["ingredient_id"]
-            ):
-                exists = True
-        if exists == True:
+        test = self._get_specific(info)
+        if test != None:
             raise RecipeAlreadyExists
         with pool.connection() as conn:
             with conn.cursor() as db:
@@ -96,16 +102,8 @@ class RecipesRepo:
                 return record
 
     def update_recipe(self, info: RecipesIn):
-        test_recipe = self.get_all()
-        exists = False
-        for item in test_recipe:
-            if (
-                int(info.ingredient_id) == item["ingredient_id"]
-                and int(info.drink_id) == item["drink_id"]
-            ):
-                exists = True
-                break
-        if exists == False:
+        test = self._get_specific(info)
+        if test == None:
             raise RecipeNotFound
         with pool.connection() as conn:
             with conn.cursor() as db:
@@ -133,13 +131,7 @@ class RecipesRepo:
                 return record
 
     def delete_recipe(self, recipe_id):
-        test_recipe = self.get_all()
-        exists = False
-        for item in test_recipe:
-            if int(recipe_id) == int(item["id"]):
-                exists = True
-        if exists == False:
-            raise RecipeNotFound
+        self.get(recipe_id)
         with pool.connection() as conn:
             with conn.cursor() as db:
                 db.execute(

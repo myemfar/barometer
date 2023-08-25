@@ -10,6 +10,10 @@ class InventoryIngredientAlreadyExists(ValueError):
     pass
 
 
+class InventoryIngredientNotFound(ValueError):
+    pass
+
+
 class InventoryRepo:
     def add_ingredient(self, info: InventoryIn):
         ingredient = self._get_specific(info.user_id, info.ingredient_id)
@@ -48,7 +52,6 @@ class InventoryRepo:
                     [user_id, ingredient_id],
                 )
                 result = []
-
                 for row in db.fetchall():
                     record = {}
                     for i, column in enumerate(db.description):
@@ -110,6 +113,9 @@ class InventoryRepo:
                 )
 
     def update_ingredient(self, info):
+        ingredient = self._get_specific(info.user_id, info.ingredient_id)
+        if ingredient == []:
+            raise InventoryIngredientNotFound
         with pool.connection() as conn:
             with conn.cursor() as db:
                 db.execute(

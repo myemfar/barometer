@@ -70,16 +70,16 @@ def update_recipe(
     return updated_recipe
 
 
-@router.delete("/api/recipes/{recipe_id}", response_model=RecipesList)
+@router.delete("/api/recipes/{recipe_id}", response_model=bool)
 def delete_recipe(
     recipe_id,
     repo: RecipesRepo = Depends(),
 ):
     try:
         repo.delete_recipe(recipe_id)
+        return True
     except RecipeNotFound:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Recipe not found",
         )
-    return RecipesList(recipes=repo.get_all())

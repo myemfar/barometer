@@ -65,16 +65,16 @@ def update_drink(
     return updated_drink
 
 
-@router.delete("/api/drinks/{drink_id}", response_model=DrinksList)
+@router.delete("/api/drinks/{drink_id}", response_model=bool)
 def delete_drink(
     drink_id,
     repo: DrinksRepo = Depends(),
 ):
     try:
         repo.delete_drink(drink_id)
+        return True
     except DrinkNotFound:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Drink not found",
         )
-    return DrinksList(drinks=repo.get_all())

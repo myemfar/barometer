@@ -11,6 +11,7 @@ from queries.inventory import (
     InventoryRepo,
     InventoryNotFound,
     InventoryIngredientAlreadyExists,
+    InventoryIngredientNotFound,
 )
 from psycopg.errors import ForeignKeyViolation
 
@@ -76,7 +77,13 @@ def update_user_ingredient(
     info: InventoryIn,
     repo: InventoryRepo = Depends(),
 ):
-    repo.update_ingredient(info)
+    try:
+        repo.update_ingredient(info)
+    except InventoryIngredientNotFound:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Ingredient does not exist",
+        )
     try:
         inventory = repo.get(info.user_id)
     except InventoryNotFound:

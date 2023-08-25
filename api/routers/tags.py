@@ -34,14 +34,19 @@ def create_user_Tags(
     return TagsList(tags=tags)
 
 
-@router.delete("/api/tags", response_model=TagsList)
+@router.delete("/api/tags", response_model=bool)
 def delete_tag(
     tag_id: str,
     repo: TagsRepo = Depends(),
 ):
-    repo.delete_tag(tag_id)
-    tags = repo.get_tags()
-    return TagsList(tags=tags)
+    try:
+        repo.delete_tag(tag_id)
+        return True
+    except TagNotFound:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="tag not found",
+        )
 
 
 @router.put("/api/tags", response_model=TagsList)
@@ -49,6 +54,12 @@ def update_tag(
     info: TagsInWithID,
     repo: TagsRepo = Depends(),
 ):
-    repo.update_tags(info)
+    try:
+        repo.update_tags(info)
+    except TagNotFound:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="tag not found",
+        )
     tags = repo.get_tags()
     return TagsList(tags=tags)
