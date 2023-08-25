@@ -51,19 +51,13 @@ class RecipesRepo:
                     """,
                     [recipe_id],
                 )
-                result = []
+                record = None
                 row = db.fetchone()
-
-                record = {
-                    "id": row[0],
-                    "drink_id": row[1],
-                    "ingredient_id": row[2],
-                    "quantity": row[3],
-                }
-
-                result.append(record)
-
-                return result
+                if row is not None:
+                    record = {}
+                    for i, column in enumerate(db.description):
+                        record[column.name] = row[i]
+                return record
 
     def add_recipe(self, info: RecipesIn):
         test_recipe = self.get_all()

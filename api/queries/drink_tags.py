@@ -12,16 +12,8 @@ class DrinkTagAlreadyExists(ValueError):
 
 class DrinkTagsRepo:
     def add_drink_tag(self, info: DrinkTagsIn):
-        exists = False
-        test_tags = self.get_all()
-        for tag in test_tags:
-            if (
-                tag["user_id"] == int(info.user_id)
-                and tag["drink_id"] == int(info.drink_id)
-                and tag["tag_id"] == int(info.tag_id)
-            ):
-                exists = True
-        if exists == True:
+        test = self._get_one(info.user_id, info.tag_id, info.drink_id)
+        if test != None:
             raise DrinkTagAlreadyExists
 
         with pool.connection() as conn:
@@ -65,15 +57,6 @@ class DrinkTagsRepo:
                 return result
 
     def get(self, user_id):
-        test_drink_tag = self.get_all()
-        exists = False
-        for item in test_drink_tag:
-            if int(user_id) == int(item["user_id"]):
-                exists = True
-                break
-        if exists == False:
-            raise DrinkTagNotFound
-
         with pool.connection() as conn:
             with conn.cursor() as db:
                 db.execute(
@@ -91,10 +74,36 @@ class DrinkTagsRepo:
                     for i, column in enumerate(db.description):
                         record[column.name] = row[i]
                     result.append(record)
-
+                if result == []:
+                    raise DrinkTagNotFound
                 return result
 
+    def _get_one(self, user_id, tag_id, drink_id):
+        with pool.connection() as conn:
+            with conn.cursor() as db:
+                db.execute(
+                    """
+                    SELECT *
+                    FROM drink_tags
+                    WHERE user_id = %s AND
+                    tag_id = %s AND
+                    drink_id = %s;
+                    """,
+                    [user_id, tag_id, drink_id],
+                )
+                record = None
+                row = db.fetchone()
+
+                if row is not None:
+                    record = {}
+                    for i, column in enumerate(db.description):
+                        record[column.name] = row[i]
+                return record
+
     def delete_drink_tag(self, info: DrinkTagsIn):
+        test = self._get_one(info.user_id, info.tag_id, info.drink_id)
+        if test == None:
+            raise DrinkTagNotFound
         with pool.connection() as conn:
             with conn.cursor() as db:
                 db.execute(

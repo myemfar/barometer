@@ -18,7 +18,7 @@ def get_recipes(repo: RecipesRepo = Depends()):
     return RecipesList(recipes=repo.get_all())
 
 
-@router.get("/api/recipes/{recipe_id}", response_model=RecipesList)
+@router.get("/api/recipes/{recipe_id}", response_model=RecipesOut)
 def get_recipe(
     recipe_id: str,
     repo: RecipesRepo = Depends(),
@@ -32,7 +32,7 @@ def get_recipe(
             detail="Cannot find a Recipe with that ID",
         )
 
-    return RecipesList(recipes=recipes)
+    return recipes
 
 
 @router.post("/api/recipes", response_model=RecipesOut)

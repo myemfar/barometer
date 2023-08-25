@@ -47,7 +47,6 @@ class AccountRepo:
                 )
                 record = None
                 row = db.fetchone()
-
                 if row is not None:
                     record = {}
                     for i, column in enumerate(db.description):

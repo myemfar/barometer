@@ -7,8 +7,8 @@ from fastapi import (
     status,
 )
 from models import DrinksIn, DrinksOut, DrinksList
-from queries.drinks import DrinksRepo, DrinkNotFound, DrinkAlreadyExists
-
+from queries.drinks import DrinksRepo, DrinkNotFound
+from psycopg.errors import UniqueViolation
 
 router = APIRouter()
 
@@ -18,7 +18,7 @@ def get_drinks(repo: DrinksRepo = Depends()):
     return DrinksList(drinks=repo.get_all())
 
 
-@router.get("/api/drinks/{drink_id}", response_model=DrinksList)
+@router.get("/api/drinks/{drink_id}", response_model=DrinksOut)
 def get_drink(
     drink_id: str,
     repo: DrinksRepo = Depends(),
@@ -32,7 +32,7 @@ def get_drink(
             detail="Cannot find a drink with that ID",
         )
 
-    return DrinksList(drinks=drinks)
+    return drinks
 
 
 @router.post("/api/drinks", response_model=DrinksOut)
@@ -42,7 +42,7 @@ def add_drink(
 ):
     try:
         added_drink = repo.add_drink(info)
-    except DrinkAlreadyExists:
+    except UniqueViolation:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Drink already exists",
@@ -55,7 +55,13 @@ def update_drink(
     info: DrinksIn,
     repo: DrinksRepo = Depends(),
 ):
-    updated_drink = repo.update_drink(info)
+    try:
+        updated_drink = repo.update_drink(info)
+    except DrinkNotFound:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Drink not found",
+        )
     return updated_drink
 
 

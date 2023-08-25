@@ -4,8 +4,8 @@ steps = [
         """
         CREATE TABLE inventory (
             id SERIAL PRIMARY KEY NOT NULL,
-            user_id SMALLINT REFERENCES accounts(id) NOT NULL,
-            ingredient_id SMALLINT REFERENCES ingredients(id) NOT NULL,
+            user_id SMALLINT REFERENCES accounts(id) ON DELETE CASCADE,
+            ingredient_id SMALLINT REFERENCES ingredients(id) ON DELETE CASCADE,
             quantity VARCHAR(150) NOT NULL
         );
         """,

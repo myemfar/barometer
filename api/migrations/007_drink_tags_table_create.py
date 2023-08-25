@@ -4,9 +4,9 @@ steps = [
         """
         CREATE TABLE drink_tags (
             id SERIAL PRIMARY KEY NOT NULL,
-            user_id SMALLINT REFERENCES accounts(id) NOT NULL,
-            drink_id SMALLINT REFERENCES drinks(id) NOT NULL,
-            tag_id SMALLINT REFERENCES tags(id) NOT NULL
+            user_id SMALLINT REFERENCES accounts(id) ON DELETE CASCADE,
+            drink_id SMALLINT REFERENCES drinks(id) ON DELETE CASCADE,
+            tag_id SMALLINT REFERENCES tags(id) ON DELETE CASCADE
         );
         """,
         ## "Down" SQL statement

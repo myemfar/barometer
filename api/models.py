@@ -9,7 +9,7 @@ class AccountIn(BaseModel):
 
 
 class AccountOut(BaseModel):
-    id: str
+    id: int
     username: str
 
 
@@ -32,7 +32,7 @@ class IngredientsIn(BaseModel):
 
 
 class IngredientsOut(BaseModel):
-    id: str
+    id: int
     name: str
 
 
@@ -48,7 +48,7 @@ class DrinksIn(BaseModel):
 
 
 class DrinksOut(BaseModel):
-    id: str
+    id: int
     name: str
     image_url: str | None
     description: str | None
@@ -60,15 +60,15 @@ class DrinksList(BaseModel):
 
 
 class RecipesIn(BaseModel):
-    drink_id: str
-    ingredient_id: str
+    drink_id: int
+    ingredient_id: int
     quantity: str
 
 
 class RecipesOut(BaseModel):
-    id: str
-    drink_id: str
-    ingredient_id: str
+    id: int
+    drink_id: int
+    ingredient_id: int
     quantity: str
 
 
@@ -77,15 +77,15 @@ class RecipesList(BaseModel):
 
 
 class InventoryIn(BaseModel):
-    user_id: str
-    ingredient_id: str
+    user_id: int
+    ingredient_id: int
     quantity: str
 
 
 class InventoryOut(BaseModel):
-    id: str
-    user_id: str
-    ingredient_id: str
+    id: int
+    user_id: int
+    ingredient_id: int
     quantity: str
 
 
@@ -103,7 +103,7 @@ class TagsInWithID(BaseModel):
 
 
 class TagsOut(BaseModel):
-    id: str
+    id: int
     tag_name: str
 
 
@@ -112,16 +112,16 @@ class TagsList(BaseModel):
 
 
 class DrinkTagsIn(BaseModel):
-    user_id: str
-    drink_id: str
-    tag_id: str
+    user_id: int
+    drink_id: int
+    tag_id: int
 
 
 class DrinkTagsOut(BaseModel):
-    id: str
-    user_id: str
-    drink_id: str
-    tag_id: str
+    id: int
+    user_id: int
+    drink_id: int
+    tag_id: int
 
 
 class DrinkTagsList(BaseModel):

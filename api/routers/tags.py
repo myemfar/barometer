@@ -8,7 +8,7 @@ from fastapi import (
 )
 from models import TagsIn, TagsOut, TagsList, TagsInWithID
 from queries.tags import TagsRepo, TagNotFound
-
+from psycopg.errors import UniqueViolation
 
 router = APIRouter()
 
@@ -23,7 +23,13 @@ def create_user_Tags(
     info: TagsIn,
     repo: TagsRepo = Depends(),
 ):
-    repo.add_tag(info)
+    try:
+        repo.add_tag(info)
+    except UniqueViolation:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="tag already exists, please delete or update instead",
+        )
     tags = repo.get_tags()
     return TagsList(tags=tags)
 

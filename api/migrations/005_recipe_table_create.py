@@ -4,8 +4,8 @@ steps = [
         """
         CREATE TABLE recipes (
             id SERIAL PRIMARY KEY NOT NULL,
-            drink_id SMALLINT REFERENCES drinks(id) NOT NULL,
-            ingredient_id SMALLINT REFERENCES ingredients(id) NOT NULL,
+            drink_id SMALLINT REFERENCES drinks(id) ON DELETE CASCADE,
+            ingredient_id SMALLINT REFERENCES ingredients(id) ON DELETE CASCADE,
             quantity VARCHAR(150) NOT NULL
         );
         """,

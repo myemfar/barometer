@@ -56,14 +56,14 @@ def create_drink_tag(
     return DrinkTagsList(drink_tags=drink_tags)
 
 
-@router.delete("/api/drink_tags/{user_id}", response_model=DrinkTagsList)
+@router.delete("/api/drink_tags/{user_id}", response_model=bool)
 def delete_drink_tag(
     info: DrinkTagsIn,
     repo: DrinkTagsRepo = Depends(),
 ):
     try:
         repo.delete_drink_tag(info)
-
+        return True
     except DrinkTagNotFound:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -74,11 +74,3 @@ def delete_drink_tag(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=f"User, tag, or drink not found, error{e}",
         )
-    try:
-        drink_tags = repo.get(info.user_id)
-    except DrinkTagNotFound:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="There are no drink tags for this user",
-        )
-    return DrinkTagsList(drink_tags=drink_tags)

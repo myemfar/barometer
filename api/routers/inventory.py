@@ -7,7 +7,11 @@ from fastapi import (
     status,
 )
 from models import InventoryIn, InventoryOut, InventoryList
-from queries.inventory import InventoryRepo, InventoryNotFound
+from queries.inventory import (
+    InventoryRepo,
+    InventoryNotFound,
+    InventoryIngredientAlreadyExists,
+)
 from psycopg.errors import ForeignKeyViolation
 
 router = APIRouter()
@@ -41,6 +45,11 @@ def create_user_inventory(
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Ingredient does not exist, error code details: {error}",
+        )
+    except InventoryIngredientAlreadyExists:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"User already has this ingredient, please update instead",
         )
     inventory = repo.get(info.user_id)
     return InventoryList(inventory=inventory)
