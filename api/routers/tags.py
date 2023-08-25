@@ -6,7 +6,7 @@ from fastapi import (
     HTTPException,
     status,
 )
-from models import TagsIn, TagsOut, TagsList
+from models import TagsIn, TagsOut, TagsList, TagsInWithID
 from queries.tags import TagsRepo, TagNotFound
 
 
@@ -20,10 +20,10 @@ def get_tags(repo: TagsRepo = Depends()):
 
 @router.post("/api/tags", response_model=TagsList)
 def create_user_Tags(
-    tag_name: str,
+    info: TagsIn,
     repo: TagsRepo = Depends(),
 ):
-    repo.add_tag(tag_name)
+    repo.add_tag(info)
     tags = repo.get_tags()
     return TagsList(tags=tags)
 
@@ -40,10 +40,9 @@ def delete_tag(
 
 @router.put("/api/tags", response_model=TagsList)
 def update_tag(
-    tag_id: str,
-    tag_name: str,
+    info: TagsInWithID,
     repo: TagsRepo = Depends(),
 ):
-    repo.update_tags(tag_id, tag_name)
+    repo.update_tags(info)
     tags = repo.get_tags()
     return TagsList(tags=tags)

@@ -1,4 +1,4 @@
-from models import TagsIn, TagsOut
+from models import TagsIn, TagsOut, TagsInWithID
 from queries.pool import pool
 
 
@@ -27,7 +27,7 @@ class TagsRepo:
 
                 return result
 
-    def add_tag(self, tag_name):
+    def add_tag(self, info: TagsIn):
         with pool.connection() as conn:
             with conn.cursor() as db:
                 db.execute(
@@ -38,7 +38,7 @@ class TagsRepo:
                         (%s)
                     RETURNING (tag_name)
                     """,
-                    [tag_name],
+                    [info.tag_name],
                 )
                 record = None
                 row = db.fetchone()
@@ -60,7 +60,7 @@ class TagsRepo:
                     [id],
                 )
 
-    def update_tags(self, id, tag_name):
+    def update_tags(self, info: TagsInWithID):
         with pool.connection() as conn:
             with conn.cursor() as db:
                 db.execute(
@@ -69,5 +69,5 @@ class TagsRepo:
                     SET tag_name = %s
                     WHERE id = %s
                     """,
-                    [tag_name, id],
+                    [info.tag_name, info.id],
                 )

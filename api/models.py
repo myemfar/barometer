@@ -97,6 +97,11 @@ class TagsIn(BaseModel):
     tag_name: str
 
 
+class TagsInWithID(BaseModel):
+    id: int
+    tag_name: str
+
+
 class TagsOut(BaseModel):
     id: str
     tag_name: str
