@@ -1,6 +1,6 @@
 import os
 from fastapi import Depends
-from jwtdown_fastapi.authentication import Authenticator
+from jwtdown_fastapi.authenticatio import Authenticator
 from queries.accounts import AccountRepo
 from models import AccountOut, AccountOutWithHashedPassword
 
