@@ -1,6 +1,6 @@
 steps = [
     [
-        ## "Up" SQL statement
+        # "Up" SQL statement
         """
         CREATE TABLE accounts (
             id SERIAL PRIMARY KEY NOT NULL,
@@ -8,7 +8,7 @@ steps = [
             hashed_password varchar(200) NOT NULL
         );
         """,
-        ## "Down" SQL statement
+        # "Down" SQL statement
         """
         DROP TABLE accounts;
         """,

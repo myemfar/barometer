@@ -1,6 +1,5 @@
-from models import RecipesIn, RecipesOut
+from models import RecipesIn
 from queries.pool import pool
-from queries.ingredients import IngredientsRepo
 
 
 class RecipeNotFound(ValueError):
@@ -74,7 +73,7 @@ class RecipesRepo:
 
     def add_recipe(self, info: RecipesIn):
         test = self._get_specific(info)
-        if test != None:
+        if test is not None:
             raise RecipeAlreadyExists
         with pool.connection() as conn:
             with conn.cursor() as db:
@@ -103,7 +102,7 @@ class RecipesRepo:
 
     def update_recipe(self, info: RecipesIn):
         test = self._get_specific(info)
-        if test == None:
+        if test is None:
             raise RecipeNotFound
         with pool.connection() as conn:
             with conn.cursor() as db:

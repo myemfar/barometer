@@ -1,12 +1,10 @@
 from fastapi import (
     APIRouter,
     Depends,
-    Request,
-    Response,
     HTTPException,
     status,
 )
-from models import DrinkTagsIn, DrinkTagsOut, DrinkTagsList
+from models import DrinkTagsIn, DrinkTagsList
 from queries.drink_tags import (
     DrinkTagsRepo,
     DrinkTagNotFound,

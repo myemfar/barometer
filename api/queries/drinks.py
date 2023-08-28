@@ -1,4 +1,4 @@
-from models import DrinksIn, DrinksOut
+from models import DrinksIn
 from queries.pool import pool
 
 
@@ -38,7 +38,7 @@ class DrinksRepo:
                 )
                 record = None
                 row = db.fetchone()
-                if row == None:
+                if row is None:
                     raise DrinkNotFound
                 if row is not None:
                     record = {}
@@ -59,7 +59,7 @@ class DrinksRepo:
                 )
                 record = None
                 row = db.fetchone()
-                if row == None:
+                if row is None:
                     raise DrinkNotFound
                 if row is not None:
                     record = {}

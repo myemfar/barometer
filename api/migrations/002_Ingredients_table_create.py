@@ -1,6 +1,6 @@
 steps = [
     [
-        ## "Up" SQL statement
+        # "Up" SQL statement
         """
         CREATE TABLE ingredients (
             id SERIAL PRIMARY KEY NOT NULL,
@@ -8,7 +8,7 @@ steps = [
             image_url varchar(200)
         );
         """,
-        ## "Down" SQL statement
+        # "Down" SQL statement
         """
         DROP TABLE ingredients;
         """,

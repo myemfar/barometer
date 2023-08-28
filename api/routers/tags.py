@@ -1,12 +1,10 @@
 from fastapi import (
     APIRouter,
     Depends,
-    Request,
-    Response,
     HTTPException,
     status,
 )
-from models import TagsIn, TagsOut, TagsList, TagsInWithID
+from models import TagsIn, TagsList, TagsInWithID
 from queries.tags import TagsRepo, TagNotFound
 from psycopg.errors import UniqueViolation
 

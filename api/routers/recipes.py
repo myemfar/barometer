@@ -1,8 +1,6 @@
 from fastapi import (
     APIRouter,
     Depends,
-    Request,
-    Response,
     HTTPException,
     status,
 )
@@ -50,7 +48,7 @@ def add_recipe(
     except ForeignKeyViolation as e:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"ingredient or drink do not exist, full error message is: ${e}",
+            detail=f"ingredient or drink do not exist, full error is: ${e}",
         )
     return added_recipe
 

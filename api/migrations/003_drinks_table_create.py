@@ -1,6 +1,6 @@
 steps = [
     [
-        ## "Up" SQL statement
+        # "Up" SQL statement
         """
         CREATE TABLE drinks (
             id SERIAL PRIMARY KEY NOT NULL,
@@ -10,7 +10,7 @@ steps = [
             instructions TEXT
         );
         """,
-        ## "Down" SQL statement
+        # "Down" SQL statement
         """
         DROP TABLE drinks;
         """,

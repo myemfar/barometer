@@ -1,4 +1,4 @@
-from models import TagsIn, TagsOut, TagsInWithID
+from models import TagsIn, TagsInWithID
 from queries.pool import pool
 
 

@@ -1,12 +1,8 @@
 from fastapi import (
     APIRouter,
     Depends,
-    Request,
-    Response,
-    HTTPException,
-    status,
 )
-from models import IngredientsIn, IngredientsOut, IngredientsList
+from models import IngredientsList
 from queries.ingredients import IngredientsRepo
 
 

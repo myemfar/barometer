@@ -1,4 +1,4 @@
-from models import DrinkTagsIn, DrinksOut
+from models import DrinkTagsIn
 from queries.pool import pool
 
 
@@ -13,7 +13,7 @@ class DrinkTagAlreadyExists(ValueError):
 class DrinkTagsRepo:
     def add_drink_tag(self, info: DrinkTagsIn):
         test = self._get_one(info.user_id, info.tag_id, info.drink_id)
-        if test != None:
+        if test is not None:
             raise DrinkTagAlreadyExists
 
         with pool.connection() as conn:
@@ -102,7 +102,7 @@ class DrinkTagsRepo:
 
     def delete_drink_tag(self, info: DrinkTagsIn):
         test = self._get_one(info.user_id, info.tag_id, info.drink_id)
-        if test == None:
+        if test is None:
             raise DrinkTagNotFound
         with pool.connection() as conn:
             with conn.cursor() as db:

@@ -1,4 +1,4 @@
-from fastapi import FastAPI, APIRouter
+from fastapi import FastAPI
 from authenticator import authenticator
 from routers import (
     accounts,

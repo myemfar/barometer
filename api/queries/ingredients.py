@@ -1,4 +1,3 @@
-from models import IngredientsIn, IngredientsOut
 from queries.pool import pool
 
 

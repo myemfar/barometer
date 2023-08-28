@@ -1,12 +1,10 @@
 from fastapi import (
     APIRouter,
     Depends,
-    Request,
-    Response,
     HTTPException,
     status,
 )
-from models import InventoryIn, InventoryOut, InventoryList
+from models import InventoryIn, InventoryList
 from queries.inventory import (
     InventoryRepo,
     InventoryNotFound,
@@ -50,7 +48,7 @@ def create_user_inventory(
     except InventoryIngredientAlreadyExists:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"User already has this ingredient, please update instead",
+            detail="User already has this ingredient, please update instead",
         )
     inventory = repo.get(info.user_id)
     return InventoryList(inventory=inventory)

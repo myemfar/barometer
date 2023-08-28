@@ -1,4 +1,3 @@
-from queries.ingredients import IngredientsRepo
 from queries.pool import pool
 import requests
 import json
@@ -12,7 +11,10 @@ def api_populate():
     for item in fetched_items["drinks"]:
         item_dict = {}
         item_dict["name"] = item["strIngredient1"]
-        constructed_image_url = f"www.thecocktaildb.com/images/ingredients/{item['strIngredient1']}-Medium.png"
+        constructed_image_url = (
+            "www.thecocktaildb.com/images/ingred"
+            + f"ients/{item['strIngredient1']}-Medium.png"
+        )
         item_dict["image_url"] = constructed_image_url
         data.append(item_dict)
     for value in data:

@@ -1,6 +1,6 @@
 steps = [
     [
-        ## "Up" SQL statement
+        # "Up" SQL statement
         """
         CREATE TABLE drink_tags (
             id SERIAL PRIMARY KEY NOT NULL,
@@ -9,7 +9,7 @@ steps = [
             tag_id SMALLINT REFERENCES tags(id) ON DELETE CASCADE
         );
         """,
-        ## "Down" SQL statement
+        # "Down" SQL statement
         """
         DROP TABLE drink_tags;
         """,

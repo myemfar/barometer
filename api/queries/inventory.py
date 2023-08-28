@@ -1,4 +1,4 @@
-from models import InventoryIn, InventoryOut
+from models import InventoryIn
 from queries.pool import pool
 
 
