@@ -7,6 +7,7 @@ from fastapi import (
 from models import RecipesIn, RecipesOut, RecipesList
 from queries.recipes import RecipesRepo, RecipeNotFound, RecipeAlreadyExists
 from psycopg.errors import ForeignKeyViolation
+from authenticator import authenticator
 
 router = APIRouter()
 
@@ -37,9 +38,17 @@ def get_recipe(
 def add_recipe(
     info: RecipesIn,
     repo: RecipesRepo = Depends(),
+    account_data: dict = Depends(authenticator.get_current_account_data),
 ):
     try:
-        added_recipe = repo.add_recipe(info)
+        user = repo._get_user_id_from_drink(info.drink_id)
+        if account_data and user == account_data["id"]:
+            added_recipe = repo.add_recipe(info)
+        else:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="You are not allowed to view that",
+            )
     except RecipeAlreadyExists:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -50,6 +59,11 @@ def add_recipe(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"ingredient or drink do not exist, full error is: ${e}",
         )
+    except RecipeNotFound:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="ingredient or drink do not exist",
+        )
     return added_recipe
 
 
@@ -57,9 +71,17 @@ def add_recipe(
 def update_recipe(
     info: RecipesIn,
     repo: RecipesRepo = Depends(),
+    account_data: dict = Depends(authenticator.get_current_account_data),
 ):
     try:
-        updated_recipe = repo.update_recipe(info)
+        user = repo._get_user_id_from_drink(info.drink_id)
+        if account_data and user == account_data["id"]:
+            updated_recipe = repo.update_recipe(info)
+        else:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="You are not allowed to view that",
+            )
     except RecipeNotFound:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -70,12 +92,20 @@ def update_recipe(
 
 @router.delete("/api/recipes/{recipe_id}", response_model=bool)
 def delete_recipe(
-    recipe_id,
+    info: RecipesIn,
     repo: RecipesRepo = Depends(),
+    account_data: dict = Depends(authenticator.get_current_account_data),
 ):
     try:
-        repo.delete_recipe(recipe_id)
-        return True
+        user = repo._get_user_id_from_drink(info.drink_id)
+        if account_data and user == account_data["id"]:
+            repo.delete_recipe(info.drink_id)
+            return True
+        else:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="You are not allowed to view that",
+            )
     except RecipeNotFound:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,

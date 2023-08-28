@@ -42,9 +42,15 @@ class IngredientsList(BaseModel):
 
 class DrinksIn(BaseModel):
     name: str
+    user_id: int
     image_url: str | None
     description: str | None
     instructions: str | None
+
+
+class DrinksById(BaseModel):
+    id: int
+    user_id: int
 
 
 class DrinksOut(BaseModel):

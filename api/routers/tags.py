@@ -7,6 +7,7 @@ from fastapi import (
 from models import TagsIn, TagsList, TagsInWithID
 from queries.tags import TagsRepo, TagNotFound
 from psycopg.errors import UniqueViolation
+from authenticator import authenticator
 
 router = APIRouter()
 
@@ -20,9 +21,11 @@ def get_tags(repo: TagsRepo = Depends()):
 def create_user_Tags(
     info: TagsIn,
     repo: TagsRepo = Depends(),
+    account_data: dict = Depends(authenticator.get_current_account_data),
 ):
     try:
-        repo.add_tag(info)
+        if account_data:
+            repo.add_tag(info)
     except UniqueViolation:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -36,10 +39,12 @@ def create_user_Tags(
 def delete_tag(
     tag_id: str,
     repo: TagsRepo = Depends(),
+    account_data: dict = Depends(authenticator.get_current_account_data),
 ):
     try:
-        repo.delete_tag(tag_id)
-        return True
+        if account_data:
+            repo.delete_tag(tag_id)
+            return True
     except TagNotFound:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -51,9 +56,11 @@ def delete_tag(
 def update_tag(
     info: TagsInWithID,
     repo: TagsRepo = Depends(),
+    account_data: dict = Depends(authenticator.get_current_account_data),
 ):
     try:
-        repo.update_tags(info)
+        if account_data:
+            repo.update_tags(info)
     except TagNotFound:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,

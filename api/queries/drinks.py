@@ -74,13 +74,15 @@ class DrinksRepo:
                 db.execute(
                     """
                     INSERT INTO drinks
-                        (name, image_url, description, instructions)
+                        (name, user_id, image_url, description, instructions)
                     VALUES
-                        (%s, %s, %s, %s)
-                    RETURNING id, name, image_url, description, instructions;
+                        (%s, %s, %s, %s, %s)
+                    RETURNING id, user_id, name, image_url,
+                    description, instructions;
                     """,
                     [
                         info.name,
+                        info.user_id,
                         info.image_url,
                         info.description,
                         info.instructions,

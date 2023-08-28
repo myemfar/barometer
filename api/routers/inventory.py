@@ -12,6 +12,7 @@ from queries.inventory import (
     InventoryIngredientNotFound,
 )
 from psycopg.errors import ForeignKeyViolation
+from authenticator import authenticator
 
 router = APIRouter()
 
@@ -20,26 +21,38 @@ router = APIRouter()
 def get_user_inventory(
     user_id: str,
     repo: InventoryRepo = Depends(),
+    account_data: dict = Depends(authenticator.get_current_account_data),
 ):
     try:
-        inventory = repo.get(user_id)
-
+        if account_data and int(user_id) == account_data["id"]:
+            inventory = repo.get(user_id)
+            return InventoryList(inventory=inventory)
+        else:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="You are not allowed to view that",
+            )
     except InventoryNotFound:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Inventory is empty",
         )
 
-    return InventoryList(inventory=inventory)
-
 
 @router.post("/api/inventory", response_model=InventoryList)
 def create_user_inventory(
     info: InventoryIn,
     repo: InventoryRepo = Depends(),
+    account_data: dict = Depends(authenticator.get_current_account_data),
 ):
     try:
-        repo.add_ingredient(info)
+        if account_data and info.user_id == account_data["id"]:
+            repo.add_ingredient(info)
+        else:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="You are not allowed to view that",
+            )
     except ForeignKeyViolation as error:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -58,10 +71,17 @@ def create_user_inventory(
 def delete_user_ingredient(
     info: InventoryIn,
     repo: InventoryRepo = Depends(),
+    account_data: dict = Depends(authenticator.get_current_account_data),
 ):
     repo.delete_ingredient(info)
     try:
-        inventory = repo.get(info.user_id)
+        if account_data and info.user_id == account_data["id"]:
+            inventory = repo.get(info.user_id)
+        else:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="You are not allowed to view that",
+            )
     except InventoryNotFound:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -74,9 +94,16 @@ def delete_user_ingredient(
 def update_user_ingredient(
     info: InventoryIn,
     repo: InventoryRepo = Depends(),
+    account_data: dict = Depends(authenticator.get_current_account_data),
 ):
     try:
-        repo.update_ingredient(info)
+        if account_data and info.user_id == account_data["id"]:
+            repo.update_ingredient(info)
+        else:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="You are not allowed to view that",
+            )
     except InventoryIngredientNotFound:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,

@@ -30,6 +30,28 @@ class RecipesRepo:
 
                 return result
 
+    def _get_user_id_from_drink(self, drink_id):
+        with pool.connection() as conn:
+            with conn.cursor() as db:
+                db.execute(
+                    """
+                    SELECT *
+                    FROM drinks
+                    WHERE id = %s;
+                    """,
+                    [drink_id],
+                )
+                record = None
+                row = db.fetchone()
+                if row is None:
+                    raise RecipeNotFound
+                if row is not None:
+                    record = {}
+                    for i, column in enumerate(db.description):
+                        record[column.name] = row[i]
+                print(record)
+                return record["user_id"]
+
     def get(self, recipe_id):
         with pool.connection() as conn:
             with conn.cursor() as db:

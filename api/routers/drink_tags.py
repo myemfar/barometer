@@ -11,6 +11,7 @@ from queries.drink_tags import (
     DrinkTagAlreadyExists,
 )
 from psycopg.errors import ForeignKeyViolation
+from authenticator import authenticator
 
 
 router = APIRouter()
@@ -34,13 +35,20 @@ def get_drink_tag(
 
 
 @router.post("/api/drink_tags", response_model=DrinkTagsList)
-def create_drink_tag(
+async def create_drink_tag(
     info: DrinkTagsIn,
     repo: DrinkTagsRepo = Depends(),
+    account_data: dict = Depends(authenticator.get_current_account_data),
 ):
     try:
-        repo.add_drink_tag(info)
-        drink_tags = repo.get(info.user_id)
+        if account_data and info.user_id == account_data["id"]:
+            repo.add_drink_tag(info)
+            drink_tags = repo.get(info.user_id)
+        else:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="You are not allowed to view that",
+            )
     except DrinkTagAlreadyExists:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -58,10 +66,17 @@ def create_drink_tag(
 def delete_drink_tag(
     info: DrinkTagsIn,
     repo: DrinkTagsRepo = Depends(),
+    account_data: dict = Depends(authenticator.get_current_account_data),
 ):
     try:
-        repo.delete_drink_tag(info)
-        return True
+        if account_data and info.user_id == account_data["id"]:
+            repo.delete_drink_tag(info)
+            return True
+        else:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="You are not allowed to view that",
+            )
     except DrinkTagNotFound:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,

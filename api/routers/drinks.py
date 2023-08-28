@@ -4,9 +4,10 @@ from fastapi import (
     HTTPException,
     status,
 )
-from models import DrinksIn, DrinksOut, DrinksList
+from models import DrinksIn, DrinksOut, DrinksList, DrinksById
 from queries.drinks import DrinksRepo, DrinkNotFound
 from psycopg.errors import UniqueViolation
+from authenticator import authenticator
 
 router = APIRouter()
 
@@ -37,9 +38,16 @@ def get_drink(
 def add_drink(
     info: DrinksIn,
     repo: DrinksRepo = Depends(),
+    account_data: dict = Depends(authenticator.get_current_account_data),
 ):
     try:
-        added_drink = repo.add_drink(info)
+        if account_data and info.user_id == account_data["id"]:
+            added_drink = repo.add_drink(info)
+        else:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="You are not allowed to view that",
+            )
     except UniqueViolation:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -52,9 +60,16 @@ def add_drink(
 def update_drink(
     info: DrinksIn,
     repo: DrinksRepo = Depends(),
+    account_data: dict = Depends(authenticator.get_current_account_data),
 ):
     try:
-        updated_drink = repo.update_drink(info)
+        if account_data and info.user_id == account_data["id"]:
+            updated_drink = repo.update_drink(info)
+        else:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="You are not allowed to view that",
+            )
     except DrinkNotFound:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -65,12 +80,19 @@ def update_drink(
 
 @router.delete("/api/drinks/{drink_id}", response_model=bool)
 def delete_drink(
-    drink_id,
+    info: DrinksById,
     repo: DrinksRepo = Depends(),
+    account_data: dict = Depends(authenticator.get_current_account_data),
 ):
     try:
-        repo.delete_drink(drink_id)
-        return True
+        if account_data and info.user_id == account_data["id"]:
+            repo.delete_drink(info.id)
+            return True
+        else:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="You are not allowed to view that",
+            )
     except DrinkNotFound:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
