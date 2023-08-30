@@ -54,6 +54,14 @@ export const barometerApi = createApi({
       transformResponse: (response) => response?.account || null,
       providesTags: ["Account"],
     }),
+    getInventoryByUser: builder.query({
+      query: (user_id) => ({
+        url: `/api/inventory/${user_id}`,
+        method: "GET",
+        credentials: "include",
+      }),
+      transformResponse: (response) => response?.inventory || [],
+    }),
   }),
 });
 
@@ -62,4 +70,5 @@ export const {
   useLoginMutation,
   useLogOutMutation,
   useSignUpMutation,
+  useGetInventoryByUserQuery,
 } = barometerApi;

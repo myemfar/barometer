@@ -73,7 +73,11 @@ const Nav = () => {
               </li>
               {account && (
                 <li className="nav-item">
-                  <NavLink className="nav-link" aria-current="page" to="">
+                  <NavLink
+                    className="nav-link"
+                    aria-current="page"
+                    to="/inventory"
+                  >
                     Inventory
                   </NavLink>
                 </li>

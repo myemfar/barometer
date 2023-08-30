@@ -4,6 +4,7 @@ import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import LoginForm from "./LoginForm.jsx";
 import SignUpForm from "./SignUpForm.jsx";
+import Inventory from "./Inventory.jsx";
 import Nav from "./Nav.jsx";
 import MainPage from "./Home.jsx";
 
@@ -40,6 +41,7 @@ function App() {
             <Route index element={<MainPage />} />
             <Route path="/login" element={<LoginForm />} />
             <Route path="/signUp" element={<SignUpForm />} />
+            <Route path="/inventory" element={<Inventory />} />
           </Routes>
         </div>
       </BrowserRouter>
