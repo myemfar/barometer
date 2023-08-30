@@ -29,6 +29,13 @@ export const barometerApi = createApi({
         return (result && ["Account"]) || [];
       },
     }),
+    logOut: builder.mutation({
+      query: () => ({
+        url: "/token",
+        method: "DELETE",
+        credentials: "include",
+      }),
+    }),
     getToken: builder.query({
       query: () => ({
         url: "/token",
@@ -41,4 +48,5 @@ export const barometerApi = createApi({
   }),
 });
 
-export const { useGetTokenQuery, useLoginMutation } = barometerApi;
+export const { useGetTokenQuery, useLoginMutation, useLogOutMutation } =
+  barometerApi;
