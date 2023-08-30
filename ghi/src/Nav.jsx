@@ -6,7 +6,7 @@ const Nav = () => {
   const [logOut] = useLogOutMutation();
   return (
     <header>
-      <nav className="navbar navbar-expand-lg navbar-light bg-light">
+      <nav className="navbar navbar-expand-lg navbar-dark bartop-bg">
         <div className="container-fluid">
           <NavLink className="navbar-brand" to="/">
             Barometer
