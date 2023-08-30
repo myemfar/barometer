@@ -4,6 +4,7 @@ import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import LoginForm from "./LoginForm.jsx";
 import Nav from "./Nav.jsx";
+import MainPage from "./Home.jsx";
 
 function App() {
   const [launchInfo, setLaunchInfo] = useState([]);
@@ -32,10 +33,11 @@ function App() {
     <div>
       <ErrorNotification error={error} />
       <BrowserRouter>
-      <Nav />
+        <Nav />
         <div>
           <Routes>
-            <Route path="/login" element={ <LoginForm /> }/>
+            <Route path="/login" element={<LoginForm />} />
+            <Route index element={<MainPage />} />
           </Routes>
         </div>
       </BrowserRouter>
