@@ -19,3 +19,7 @@ code {
   background-size: contain;
   font-weight: 200;
 }
+
+.body-base {
+  background-color: tan;
+}

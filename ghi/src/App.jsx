@@ -30,7 +30,7 @@ function App() {
   }, []);
 
   return (
-    <div>
+    <div className="body-base">
       <ErrorNotification error={error} />
       <BrowserRouter>
         <Nav />
