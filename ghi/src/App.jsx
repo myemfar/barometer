@@ -3,6 +3,7 @@ import ErrorNotification from "./ErrorNotification";
 import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import LoginForm from "./LoginForm.jsx";
+import SignUpForm from "./SignUpForm.jsx";
 import Nav from "./Nav.jsx";
 import MainPage from "./Home.jsx";
 
@@ -36,8 +37,9 @@ function App() {
         <Nav />
         <div>
           <Routes>
-            <Route path="/login" element={<LoginForm />} />
             <Route index element={<MainPage />} />
+            <Route path="/login" element={<LoginForm />} />
+            <Route path="/signUp" element={<SignUpForm />} />
           </Routes>
         </div>
       </BrowserRouter>
