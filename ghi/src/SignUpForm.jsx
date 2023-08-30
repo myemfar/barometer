@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSignUpMutation } from "./app/apiSlice";
@@ -29,6 +28,7 @@ const SignUpForm = () => {
         alert("Username already exists");
       } else {
         navigate("/home");
+        alert("Account successfully created!");
       }
     } else {
       alert("Passwords do not match");

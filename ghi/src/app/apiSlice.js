@@ -19,7 +19,6 @@ export const barometerApi = createApi({
         }
         return {
           url: "/token",
-
           method: "post",
           body: formData,
           credentials: "include",
@@ -35,6 +34,7 @@ export const barometerApi = createApi({
         method: "DELETE",
         credentials: "include",
       }),
+      invalidatesTags: ["Account"],
     }),
     signUp: builder.mutation({
       query: (data) => ({
@@ -43,18 +43,23 @@ export const barometerApi = createApi({
         credentials: "include",
         body: data,
       }),
+      invalidatesTags: ["Account"],
     }),
     getToken: builder.query({
       query: () => ({
         url: "/token",
-
         credentials: "include",
       }),
       providesTags: ["Token"],
       transformResponse: (response) => response?.account || null,
+      providesTags: ["Account"],
     }),
   }),
 });
 
-export const { useGetTokenQuery, useLoginMutation, useLogOutMutation, useSignUpMutation, } =
-  barometerApi;
+export const {
+  useGetTokenQuery,
+  useLoginMutation,
+  useLogOutMutation,
+  useSignUpMutation,
+} = barometerApi;
