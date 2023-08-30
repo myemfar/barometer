@@ -1,44 +1,44 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const barometerApi = createApi({
-  reducerPath: 'authentication',
-  tagTypes: ['Token'],
+  reducerPath: "authentication",
+  tagTypes: ["Token"],
   baseQuery: fetchBaseQuery({
     baseUrl: process.env.REACT_APP_API_HOST,
   }),
-  endpoints: builder => ({
+  endpoints: (builder) => ({
     login: builder.mutation({
-      query: info => {
+      query: (info) => {
         let formData = null;
         if (info instanceof HTMLElement) {
           formData = new FormData(info);
         } else {
           formData = new FormData();
-          formData.append('username', info.email);
-          formData.append('password', info.password);
+          formData.append("username", info.username);
+          formData.append("password", info.password);
         }
         return {
-          url: '/token',
+          url: "/token",
 
-          method: 'post',
+          method: "post",
           body: formData,
-          credentials: 'include',
+          credentials: "include",
         };
       },
-      invalidatesTags: result => {
-        return (result && ['Account']) || [];
+      invalidatesTags: (result) => {
+        return (result && ["Account"]) || [];
       },
     }),
     getToken: builder.query({
       query: () => ({
-        url: '/token',
+        url: "/token",
 
-        credentials: 'include',
+        credentials: "include",
       }),
-      providesTags: ['Token'],
+      providesTags: ["Token"],
       transformResponse: (response) => response?.account || null,
     }),
   }),
 });
 
-export const { useGetTokenQuery } = barometerApi
+export const { useGetTokenQuery, useLoginMutation } = barometerApi;
