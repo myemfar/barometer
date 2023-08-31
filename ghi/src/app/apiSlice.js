@@ -69,6 +69,14 @@ export const barometerApi = createApi({
       }),
       transformResponse: (response) => response?.drinks || [],
     }),
+    getDrinkByName: builder.query({
+      query: (id) => ({
+        url: `/api/drinks/${id}`,
+        method: "GET",
+        credentials: "include",
+      }),
+      transformResponse: (response) => response?.drinks || [],
+    }),
   }),
 });
 
@@ -79,4 +87,5 @@ export const {
   useSignUpMutation,
   useGetInventoryByUserQuery,
   useGetDrinkQuery,
+  useGetDrinkByNameQuery,
 } = barometerApi;
