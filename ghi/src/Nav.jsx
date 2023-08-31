@@ -24,36 +24,6 @@ const Nav = () => {
           </button>
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-              {!account && (
-                <li className="nav-item">
-                  <NavLink
-                    className="nav-link"
-                    aria-current="page"
-                    to="/signUp"
-                  >
-                    Sign Up
-                  </NavLink>
-                </li>
-              )}
-              {!account && (
-                <li className="nav-item">
-                  <NavLink className="nav-link" aria-current="page" to="/login">
-                    Log in
-                  </NavLink>
-                </li>
-              )}
-              {account && (
-                <li className="nav-item">
-                  <NavLink
-                    onClick={logOut}
-                    className="nav-link"
-                    aria-current="page"
-                    to="/login"
-                  >
-                    Log Out
-                  </NavLink>
-                </li>
-              )}
               <li className="nav-item">
                 <NavLink className="nav-link active" aria-current="page" to="/">
                   Home
@@ -83,6 +53,45 @@ const Nav = () => {
                 </li>
               )}
             </ul>
+          </div>
+          <div
+            className="collapse navbar-collapse justify-content-md-end"
+            id="navbarRightAlighnContent"
+          >
+            {!account && (
+              <li className="nav-item">
+                <NavLink
+                  className="btn btn-info"
+                  aria-current="page"
+                  to="/signUp"
+                >
+                  Sign Up
+                </NavLink>
+              </li>
+            )}
+            {account && (
+              <li className="nav-item justify-content-md-end">
+                <NavLink
+                  onClick={logOut}
+                  className="btn btn-secondary justify-content-md-end"
+                  aria-current="page"
+                  to="/login"
+                >
+                  Log Out
+                </NavLink>
+              </li>
+            )}
+            {!account && (
+              <li className="nav-item">
+                <NavLink
+                  className="btn btn-secondary"
+                  aria-current="page"
+                  to="/login"
+                >
+                  Log in
+                </NavLink>
+              </li>
+            )}
           </div>
         </div>
       </nav>

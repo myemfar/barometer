@@ -50,9 +50,8 @@ export const barometerApi = createApi({
         url: "/token",
         credentials: "include",
       }),
-      providesTags: ["Token"],
+      providesTags: ["Token", "Account"],
       transformResponse: (response) => response?.account || null,
-      providesTags: ["Account"],
     }),
     getInventoryByUser: builder.query({
       query: (user_id) => ({
