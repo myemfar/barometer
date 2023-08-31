@@ -1,9 +1,16 @@
 import { NavLink } from "react-router-dom";
 import { useGetTokenQuery, useLogOutMutation } from "./app/apiSlice";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 const Nav = () => {
   const { data: account } = useGetTokenQuery();
-  const [logOut] = useLogOutMutation();
+  const [logOut, logoutResponse] = useLogOutMutation();
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (logoutResponse.data) navigate("/");
+  }, [logoutResponse]);
+
   return (
     <header>
       <nav className="navbar navbar-expand-lg navbar-dark bartop-bg">
@@ -75,7 +82,7 @@ const Nav = () => {
                   onClick={logOut}
                   className="btn btn-secondary justify-content-md-end"
                   aria-current="page"
-                  to="/login"
+                  to="/"
                 >
                   Log Out
                 </NavLink>
