@@ -15,8 +15,8 @@ class InventoryIngredientNotFound(ValueError):
 
 
 class InventoryRepo:
-    def add_ingredient(self, info: InventoryIn):
-        ingredient = self._get_specific(info.user_id, info.ingredient_id)
+    def add_ingredient(self, info: InventoryIn, user_id):
+        ingredient = self._get_specific(user_id, info.ingredient_id)
         if ingredient != []:
             raise InventoryIngredientAlreadyExists
         with pool.connection() as conn:
@@ -29,7 +29,7 @@ class InventoryRepo:
                         (%s, %s, %s)
                     RETURNING user_id, ingredient_id, quantity;
                     """,
-                    [info.user_id, info.ingredient_id, info.quantity],
+                    [user_id, info.ingredient_id, info.quantity],
                 )
                 record = None
                 row = db.fetchone()
@@ -112,8 +112,8 @@ class InventoryRepo:
                     [info.user_id, info.ingredient_id],
                 )
 
-    def update_ingredient(self, info):
-        ingredient = self._get_specific(info.user_id, info.ingredient_id)
+    def update_ingredient(self, info, user_id):
+        ingredient = self._get_specific(user_id, info.ingredient_id)
         if ingredient == []:
             raise InventoryIngredientNotFound
         with pool.connection() as conn:
@@ -125,5 +125,5 @@ class InventoryRepo:
                     WHERE user_id = %s AND
                     ingredient_id = %s;
                     """,
-                    [info.quantity, info.user_id, info.ingredient_id],
+                    [info.quantity, user_id, info.ingredient_id],
                 )

@@ -3,9 +3,9 @@ import { useGetInventoryByUserQuery } from "./app/apiSlice";
 import { useGetTokenQuery } from "./app/apiSlice";
 
 const Inventory = () => {
-  const account = useGetTokenQuery();
-  const accountId = account?.data?.id || undefined;
-  const inventory = useGetInventoryByUserQuery(accountId);
+  // const account = useGetTokenQuery();
+  // const accountId = account?.data?.id || undefined;
+  const inventory = useGetInventoryByUserQuery();
   return (
     <div className="px-4 py-5 my-5 text-center">
       <h1 className="display-5 fw-bold">Inventory</h1>

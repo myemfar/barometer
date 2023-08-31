@@ -42,7 +42,6 @@ class IngredientsList(BaseModel):
 
 class DrinksIn(BaseModel):
     name: str
-    user_id: int
     image_url: str | None
     description: str | None
     instructions: str | None
@@ -83,7 +82,6 @@ class RecipesList(BaseModel):
 
 
 class InventoryIn(BaseModel):
-    user_id: int
     ingredient_id: int
     quantity: str
 
@@ -118,7 +116,6 @@ class TagsList(BaseModel):
 
 
 class DrinkTagsIn(BaseModel):
-    user_id: int
     drink_id: int
     tag_id: int
 

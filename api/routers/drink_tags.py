@@ -17,13 +17,13 @@ from authenticator import authenticator
 router = APIRouter()
 
 
-@router.get("/api/drink_tags/{user_id}", response_model=DrinkTagsList)
+@router.get("/api/drink_tags/mine", response_model=DrinkTagsList)
 def get_drink_tag(
-    user_id,
     repo: DrinkTagsRepo = Depends(),
+    account_data: dict = Depends(authenticator.get_current_account_data),
 ):
     try:
-        drink_tags = repo.get(user_id)
+        drink_tags = repo.get(account_data["id"])
 
     except DrinkTagNotFound:
         raise HTTPException(
@@ -41,14 +41,8 @@ async def create_drink_tag(
     account_data: dict = Depends(authenticator.get_current_account_data),
 ):
     try:
-        if account_data and info.user_id == account_data["id"]:
-            repo.add_drink_tag(info)
-            drink_tags = repo.get(info.user_id)
-        else:
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="You are not allowed to view that",
-            )
+        repo.add_drink_tag(info, account_data["id"])
+        drink_tags = repo.get(account_data["id"])
     except DrinkTagAlreadyExists:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -62,21 +56,15 @@ async def create_drink_tag(
     return DrinkTagsList(drink_tags=drink_tags)
 
 
-@router.delete("/api/drink_tags/{user_id}", response_model=bool)
+@router.delete("/api/drink_tags/mine", response_model=bool)
 def delete_drink_tag(
     info: DrinkTagsIn,
     repo: DrinkTagsRepo = Depends(),
     account_data: dict = Depends(authenticator.get_current_account_data),
 ):
     try:
-        if account_data and info.user_id == account_data["id"]:
-            repo.delete_drink_tag(info)
-            return True
-        else:
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="You are not allowed to view that",
-            )
+        repo.delete_drink_tag(info, account_data["id"])
+        return True
     except DrinkTagNotFound:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,

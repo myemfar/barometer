@@ -41,13 +41,7 @@ def add_drink(
     account_data: dict = Depends(authenticator.get_current_account_data),
 ):
     try:
-        if account_data and info.user_id == account_data["id"]:
-            added_drink = repo.add_drink(info)
-        else:
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="You are not allowed to view that",
-            )
+        added_drink = repo.add_drink(info, account_data["id"])
     except UniqueViolation:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -63,7 +57,8 @@ def update_drink(
     account_data: dict = Depends(authenticator.get_current_account_data),
 ):
     try:
-        if account_data and info.user_id == account_data["id"]:
+        fooFighters = repo.get_by_name(info.name)
+        if account_data and fooFighters["user_id"] == account_data["id"]:
             updated_drink = repo.update_drink(info)
         else:
             raise HTTPException(

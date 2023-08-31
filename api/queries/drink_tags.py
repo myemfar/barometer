@@ -11,8 +11,8 @@ class DrinkTagAlreadyExists(ValueError):
 
 
 class DrinkTagsRepo:
-    def add_drink_tag(self, info: DrinkTagsIn):
-        test = self._get_one(info.user_id, info.tag_id, info.drink_id)
+    def add_drink_tag(self, info: DrinkTagsIn, user_id):
+        test = self._get_one(user_id, info.tag_id, info.drink_id)
         if test is not None:
             raise DrinkTagAlreadyExists
 
@@ -26,7 +26,7 @@ class DrinkTagsRepo:
                         (%s, %s, %s)
                     RETURNING user_id, drink_id, tag_id;
                     """,
-                    [info.user_id, info.drink_id, info.tag_id],
+                    [user_id, info.drink_id, info.tag_id],
                 )
                 record = None
                 row = db.fetchone()
@@ -100,8 +100,8 @@ class DrinkTagsRepo:
                         record[column.name] = row[i]
                 return record
 
-    def delete_drink_tag(self, info: DrinkTagsIn):
-        test = self._get_one(info.user_id, info.tag_id, info.drink_id)
+    def delete_drink_tag(self, info: DrinkTagsIn, user_id):
+        test = self._get_one(user_id, info.tag_id, info.drink_id)
         if test is None:
             raise DrinkTagNotFound
         with pool.connection() as conn:
@@ -113,5 +113,5 @@ class DrinkTagsRepo:
                     drink_id = %s AND
                     tag_id = %s;
                     """,
-                    [info.user_id, info.drink_id, info.tag_id],
+                    [user_id, info.drink_id, info.tag_id],
                 )

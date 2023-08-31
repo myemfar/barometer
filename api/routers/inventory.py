@@ -17,21 +17,14 @@ from authenticator import authenticator
 router = APIRouter()
 
 
-@router.get("/api/inventory/{user_id}", response_model=InventoryList)
+@router.get("/api/inventory/mine", response_model=InventoryList)
 def get_user_inventory(
-    user_id: str,
     repo: InventoryRepo = Depends(),
     account_data: dict = Depends(authenticator.get_current_account_data),
 ):
     try:
-        if account_data and int(user_id) == account_data["id"]:
-            inventory = repo.get(user_id)
-            return InventoryList(inventory=inventory)
-        else:
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="You are not allowed to view that",
-            )
+        inventory = repo.get(account_data["id"])
+        return InventoryList(inventory=inventory)
     except InventoryNotFound:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -46,13 +39,7 @@ def create_user_inventory(
     account_data: dict = Depends(authenticator.get_current_account_data),
 ):
     try:
-        if account_data and info.user_id == account_data["id"]:
-            repo.add_ingredient(info)
-        else:
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="You are not allowed to view that",
-            )
+        repo.add_ingredient(info, account_data["id"])
     except ForeignKeyViolation as error:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -63,7 +50,7 @@ def create_user_inventory(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="User already has this ingredient, please update instead",
         )
-    inventory = repo.get(info.user_id)
+    inventory = repo.get(account_data["id"])
     return InventoryList(inventory=inventory)
 
 
@@ -97,8 +84,11 @@ def update_user_ingredient(
     account_data: dict = Depends(authenticator.get_current_account_data),
 ):
     try:
-        if account_data and info.user_id == account_data["id"]:
-            repo.update_ingredient(info)
+        fooFighters = repo._get_specific(
+            account_data["id"], info.ingredient_id
+        )
+        if account_data and fooFighters[0]["user_id"] == account_data["id"]:
+            inventory = repo.update_ingredient(info, account_data["id"])
         else:
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
@@ -110,7 +100,7 @@ def update_user_ingredient(
             detail="Ingredient does not exist",
         )
     try:
-        inventory = repo.get(info.user_id)
+        inventory = repo.get(account_data["id"])
     except InventoryNotFound:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,

@@ -68,7 +68,7 @@ class DrinksRepo:
 
                 return record
 
-    def add_drink(self, info: DrinksIn):
+    def add_drink(self, info: DrinksIn, user_id):
         with pool.connection() as conn:
             with conn.cursor() as db:
                 db.execute(
@@ -82,7 +82,7 @@ class DrinksRepo:
                     """,
                     [
                         info.name,
-                        info.user_id,
+                        user_id,
                         info.image_url,
                         info.description,
                         info.instructions,

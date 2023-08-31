@@ -25,7 +25,7 @@ export const barometerApi = createApi({
         };
       },
       invalidatesTags: (result) => {
-        return (result && ["Account"]) || [];
+        return (result && ["Account", "Inventory"]) || [];
       },
     }),
     logOut: builder.mutation({
@@ -34,7 +34,7 @@ export const barometerApi = createApi({
         method: "DELETE",
         credentials: "include",
       }),
-      invalidatesTags: ["Account"],
+      invalidatesTags: ["Account", "Inventory"],
     }),
     signUp: builder.mutation({
       query: (data) => ({
@@ -54,11 +54,12 @@ export const barometerApi = createApi({
       transformResponse: (response) => response?.account || null,
     }),
     getInventoryByUser: builder.query({
-      query: (user_id) => ({
-        url: `/api/inventory/${user_id}`,
+      query: () => ({
+        url: `/api/inventory/mine`,
         method: "GET",
         credentials: "include",
       }),
+      providesTags: ["Inventory"],
       transformResponse: (response) => response?.inventory || [],
     }),
     getDrink: builder.query({
@@ -89,3 +90,4 @@ export const {
   useGetDrinkQuery,
   useGetDrinkByNameQuery,
 } = barometerApi;
+
