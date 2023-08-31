@@ -44,7 +44,7 @@ const Nav = () => {
                 </li>
               )}
               <li className="nav-item">
-                <NavLink className="nav-link" aria-current="page" to="">
+                <NavLink className="nav-link" aria-current="page" to="/drinks">
                   Drinks
                 </NavLink>
               </li>
