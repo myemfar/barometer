@@ -29,12 +29,7 @@ const Inventory = () => {
                   <td>{item.name}</td>
                   <td>
                     <img
-                      src={
-                        item.image_url.startsWith("http://") ||
-                        item.image_url.startsWith("https://")
-                          ? item.image_url
-                          : "https://" + item.image_url
-                      }
+                      src={item.image_url}
                       alt={item.name}
                       style={{ maxHeight: "100px", width: "auto" }}
                     />

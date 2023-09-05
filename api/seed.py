@@ -12,7 +12,7 @@ def api_populate():
         item_dict = {}
         item_dict["name"] = item["strIngredient1"]
         constructed_image_url = (
-            "www.thecocktaildb.com/images/ingred"
+            "http://www.thecocktaildb.com/images/ingred"
             + f"ients/{item['strIngredient1']}-Medium.png"
         )
         item_dict["image_url"] = constructed_image_url

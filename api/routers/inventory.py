@@ -37,7 +37,7 @@ def get_user_inventory(
         )
 
 
-@router.post("/api/inventory", response_model=InventoryList)
+@router.post("/api/inventory", response_model=UserInventoryList)
 def create_user_inventory(
     info: InventoryIn,
     repo: InventoryRepo = Depends(),
@@ -56,7 +56,7 @@ def create_user_inventory(
             detail="User already has this ingredient, please update instead",
         )
     inventory = repo.get(account_data["id"])
-    return InventoryList(inventory=inventory)
+    return UserInventoryList(inventory=inventory)
 
 
 @router.delete("/api/inventory", response_model=InventoryList)
