@@ -4,7 +4,12 @@ from fastapi import (
     HTTPException,
     status,
 )
-from models import InventoryIn, InventoryList
+from models import (
+    InventoryIn,
+    InventoryList,
+    UserInventoryOut,
+    UserInventoryList,
+)
 from queries.inventory import (
     InventoryRepo,
     InventoryNotFound,
@@ -17,14 +22,14 @@ from authenticator import authenticator
 router = APIRouter()
 
 
-@router.get("/api/inventory/mine", response_model=InventoryList)
+@router.get("/api/inventory/mine", response_model=UserInventoryList)
 def get_user_inventory(
     repo: InventoryRepo = Depends(),
     account_data: dict = Depends(authenticator.get_current_account_data),
 ):
     try:
         inventory = repo.get(account_data["id"])
-        return InventoryList(inventory=inventory)
+        return UserInventoryList(inventory=inventory)
     except InventoryNotFound:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,

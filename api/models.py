@@ -40,6 +40,16 @@ class IngredientsList(BaseModel):
     ingredients: List[IngredientsOut]
 
 
+class UserInventoryOut(BaseModel):
+    name: str
+    image_url: str
+    quantity: str
+
+
+class UserInventoryList(BaseModel):
+    inventory: List[UserInventoryOut]
+
+
 class DrinksIn(BaseModel):
     name: str
     image_url: str | None

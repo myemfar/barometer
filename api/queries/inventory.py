@@ -83,9 +83,11 @@ class InventoryRepo:
             with conn.cursor() as db:
                 db.execute(
                     """
-                    SELECT *
+                    SELECT ingredients.name, ingredients.image_url, inventory.quantity
                     FROM inventory
-                    WHERE user_id = %s;
+                    INNER JOIN ingredients
+                        ON (ingredients.id = inventory.ingredient_id)
+                    WHERE inventory.user_id = %s;
                     """,
                     [user_id],
                 )

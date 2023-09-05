@@ -18,14 +18,27 @@ const Inventory = () => {
           <thead>
             <tr>
               <th>Ingredient</th>
+              <th>Picture</th>
               <th>Amount</th>
             </tr>
           </thead>
           <tbody>
             {inventory.data &&
               inventory.data.map((item) => (
-                <tr key={item.id}>
-                  <td>{item.ingredient_id}</td>
+                <tr key={item.name}>
+                  <td>{item.name}</td>
+                  <td>
+                    <img
+                      src={
+                        item.image_url.startsWith("http://") ||
+                        item.image_url.startsWith("https://")
+                          ? item.image_url
+                          : "https://" + item.image_url
+                      }
+                      alt={item.name}
+                      style={{ maxHeight: "100px", width: "auto" }}
+                    />
+                  </td>
                   <td>{item.quantity}</td>
                 </tr>
               ))}
