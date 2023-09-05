@@ -3,6 +3,7 @@ import { useGetDrinkQuery } from "./app/apiSlice";
 import { useGetTokenQuery } from "./app/apiSlice";
 import Search from "./Search";
 import { useSelector } from "react-redux";
+import { NavLink } from "react-router-dom";
 
 const Drinks = () => {
   const searchCriteria = useSelector((state) => state.search.value);
@@ -18,9 +19,12 @@ const Drinks = () => {
       <div className="col-lg-6 mx-auto">
         <p className="lead mb-4">BAROMETER: WE HELP U MAKE DRANK</p>
       </div>
-      <div>
-        <button>Add drink</button>
-      </div>
+      <NavLink className="btn btn-secondary" aria-current="page" to="/drinks/new">
+        Create Drink
+      </NavLink>
+      <NavLink className="btn btn-secondary" aria-current="page" to="/drinks/recipes">
+        Create Recipe
+      </NavLink>
       <div>
         <Search />
       </div>
