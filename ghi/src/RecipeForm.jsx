@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { useGetIngredientsQuery } from "./app/apiSlice";
 import { useGetDrinkQuery } from "./app/apiSlice";
 
-
 const RecipeForm = () => {
   const [recipe] = useCreateRecipeMutation();
   const [formData, setFormData] = useState();
@@ -21,12 +20,12 @@ const RecipeForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(formData.drink_id);
+
     const response = recipe(formData);
-    console.log(e);
+
     if (response.error) {
       alert("Unable to create recipe");
-    } 
+    }
   };
 
   return (
@@ -34,23 +33,43 @@ const RecipeForm = () => {
       <h5 className="card-header">Recipe Changes</h5>
       <div className="card-body">
         <form onSubmit={handleSubmit}>
-            <div className="mb-3">
+          <div className="mb-3">
             <label className="form-label">Select Drink:</label>
-            <input className= "form-control" onChange={handleChange} name= "drink_id" list="datalistOptions" id="drinksDataList" placeholder="Type to search..."/>
-                <datalist id="datalistOptions">
-                    {drinks.data && drinks.data.map((item) => (
-                        <option value= {item.id} key= {item.id}>{item.name}</option>
-                    ))}
-                </datalist>
+            <input
+              className="form-control"
+              onChange={handleChange}
+              name="drink_id"
+              list="datalistOptions"
+              id="drinksDataList"
+              placeholder="Type to search..."
+            />
+            <datalist id="datalistOptions">
+              {drinks.data &&
+                drinks.data.map((item) => (
+                  <option value={item.id} key={item.id}>
+                    {item.name}
+                  </option>
+                ))}
+            </datalist>
           </div>
           <div className="mb-3">
             <label className="form-label">Add ingredient:</label>
-            <input className= "form-control" onChange={handleChange} name= "ingredient_id" list="datalistOptions2" id="ingredientsDataList" placeholder="Type to search..."/>
-                <datalist id="datalistOptions2">
-                    {ingredients.data && ingredients.data.map((item) => (
-                        <option value= {item.id} key= {item.id}>{item.name}</option>
-                    ))}
-                </datalist>
+            <input
+              className="form-control"
+              onChange={handleChange}
+              name="ingredient_id"
+              list="datalistOptions2"
+              id="ingredientsDataList"
+              placeholder="Type to search..."
+            />
+            <datalist id="datalistOptions2">
+              {ingredients.data &&
+                ingredients.data.map((item) => (
+                  <option value={item.id} key={item.id}>
+                    {item.name}
+                  </option>
+                ))}
+            </datalist>
           </div>
           <div className="mb-3">
             <label className="form-label">Quantity:</label>
@@ -61,7 +80,7 @@ const RecipeForm = () => {
               onChange={handleChange}
             />
           </div>
-          
+
           <div>
             <input className="btn btn-primary" type="submit" value="add" />
           </div>
@@ -72,7 +91,3 @@ const RecipeForm = () => {
 };
 
 export default RecipeForm;
-
-
-
-

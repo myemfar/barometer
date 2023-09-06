@@ -98,11 +98,21 @@ export const barometerApi = createApi({
     }),
     getDrinkByName: builder.query({
       query: (id) => ({
-        url: `/api/drinks/${id}`,
+        url: `api/drinks/${id}`,
         method: "GET",
         credentials: "include",
       }),
-      transformResponse: (response) => response?.drinks || [],
+
+      transformResponse: (response) => response?.drink || [],
+    }),
+    getTags: builder.query({
+      query: () => ({
+        url: `/api/tags`,
+        method: "GET",
+        credentials: "include",
+      }),
+
+      transformResponse: (response) => response?.tags || [],
     }),
   }),
 });
@@ -118,4 +128,5 @@ export const {
   useCreateDrinkMutation,
   useGetIngredientsQuery,
   useCreateRecipeMutation,
+  useGetTagsQuery,
 } = barometerApi;

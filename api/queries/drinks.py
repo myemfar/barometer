@@ -36,6 +36,7 @@ class DrinksRepo:
                     """,
                     [drink_id],
                 )
+
                 record = None
                 row = db.fetchone()
                 if row is None:

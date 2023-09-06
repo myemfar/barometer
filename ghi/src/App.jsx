@@ -10,10 +10,9 @@ import Nav from "./Nav.jsx";
 import MainPage from "./Home.jsx";
 import DrinkForm from "./DrinkForm";
 import RecipeForm from "./RecipeForm";
-
+import DrinkDetail from "./DrinkDetail";
 
 function App() {
-
   return (
     <div className="body-base">
       <BrowserRouter>
@@ -25,9 +24,10 @@ function App() {
             <Route path="/signUp" element={<SignUpForm />} />
             <Route path="/inventory" element={<Inventory />} />
             <Route path="/drinks">
-               <Route index element={<Drinks />} />
-               <Route path="new" element={<DrinkForm />} />
-               <Route path="recipes" element={<RecipeForm />} />
+              <Route index element={<Drinks />} />
+              <Route path="new" element={<DrinkForm />} />
+              <Route path="recipes" element={<RecipeForm />} />
+              <Route path=":id" element={<DrinkDetail />} />
             </Route>
           </Routes>
         </div>
