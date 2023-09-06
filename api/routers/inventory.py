@@ -8,6 +8,7 @@ from models import (
     InventoryIn,
     InventoryList,
     UserInventoryOut,
+    UserInventoryIn,
     UserInventoryList,
 )
 from queries.inventory import (
@@ -59,27 +60,14 @@ def create_user_inventory(
     return UserInventoryList(inventory=inventory)
 
 
-@router.delete("/api/inventory", response_model=InventoryList)
+@router.delete("/api/inventory/mine", response_model=bool)
 def delete_user_ingredient(
-    info: InventoryIn,
+    info: UserInventoryIn,
     repo: InventoryRepo = Depends(),
     account_data: dict = Depends(authenticator.get_current_account_data),
 ):
-    repo.delete_ingredient(info)
-    try:
-        if account_data and info.user_id == account_data["id"]:
-            inventory = repo.get(info.user_id)
-        else:
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="You are not allowed to view that",
-            )
-    except InventoryNotFound:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Inventory is empty",
-        )
-    return InventoryList(inventory=inventory)
+    repo.delete_ingredient(info, account_data["id"])
+    return True
 
 
 @router.put("/api/inventory", response_model=InventoryList)

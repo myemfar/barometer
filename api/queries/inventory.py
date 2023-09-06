@@ -83,7 +83,7 @@ class InventoryRepo:
             with conn.cursor() as db:
                 db.execute(
                     """
-                    SELECT ingredients.name, ingredients.image_url, inventory.quantity
+                    SELECT ingredients.id, ingredients.name, ingredients.image_url, inventory.quantity
                     FROM inventory
                     INNER JOIN ingredients
                         ON (ingredients.id = inventory.ingredient_id)
@@ -102,7 +102,7 @@ class InventoryRepo:
                     raise InventoryNotFound
                 return result
 
-    def delete_ingredient(self, info):
+    def delete_ingredient(self, info, user_id):
         with pool.connection() as conn:
             with conn.cursor() as db:
                 db.execute(
@@ -111,7 +111,7 @@ class InventoryRepo:
                     WHERE user_id = %s AND
                     ingredient_id = %s;
                     """,
-                    [info.user_id, info.ingredient_id],
+                    [user_id, info.ingredient_id],
                 )
 
     def update_ingredient(self, info, user_id):

@@ -41,9 +41,14 @@ class IngredientsList(BaseModel):
 
 
 class UserInventoryOut(BaseModel):
+    id: int
     name: str
     image_url: str
     quantity: str
+
+
+class UserInventoryIn(BaseModel):
+    ingredient_id: int
 
 
 class UserInventoryList(BaseModel):

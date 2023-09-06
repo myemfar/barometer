@@ -143,6 +143,14 @@ export const barometerApi = createApi({
         body: data,
       }),
     }),
+    deleteIngredient: builder.mutation({
+      query: (data) => ({
+        url: "/api/inventory/mine",
+        method: "DELETE",
+        credentials: "include",
+        body: data,
+      }),
+    }),
   }),
 });
 
@@ -162,5 +170,6 @@ export const {
   useGetRecipeForDrinkQuery,
   useDeleteRecipeMutation,
   useCreateInventoryMutation,
+  useDeleteIngredientMutation,
   
 } = barometerApi;

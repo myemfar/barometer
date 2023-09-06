@@ -1,11 +1,27 @@
 import React, { useState, useEffect } from "react";
-import { useGetInventoryByUserQuery } from "./app/apiSlice";
+import { useGetInventoryByUserQuery, useDeleteIngredientMutation } from "./app/apiSlice";
 import { useGetTokenQuery } from "./app/apiSlice";
 import { NavLink } from "react-router-dom";
 
+
+
 const Inventory = () => {
-  // const account = useGetTokenQuery();
-  // const accountId = account?.data?.id || undefined;
+
+  const [deleteIngredient] = useDeleteIngredientMutation();
+
+  const handleIngredientDelete = (e) => {
+    
+    const ingredient = {ingredient_id: e.target.value};
+    deleteIngredient(ingredient)
+      .unwrap()
+      .then((result) => {
+        alert("Ingredient succesfully deleted");
+      })
+      .catch((error) => {
+        alert("WHY IS THERE ERROR HERE");
+      });
+  };
+
   const inventory = useGetInventoryByUserQuery();
   return (
     <div className="px-4 py-5 my-5 text-center">
@@ -42,6 +58,16 @@ const Inventory = () => {
                     />
                   </td>
                   <td>{item.quantity}</td>
+                  <td>
+                        <button
+                          onClick={handleIngredientDelete}
+                          value={item.id}
+                          key={item.id}
+                          className="btn btn-secondary"
+                        >
+                          Delete
+                        </button>
+                      </td>
                 </tr>
               ))}
           </tbody>

@@ -19,11 +19,10 @@ const InventoryForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const response = inventory(formData);
-    console.log(formData)
     if (response.error) {
       alert("Unable to create inventory");
     } else {
-      navigate("/inventory");
+      navigate("/inventory/mine");
     }
   };
 
