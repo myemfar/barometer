@@ -5,22 +5,31 @@ import {
   useGetTagsQuery,
 } from "./app/apiSlice";
 import { useGetTokenQuery } from "./app/apiSlice";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 const DrinkDetail = () => {
   const params = useParams();
-
+  const [createDrinkTags] = useCreateDrinkTagsMutation();
   const { data: drink, isLoading: drinksLoading } = useGetDrinkByNameQuery(
     params.id
   );
+  const navigate = useNavigate();
   const { data: tags, isLoading: tagsLoading } = useGetTagsQuery();
 
   if (drinksLoading || tagsLoading) return <div>Loading..</div>;
 
   const handleButton = (e) => {
     const tagData = { tag_id: e.target.value, drink_id: params.id };
-    useCreateDrinkTagsMutation(tagData);
+    createDrinkTags(tagData)
+      .unwrap()
+      .then((result) => {
+        alert("Tag succesfully added");
+      })
+      .catch((error) => {
+        alert("Drink already tagged");
+      });
   };
+
   return (
     <div className="px-4 py-5 my-5 text-center">
       <h1 className="display-5 fw-bold">Drink Detail</h1>

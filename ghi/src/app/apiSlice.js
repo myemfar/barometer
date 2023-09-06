@@ -114,7 +114,7 @@ export const barometerApi = createApi({
     }),
     createDrinkTags: builder.mutation({
       query: (data) => ({
-        url: "/api/drink_tags/mine",
+        url: "/api/drink_tags",
         method: "POST",
         credentials: "include",
         body: data,
