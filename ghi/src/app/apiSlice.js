@@ -52,7 +52,7 @@ export const barometerApi = createApi({
         credentials: "include",
         body: data,
       }),
-      invalidatesTags: ["Drinks"],
+      providesTags: ["Drinks"],
     }),
     getToken: builder.query({
       query: () => ({
@@ -77,7 +77,7 @@ export const barometerApi = createApi({
         method: "GET",
         credentials: "include",
       }),
-      providesTags: ["Drinks"],
+      invalidatesTags: ["Drinks"],
       transformResponse: (response) => response?.drinks || [],
     }),
     getIngredients: builder.query({
@@ -112,6 +112,14 @@ export const barometerApi = createApi({
 
       transformResponse: (response) => response?.tags || [],
     }),
+    createDrinkTags: builder.mutation({
+      query: (data) => ({
+        url: "/api/drink_tags/mine",
+        method: "POST",
+        credentials: "include",
+        body: data,
+      }),
+    }),
   }),
 });
 
@@ -127,4 +135,5 @@ export const {
   useGetIngredientsQuery,
   useCreateRecipeMutation,
   useGetTagsQuery,
+  useCreateDrinkTagsMutation,
 } = barometerApi;
