@@ -53,7 +53,7 @@ const Nav = () => {
                   <NavLink
                     className="nav-link"
                     aria-current="page"
-                    to="/inventory"
+                    to="/inventory/mine"
                   >
                     Inventory
                   </NavLink>

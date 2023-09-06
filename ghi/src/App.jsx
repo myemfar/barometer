@@ -11,6 +11,7 @@ import MainPage from "./Home.jsx";
 import DrinkForm from "./DrinkForm";
 import RecipeForm from "./RecipeForm";
 import DrinkDetail from "./DrinkDetail";
+import InventoryForm from "./InventoryForm";
 
 function App() {
   return (
@@ -22,7 +23,10 @@ function App() {
             <Route index element={<MainPage />} />
             <Route path="/login" element={<LoginForm />} />
             <Route path="/signUp" element={<SignUpForm />} />
-            <Route path="/inventory" element={<Inventory />} />
+            <Route path="/inventory">
+              <Route path="mine" element={<Inventory />} />
+              <Route path="new" element={<InventoryForm />} />
+            </Route>
             <Route path="/drinks">
               <Route index element={<Drinks />} />
               <Route path="new" element={<DrinkForm />} />

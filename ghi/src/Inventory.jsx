@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useGetInventoryByUserQuery } from "./app/apiSlice";
 import { useGetTokenQuery } from "./app/apiSlice";
+import { NavLink } from "react-router-dom";
 
 const Inventory = () => {
   // const account = useGetTokenQuery();
@@ -13,7 +14,13 @@ const Inventory = () => {
         <p className="lead mb-4">BAROMETER: WE HELP U MAKE DRANK</p>
       </div>
       <div>
-        <button>Add to inventory</button>
+        <NavLink
+        className="btn btn-secondary"
+        aria-current="page"
+        to="/inventory/new"
+      >
+        Add to Inventory
+      </NavLink>
         <table className="table table-striped">
           <thead>
             <tr>

@@ -135,6 +135,14 @@ export const barometerApi = createApi({
         body: data,
       }),
     }),
+    createInventory: builder.mutation({
+      query: (data) => ({
+        url: "/api/inventory",
+        method: "POST",
+        credentials: "include",
+        body: data,
+      }),
+    }),
   }),
 });
 
@@ -153,4 +161,6 @@ export const {
   useCreateDrinkTagsMutation,
   useGetRecipeForDrinkQuery,
   useDeleteRecipeMutation,
+  useCreateInventoryMutation,
+  
 } = barometerApi;
