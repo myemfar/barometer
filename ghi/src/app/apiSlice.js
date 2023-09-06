@@ -102,8 +102,6 @@ export const barometerApi = createApi({
         method: "GET",
         credentials: "include",
       }),
-
-      transformResponse: (response) => response?.drink || [],
     }),
     getTags: builder.query({
       query: () => ({

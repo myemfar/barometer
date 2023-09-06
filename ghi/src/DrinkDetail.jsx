@@ -4,12 +4,11 @@ import { useGetTokenQuery } from "./app/apiSlice";
 import { useParams } from "react-router-dom";
 
 const DrinkDetail = () => {
-  // const account = useGetTokenQuery();
-  // const accountId = account?.data?.id || undefined;
   const params = useParams();
 
-  const drink = useGetDrinkByNameQuery(params.id);
-  console.log(drink);
+  const { data: drink, isLoading } = useGetDrinkByNameQuery(params.id);
+  if (isLoading) return <div>Loading..</div>;
+
   return (
     <div className="px-4 py-5 my-5 text-center">
       <h1 className="display-5 fw-bold">Drink Detail</h1>
@@ -28,21 +27,20 @@ const DrinkDetail = () => {
             </tr>
           </thead>
           <tbody>
-            {drink.data &&
-              drink.data.map((item) => (
-                <tr key={item.name}>
-                  <td>{item.name}</td>
-                  <td>
-                    <img
-                      src={item.image_url}
-                      alt={item.name}
-                      style={{ maxHeight: "100px", width: "auto" }}
-                    />
-                  </td>
-                  <td>{item.descriptions}</td>
-                  <td>{item.instructions}</td>
-                </tr>
-              ))}
+            {drink && (
+              <tr key={drink.name}>
+                <td>{drink.name}</td>
+                <td>
+                  <img
+                    src={drink.image_url}
+                    alt={drink.name}
+                    style={{ maxHeight: "100px", width: "auto" }}
+                  />
+                </td>
+                <td>{drink.descriptions}</td>
+                <td>{drink.instructions}</td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>
