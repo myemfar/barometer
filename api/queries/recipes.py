@@ -73,6 +73,29 @@ class RecipesRepo:
                         record[column.name] = row[i]
                 return record
 
+    def get_by_drink(self, drink_id):
+        with pool.connection() as conn:
+            with conn.cursor() as db:
+                db.execute(
+                    """
+                    SELECT r.id, i.name, i.image_url, r.quantity
+                    FROM recipes r
+                    INNER JOIN ingredients i
+                        ON (r.ingredient_id = i.id)
+                    WHERE r.drink_id = %s;
+                    """,
+                    [drink_id],
+                )
+                result = []
+
+                for row in db.fetchall():
+                    record = {}
+                    for i, column in enumerate(db.description):
+                        record[column.name] = row[i]
+                    result.append(record)
+
+                return result
+
     def _get_specific(self, info: RecipesIn):
         with pool.connection() as conn:
             with conn.cursor() as db:

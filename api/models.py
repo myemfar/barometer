@@ -80,6 +80,11 @@ class RecipesIn(BaseModel):
     quantity: str
 
 
+class RecipesInWithoutQuantity(BaseModel):
+    drink_id: int
+    ingredient_id: int
+
+
 class RecipesOut(BaseModel):
     id: int
     drink_id: int
@@ -139,3 +144,14 @@ class DrinkTagsOut(BaseModel):
 
 class DrinkTagsList(BaseModel):
     drink_tags: List[DrinkTagsOut]
+
+
+class RecipeDetailsOut(BaseModel):
+    id: int
+    name: str
+    image_url: str
+    quantity: str
+
+
+class RecipeDetailsList(BaseModel):
+    steps: List[RecipeDetailsOut]

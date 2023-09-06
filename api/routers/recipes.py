@@ -4,7 +4,13 @@ from fastapi import (
     HTTPException,
     status,
 )
-from models import RecipesIn, RecipesOut, RecipesList
+from models import (
+    RecipesIn,
+    RecipesOut,
+    RecipesList,
+    RecipeDetailsList,
+    RecipesInWithoutQuantity,
+)
 from queries.recipes import RecipesRepo, RecipeNotFound, RecipeAlreadyExists
 from psycopg.errors import ForeignKeyViolation
 from authenticator import authenticator
@@ -32,6 +38,23 @@ def get_recipe(
         )
 
     return recipes
+
+
+@router.get("/api/recipes/{drink_id}/steps", response_model=RecipeDetailsList)
+def get_recipe_by_drink(
+    drink_id: int,
+    repo: RecipesRepo = Depends(),
+):
+    try:
+        recipes = repo.get_by_drink(drink_id)
+
+    except RecipeNotFound:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Cannot find a Recipe with that ID",
+        )
+
+    return RecipeDetailsList(steps=recipes)
 
 
 @router.post("/api/recipes", response_model=RecipesOut)
@@ -90,16 +113,17 @@ def update_recipe(
     return updated_recipe
 
 
-@router.delete("/api/recipes/{recipe_id}", response_model=bool)
+@router.delete("/api/recipes/{drink_id}/{recipe_id}", response_model=bool)
 def delete_recipe(
-    info: RecipesIn,
+    drink_id: int,
+    recipe_id: int,
     repo: RecipesRepo = Depends(),
     account_data: dict = Depends(authenticator.get_current_account_data),
 ):
     try:
-        user = repo._get_user_id_from_drink(info.drink_id)
+        user = repo._get_user_id_from_drink(drink_id)
         if account_data and user == account_data["id"]:
-            repo.delete_recipe(info.drink_id)
+            repo.delete_recipe(recipe_id)
             return True
         else:
             raise HTTPException(

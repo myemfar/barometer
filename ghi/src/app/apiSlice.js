@@ -96,6 +96,21 @@ export const barometerApi = createApi({
         body: data,
       }),
     }),
+    deleteRecipe: builder.mutation({
+      query: ({ drink_id, recipe_id }) => ({
+        url: `/api/recipes/${drink_id}/${recipe_id}`,
+        method: "DELETE",
+        credentials: "include",
+      }),
+    }),
+    getRecipeForDrink: builder.query({
+      query: (drink_id) => ({
+        url: `/api/recipes/${drink_id}/steps`,
+        method: "GET",
+        credentials: "include",
+      }),
+      transformResponse: (response) => response?.steps || [],
+    }),
     getDrinkByName: builder.query({
       query: (id) => ({
         url: `api/drinks/${id}`,
@@ -136,4 +151,6 @@ export const {
   useCreateRecipeMutation,
   useGetTagsQuery,
   useCreateDrinkTagsMutation,
+  useGetRecipeForDrinkQuery,
+  useDeleteRecipeMutation,
 } = barometerApi;
