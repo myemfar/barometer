@@ -34,5 +34,28 @@ def api_populate():
         except Exception as e:
             print(f"Error inserting ingredient {value['name']}: {e}")
 
+    initial_tags = [
+        {"tag_name": "Favorite"},
+        {"tag_name": "On Menu"},
+        {"tag_name": "Popular"},
+        {"tag_name": "Drink of the Day"},
+    ]
+    for value in initial_tags:
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as db:
+                    db.execute(
+                        """
+                        INSERT INTO tags
+                            (tag_name)
+                        VALUES
+                            (%s)
+                        ON CONFLICT (tag_name) DO NOTHING;
+                        """,
+                        [value["tag_name"]],
+                    )
+        except Exception as e:
+            print(f"Error inserting tags {value['tag_name']}: {e}")
+
 
 api_populate()

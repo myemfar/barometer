@@ -52,7 +52,8 @@ export const barometerApi = createApi({
         credentials: "include",
         body: data,
       }),
-      providesTags: ["Drinks"],
+
+      invalidatesTags: ["DrinksList"],
     }),
     updateDrink: builder.mutation({
       query: (data) => ({
@@ -61,7 +62,7 @@ export const barometerApi = createApi({
         credentials: "include",
         body: data,
       }),
-      invalidatesTags: ["Drinks"],
+      invalidatesTags: ["DrinksList"],
     }),
     getToken: builder.query({
       query: () => ({
@@ -86,7 +87,7 @@ export const barometerApi = createApi({
         method: "GET",
         credentials: "include",
       }),
-      invalidatesTags: ["Drinks"],
+      providesTags: ["DrinksList"],
       transformResponse: (response) => response?.drinks || [],
     }),
     getIngredients: builder.query({
@@ -104,6 +105,7 @@ export const barometerApi = createApi({
         credentials: "include",
         body: data,
       }),
+      invalidatesTags: ["Recipe"],
     }),
     deleteRecipe: builder.mutation({
       query: ({ drink_id, recipe_id }) => ({
@@ -111,6 +113,7 @@ export const barometerApi = createApi({
         method: "DELETE",
         credentials: "include",
       }),
+      invalidatesTags: ["Recipe"],
     }),
     getRecipeForDrink: builder.query({
       query: (drink_id) => ({
@@ -118,6 +121,7 @@ export const barometerApi = createApi({
         method: "GET",
         credentials: "include",
       }),
+      providesTags: ["Recipe"],
       transformResponse: (response) => response?.steps || [],
     }),
     getDrinkByName: builder.query({
@@ -153,6 +157,7 @@ export const barometerApi = createApi({
         credentials: "include",
         body: data,
       }),
+      invalidatesTags: ["Inventory"],
     }),
     deleteIngredient: builder.mutation({
       query: (data) => ({
@@ -161,6 +166,7 @@ export const barometerApi = createApi({
         credentials: "include",
         body: data,
       }),
+      invalidatesTags: ["Inventory"],
     }),
     deleteDrink: builder.mutation({
       query: ({ drink_id, data }) => ({
@@ -169,6 +175,7 @@ export const barometerApi = createApi({
         credentials: "include",
         body: data,
       }),
+      invalidatesTags: ["DrinksList"],
     }),
     getDrinkTagsByDrink: builder.query({
       query: (drink_id) => ({

@@ -25,6 +25,8 @@ const RecipeForm = () => {
 
     if (response.error) {
       alert("Unable to create recipe");
+    } else {
+      alert("Recipe added");
     }
   };
 

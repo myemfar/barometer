@@ -45,7 +45,6 @@ const Drinks = () => {
       });
   };
   if (drinkTagsLoading) return <div>Loading..</div>;
-  console.log(drinkTags);
 
   return (
     <div className="px-4 py-5 my-5 text-center">
@@ -92,7 +91,7 @@ const Drinks = () => {
         <thead>
           <tr>
             <th>Name</th>
-            <th>Image_Url</th>
+            <th>Image</th>
             <th>Description</th>
             <th>Instructions</th>
             <th>Tags</th>
@@ -105,7 +104,13 @@ const Drinks = () => {
             filteredData().map((item) => (
               <tr key={item.id}>
                 <td>{item.name}</td>
-                <td>{item.image_url}</td>
+                <td>
+                  <img
+                    src={item.image_url}
+                    alt={item.name}
+                    style={{ maxHeight: "100px", width: "auto" }}
+                  />
+                </td>
                 <td>{item.description}</td>
                 <td>{item.instructions}</td>
                 <td>
@@ -146,7 +151,13 @@ const Drinks = () => {
             drinks.data.map((item) => (
               <tr key={item.id}>
                 <td>{item.name}</td>
-                <td>{item.image_url}</td>
+                <td>
+                  <img
+                    src={item.image_url}
+                    alt={item.name}
+                    style={{ maxHeight: "100px", width: "auto" }}
+                  />
+                </td>
                 <td>{item.description}</td>
                 <td>{item.instructions}</td>
                 <td>

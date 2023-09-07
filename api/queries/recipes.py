@@ -49,7 +49,7 @@ class RecipesRepo:
                     record = {}
                     for i, column in enumerate(db.description):
                         record[column.name] = row[i]
-                print(record)
+
                 return record["user_id"]
 
     def get(self, recipe_id):
