@@ -107,7 +107,19 @@ const Drinks = () => {
                 <td>{item.image_url}</td>
                 <td>{item.description}</td>
                 <td>{item.instructions}</td>
-                <td>{}</td>
+                <td>
+                  {Array.isArray(drinkTags.drink_tags) && drinkTags.drink_tags.length > 0 ? (
+                    drinkTags.drink_tags
+                      .filter((tag) => tag.drink_id === item.id)
+                      .map((tag) => (
+                        <span key={tag.id} className="badge bg-secondary me-1">
+                          {tag.tag_id}
+                        </span>
+                      ))
+                  ) : (
+                    'No tags available'
+                  )}
+                </td>
                 <td>
                   <NavLink
                     className="btn btn-secondary"
@@ -118,7 +130,7 @@ const Drinks = () => {
                   </NavLink>
                   <button
                     onClick={handleDrinkDelete}
-                    className="btn btn-danger "
+                    className="btn btn-danger"
                     value={item.id}
                     key={item.id}
                   >
@@ -135,7 +147,19 @@ const Drinks = () => {
                 <td>{item.image_url}</td>
                 <td>{item.description}</td>
                 <td>{item.instructions}</td>
-                <td>drinkTags.map</td>
+                <td>
+                  {Array.isArray(drinkTags.drink_tags) && drinkTags.drink_tags.length > 0 ? (
+                    drinkTags.drink_tags
+                      .filter((tag) => tag.drink_id === item.id)
+                      .map((tag) => (
+                        <span key={tag.id} className="badge bg-secondary me-1">
+                          {tag.tag_name}
+                        </span>
+                      ))
+                  ) : (
+                    'No tags available'
+                  )}
+                </td>
                 <td>
                   <NavLink
                     className="btn btn-secondary"
@@ -146,7 +170,7 @@ const Drinks = () => {
                   </NavLink>
                   <button
                     onClick={handleDrinkDelete}
-                    className="btn btn-danger "
+                    className="btn btn-danger"
                     value={item.id}
                     key={item.id}
                   >
