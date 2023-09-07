@@ -9,11 +9,12 @@ class FakeDrinkQueries:
     def get_all(self):
         return (
             {
-                "id": 2,
-                "name": "vodka orange",
-                "image_url": "string",
+                "id": 1,
+                "user_id": 1,
+                "name": "vodka",
+                "image_url": "gsgsdg",
                 "description": "string",
-                "instructions": "string",
+                "instructions": "sdgsg",
             },
         )
 
@@ -27,11 +28,12 @@ def test_get_drinks():
     assert data == {
         "drinks": [
             {
-                "id": 2,
-                "name": "vodka orange",
-                "image_url": "string",
+                "id": 1,
+                "user_id": 1,
+                "name": "vodka",
+                "image_url": "gsgsdg",
                 "description": "string",
-                "instructions": "string",
-            }
+                "instructions": "sdgsg",
+            },
         ]
     }
