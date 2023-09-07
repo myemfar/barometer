@@ -12,6 +12,7 @@ import DrinkForm from "./DrinkForm";
 import RecipeForm from "./RecipeForm";
 import DrinkDetail from "./DrinkDetail";
 import InventoryForm from "./InventoryForm";
+import DrinkUpdateForm from "./DrinkUpdateForm";
 
 function App() {
   return (
@@ -31,7 +32,10 @@ function App() {
               <Route index element={<Drinks />} />
               <Route path="new" element={<DrinkForm />} />
               <Route path="recipes" element={<RecipeForm />} />
-              <Route path=":id" element={<DrinkDetail />} />
+              <Route path=":id">
+                <Route index element={<DrinkDetail />} />
+                <Route path="update" element={<DrinkUpdateForm />} />
+              </Route>
             </Route>
           </Routes>
         </div>

@@ -109,7 +109,7 @@ class DrinksRepo:
                     description = %s,
                         instructions = %s
                     WHERE name = %s
-                    RETURNING id, name, image_url, description, instructions;
+                    RETURNING id, user_id, name, image_url, description, instructions;
                     """,
                     [
                         info.image_url,

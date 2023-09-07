@@ -50,7 +50,7 @@ def add_drink(
     return added_drink
 
 
-@router.put("/api/drinks/", response_model=DrinksOut)
+@router.put("/api/drinks", response_model=DrinksOut)
 def update_drink(
     info: DrinksIn,
     repo: DrinksRepo = Depends(),
@@ -80,7 +80,8 @@ def delete_drink(
     account_data: dict = Depends(authenticator.get_current_account_data),
 ):
     try:
-        if account_data and info.user_id == account_data["id"]:
+        drink = repo.get(info.id)
+        if account_data and drink["user_id"] == account_data["id"]:
             repo.delete_drink(info.id)
             return True
         else:

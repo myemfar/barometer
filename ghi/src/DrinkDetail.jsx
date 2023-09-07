@@ -6,6 +6,7 @@ import {
   useGetRecipeForDrinkQuery,
   useDeleteRecipeMutation,
 } from "./app/apiSlice";
+import { NavLink } from "react-router-dom";
 import { useGetTokenQuery } from "./app/apiSlice";
 import { useParams, useNavigate } from "react-router-dom";
 
@@ -80,6 +81,13 @@ const DrinkDetail = () => {
           </div>
           <div>
             <h3 className="display-5 fw-bold">Recipe</h3>
+            <NavLink
+              aria-current="page"
+              to={`/drinks/${params.id}/update`}
+              className="btn btn-primary"
+            >
+              Update Drink
+            </NavLink>
             <table className="table table-striped">
               <thead>
                 <tr>
@@ -107,7 +115,7 @@ const DrinkDetail = () => {
                           onClick={handleRecipeDelete}
                           value={item.id}
                           key={item.id}
-                          className="btn btn-secondary"
+                          className="btn btn-danger"
                         >
                           Delete
                         </button>

@@ -3,6 +3,7 @@ import {
   useGetDrinkQuery,
   useGetTokenQuery,
   useGetTagsQuery,
+  useDeleteDrinkMutation,
 } from "./app/apiSlice";
 import Search from "./Search";
 import { useSelector } from "react-redux";
@@ -13,7 +14,7 @@ const Drinks = () => {
   const searchCriteria = useSelector((state) => state.search.value);
   const drinks = useGetDrinkQuery();
   // const tags = useGetTagsQuery();
-
+  const [drinkDelete] = useDeleteDrinkMutation();
   const [formData, setFormData] = useState();
   const navigate = useNavigate();
   const handleChange = (e) => {
@@ -26,6 +27,20 @@ const Drinks = () => {
   const filteredData = () => {
     if (searchCriteria)
       return drinks.data.filter((item) => item.name.includes(searchCriteria));
+  };
+
+  const handleDrinkDelete = (e) => {
+    const deleteData = {
+      id: e.target.value,
+    };
+    drinkDelete({ drink_id: e.target.value, data: deleteData })
+      .unwrap()
+      .then((result) => {
+        alert("Drink succesfully deleted");
+      })
+      .catch((error) => {
+        alert("WHY IS THERE ERROR HERE");
+      });
   };
 
   return (
@@ -96,6 +111,14 @@ const Drinks = () => {
                   >
                     Details
                   </NavLink>
+                  <button
+                    onClick={handleDrinkDelete}
+                    className="btn btn-danger "
+                    value={item.id}
+                    key={item.id}
+                  >
+                    Delete Drink
+                  </button>
                 </td>
               </tr>
             ))}
@@ -115,6 +138,14 @@ const Drinks = () => {
                   >
                     Details
                   </NavLink>
+                  <button
+                    onClick={handleDrinkDelete}
+                    className="btn btn-danger "
+                    value={item.id}
+                    key={item.id}
+                  >
+                    Delete Drink
+                  </button>
                 </td>
               </tr>
             ))}

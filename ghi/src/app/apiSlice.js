@@ -54,6 +54,15 @@ export const barometerApi = createApi({
       }),
       providesTags: ["Drinks"],
     }),
+    updateDrink: builder.mutation({
+      query: (data) => ({
+        url: "/api/drinks",
+        method: "PUT",
+        credentials: "include",
+        body: data,
+      }),
+      invalidatesTags: ["Drinks"],
+    }),
     getToken: builder.query({
       query: () => ({
         url: "/token",
@@ -151,6 +160,14 @@ export const barometerApi = createApi({
         body: data,
       }),
     }),
+    deleteDrink: builder.mutation({
+      query: ({ drink_id, data }) => ({
+        url: `/api/drinks/${drink_id}`,
+        method: "DELETE",
+        credentials: "include",
+        body: data,
+      }),
+    }),
   }),
 });
 
@@ -171,5 +188,6 @@ export const {
   useDeleteRecipeMutation,
   useCreateInventoryMutation,
   useDeleteIngredientMutation,
-  
+  useDeleteDrinkMutation,
+  useUpdateDrinkMutation,
 } = barometerApi;

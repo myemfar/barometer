@@ -64,11 +64,11 @@ class DrinksIn(BaseModel):
 
 class DrinksById(BaseModel):
     id: int
-    user_id: int
 
 
 class DrinksOut(BaseModel):
     id: int
+    user_id: int
     name: str
     image_url: str | None
     description: str | None
