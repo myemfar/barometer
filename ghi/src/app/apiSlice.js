@@ -143,6 +143,8 @@ export const barometerApi = createApi({
         credentials: "include",
         body: data,
       }),
+      invalidatesTags: ["drinkTags"],
+      providesTags: ["updatedDrinkTags"],
     }),
     createInventory: builder.mutation({
       query: (data) => ({
@@ -175,6 +177,8 @@ export const barometerApi = createApi({
         credentials: "include",
       }),
       transformResponse: (data) => data,
+      providesTags: ["drinkTags"],
+      invalidatesTags: ["updatedDrinkTags"],
     }),
     deleteDrinkTag: builder.mutation({
       query: (data) => ({
@@ -183,6 +187,8 @@ export const barometerApi = createApi({
         credentials: "include",
         body: data,
       }),
+      invalidatesTags: ["drinkTags"],
+      providesTags: ["updatedDrinkTags"],
     }),
   }),
 });

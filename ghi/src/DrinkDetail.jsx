@@ -41,32 +41,18 @@ const DrinkDetail = () => {
         alert("Recipe succesfully deleted");
       })
       .catch((error) => {
-        alert("WHY IS THERE ERROR HERE");
+        alert("recipe not deleted");
       });
   };
 
   const handleTagDelete = (e) => {
     const tagData = { tag_id: e.target.value, drink_id: params.id };
-    deleteDrinkTags(tagData)
-      .unwrap()
-      .then((result) => {
-        alert("Tag succesfully removed");
-      })
-      .catch((error) => {
-        alert("Tag already deleted");
-      });
+    deleteDrinkTags(tagData);
   };
 
   const handleButton = (e) => {
     const tagData = { tag_id: e.target.value, drink_id: params.id };
-    createDrinkTags(tagData)
-      .unwrap()
-      .then((result) => {
-        alert("Tag succesfully added");
-      })
-      .catch((error) => {
-        alert("Drink already tagged");
-      });
+    createDrinkTags(tagData);
   };
 
   return (
