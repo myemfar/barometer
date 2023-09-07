@@ -168,6 +168,14 @@ export const barometerApi = createApi({
         body: data,
       }),
     }),
+    deleteDrinkTag: builder.mutation({
+      query: (data) => ({
+        url: `/api/drink_tags/mine`,
+        method: "DELETE",
+        credentials: "include",
+        body: data,
+      }),
+    }),
   }),
 });
 
@@ -190,4 +198,5 @@ export const {
   useDeleteIngredientMutation,
   useDeleteDrinkMutation,
   useUpdateDrinkMutation,
+  useDeleteDrinkTagMutation,
 } = barometerApi;

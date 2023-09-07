@@ -5,6 +5,7 @@ import {
   useGetTagsQuery,
   useGetRecipeForDrinkQuery,
   useDeleteRecipeMutation,
+  useDeleteDrinkTagMutation,
 } from "./app/apiSlice";
 import { NavLink } from "react-router-dom";
 import { useGetTokenQuery } from "./app/apiSlice";
@@ -12,6 +13,7 @@ import { useParams, useNavigate } from "react-router-dom";
 
 const DrinkDetail = () => {
   const params = useParams();
+  const [deleteDrinkTags] = useDeleteDrinkTagMutation();
   const [createDrinkTags] = useCreateDrinkTagsMutation();
   const { data: drink, isLoading: drinksLoading } = useGetDrinkByNameQuery(
     params.id
@@ -41,6 +43,19 @@ const DrinkDetail = () => {
       });
   };
 
+  const handleTagDelete = (e) => {
+
+    const tagData = { tag_id: e.target.value, drink_id: params.id };
+    deleteDrinkTags(tagData)
+      .unwrap()
+      .then((result) => {
+        alert("Tag succesfully removed");
+      })
+      .catch((error) => {
+        alert("Tag already deleted");
+      });
+  };
+
   const handleButton = (e) => {
     const tagData = { tag_id: e.target.value, drink_id: params.id };
     createDrinkTags(tagData)
@@ -62,9 +77,14 @@ const DrinkDetail = () => {
       <div>
         {tags &&
           tags.map((item) => (
-            <button onClick={handleButton} value={item.id} key={item.id}>
+            <>
+            <button className= "btn btn-primary" onClick={handleButton} value={item.id} key={item.id}>
               {item.tag_name}{" "}
             </button>
+            <button className= "btn btn-danger" onClick={handleTagDelete} value={item.id} key={item.tag_name}>
+              Remove {item.tag_name}{" "}
+            </button>
+            </>
           ))}
         <div className="card">
           <img
