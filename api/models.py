@@ -147,6 +147,18 @@ class DrinkTagsOut(BaseModel):
     tag_id: int
 
 
+class DrinkTagsOutWithName(BaseModel):
+    id: int
+    user_id: int
+    drink_id: int
+    tag_id: int
+    tag_name: str
+
+
+class DrinkTagsWithNameList(BaseModel):
+    drink_tags: List[DrinkTagsOutWithName]
+
+
 class DrinkTagsList(BaseModel):
     drink_tags: List[DrinkTagsOut]
 

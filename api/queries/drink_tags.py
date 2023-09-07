@@ -99,6 +99,30 @@ class DrinkTagsRepo:
                     raise DrinkTagNotFound
                 return result
 
+    def get_with_name(self, user_id):
+        with pool.connection() as conn:
+            with conn.cursor() as db:
+                db.execute(
+                    """
+                    SELECT d.id, d.user_id, d.drink_id, d.tag_id, t.tag_name
+                    FROM drink_tags d
+                    INNER JOIN tags t
+                        ON (d.tag_id = t.id)
+                    WHERE user_id = %s;
+                    """,
+                    [user_id],
+                )
+                result = []
+
+                for row in db.fetchall():
+                    record = {}
+                    for i, column in enumerate(db.description):
+                        record[column.name] = row[i]
+                    result.append(record)
+                if result == []:
+                    raise DrinkTagNotFound
+                return result
+
     def _get_one(self, user_id, tag_id, drink_id):
         with pool.connection() as conn:
             with conn.cursor() as db:

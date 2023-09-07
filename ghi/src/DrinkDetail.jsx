@@ -14,7 +14,8 @@ import { useParams, useNavigate } from "react-router-dom";
 
 const DrinkDetail = () => {
   const params = useParams();
-  const drinkTagsByDrink = useGetDrinkTagsByDrinkQuery(params.id);
+  const { data: drinkTagsByDrink, isLoading: drinkTagsLoading } =
+    useGetDrinkTagsByDrinkQuery(params.id);
   const [deleteDrinkTags] = useDeleteDrinkTagMutation();
   const [createDrinkTags] = useCreateDrinkTagsMutation();
   const { data: drink, isLoading: drinksLoading } = useGetDrinkByNameQuery(
@@ -26,7 +27,8 @@ const DrinkDetail = () => {
     params.id
   );
   const [deleteRecipe] = useDeleteRecipeMutation();
-  if (drinksLoading || tagsLoading || stepsLoading) return <div>Loading..</div>;
+  if (drinksLoading || tagsLoading || stepsLoading || drinkTagsLoading)
+    return <div>Loading..</div>;
 
   const handleRecipeDelete = (e) => {
     const drink = params.id;
@@ -65,7 +67,7 @@ const DrinkDetail = () => {
         {tags &&
           tags.map((item) => (
             <div key={item.id}>
-              {drinkTagsByDrink.data.drink_tags.some(
+              {drinkTagsByDrink.drink_tags.some(
                 (tag) => tag.tag_id === item.id
               ) ? (
                 <button

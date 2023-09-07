@@ -14,7 +14,8 @@ import { useNavigate } from "react-router-dom";
 const Drinks = () => {
   const searchCriteria = useSelector((state) => state.search.value);
   const drinks = useGetDrinkQuery();
-  const {data: drinkTags, isLoading: drinkTagsLoading} = useGetDrinkTagsQuery();
+  const { data: drinkTags, isLoading: drinkTagsLoading } =
+    useGetDrinkTagsQuery();
   const [drinkDelete] = useDeleteDrinkMutation();
   const [formData, setFormData] = useState();
   const navigate = useNavigate();
@@ -108,17 +109,18 @@ const Drinks = () => {
                 <td>{item.description}</td>
                 <td>{item.instructions}</td>
                 <td>
-                  {Array.isArray(drinkTags.drink_tags) && drinkTags.drink_tags.length > 0 ? (
-                    drinkTags.drink_tags
-                      .filter((tag) => tag.drink_id === item.id)
-                      .map((tag) => (
-                        <span key={tag.id} className="badge bg-secondary me-1">
-                          {tag.tag_id}
-                        </span>
-                      ))
-                  ) : (
-                    'No tags available'
-                  )}
+                  {Array.isArray(drinkTags) && drinkTags.length > 0
+                    ? drinkTags
+                        .filter((tag) => tag.drink_id === item.id)
+                        .map((tag) => (
+                          <span
+                            key={tag.id}
+                            className="badge bg-secondary me-1"
+                          >
+                            {tag.tag_name}
+                          </span>
+                        ))
+                    : "No tags available"}
                 </td>
                 <td>
                   <NavLink
@@ -148,17 +150,18 @@ const Drinks = () => {
                 <td>{item.description}</td>
                 <td>{item.instructions}</td>
                 <td>
-                  {Array.isArray(drinkTags.drink_tags) && drinkTags.drink_tags.length > 0 ? (
-                    drinkTags.drink_tags
-                      .filter((tag) => tag.drink_id === item.id)
-                      .map((tag) => (
-                        <span key={tag.id} className="badge bg-secondary me-1">
-                          {tag.tag_name}
-                        </span>
-                      ))
-                  ) : (
-                    'No tags available'
-                  )}
+                  {Array.isArray(drinkTags) && drinkTags.length > 0
+                    ? drinkTags
+                        .filter((tag) => tag.drink_id === item.id)
+                        .map((tag) => (
+                          <span
+                            key={tag.id}
+                            className="badge bg-secondary me-1"
+                          >
+                            {tag.tag_name}
+                          </span>
+                        ))
+                    : "No tags available"}
                 </td>
                 <td>
                   <NavLink
