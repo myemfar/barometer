@@ -190,6 +190,15 @@ export const barometerApi = createApi({
       invalidatesTags: ["drinkTags"],
       providesTags: ["updatedDrinkTags"],
     }),
+    getDrinkTags: builder.query({
+      query: () => ({
+        url: `/api/drink_tags/mine`,
+        method: "GET",
+        credentials: "include",
+      }),
+      providesTags: ["drinkTags"],
+      invalidatesTags: ["updatedDrinkTags"],
+    }),
   }),
 });
 
@@ -214,4 +223,5 @@ export const {
   useUpdateDrinkMutation,
   useDeleteDrinkTagMutation,
   useGetDrinkTagsByDrinkQuery,
+  useGetDrinkTagsQuery,
 } = barometerApi;

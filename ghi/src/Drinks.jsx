@@ -4,6 +4,7 @@ import {
   useGetTokenQuery,
   useGetTagsQuery,
   useDeleteDrinkMutation,
+  useGetDrinkTagsQuery,
 } from "./app/apiSlice";
 import Search from "./Search";
 import { useSelector } from "react-redux";
@@ -13,7 +14,7 @@ import { useNavigate } from "react-router-dom";
 const Drinks = () => {
   const searchCriteria = useSelector((state) => state.search.value);
   const drinks = useGetDrinkQuery();
-  // const tags = useGetTagsQuery();
+  const {data: drinkTags, isLoading: drinkTagsLoading} = useGetDrinkTagsQuery();
   const [drinkDelete] = useDeleteDrinkMutation();
   const [formData, setFormData] = useState();
   const navigate = useNavigate();
@@ -42,6 +43,8 @@ const Drinks = () => {
         alert("WHY IS THERE ERROR HERE");
       });
   };
+  if (drinkTagsLoading) return <div>Loading..</div>;
+  console.log(drinkTags);
 
   return (
     <div className="px-4 py-5 my-5 text-center">
@@ -91,7 +94,8 @@ const Drinks = () => {
             <th>Image_Url</th>
             <th>Description</th>
             <th>Instructions</th>
-            <th>More info</th>
+            <th>Tags</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -103,6 +107,7 @@ const Drinks = () => {
                 <td>{item.image_url}</td>
                 <td>{item.description}</td>
                 <td>{item.instructions}</td>
+                <td>{}</td>
                 <td>
                   <NavLink
                     className="btn btn-secondary"
@@ -130,6 +135,7 @@ const Drinks = () => {
                 <td>{item.image_url}</td>
                 <td>{item.description}</td>
                 <td>{item.instructions}</td>
+                <td>drinkTags.map</td>
                 <td>
                   <NavLink
                     className="btn btn-secondary"
