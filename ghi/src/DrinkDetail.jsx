@@ -6,6 +6,7 @@ import {
   useGetRecipeForDrinkQuery,
   useDeleteRecipeMutation,
   useDeleteDrinkTagMutation,
+  useGetDrinkTagsByDrinkQuery,
 } from "./app/apiSlice";
 import { NavLink } from "react-router-dom";
 import { useGetTokenQuery } from "./app/apiSlice";
@@ -13,6 +14,7 @@ import { useParams, useNavigate } from "react-router-dom";
 
 const DrinkDetail = () => {
   const params = useParams();
+  const drinkTagsByDrink = useGetDrinkTagsByDrinkQuery(params.id);
   const [deleteDrinkTags] = useDeleteDrinkTagMutation();
   const [createDrinkTags] = useCreateDrinkTagsMutation();
   const { data: drink, isLoading: drinksLoading } = useGetDrinkByNameQuery(
@@ -44,7 +46,6 @@ const DrinkDetail = () => {
   };
 
   const handleTagDelete = (e) => {
-
     const tagData = { tag_id: e.target.value, drink_id: params.id };
     deleteDrinkTags(tagData)
       .unwrap()
@@ -77,14 +78,27 @@ const DrinkDetail = () => {
       <div>
         {tags &&
           tags.map((item) => (
-            <>
-            <button className= "btn btn-primary" onClick={handleButton} value={item.id} key={item.id}>
-              {item.tag_name}{" "}
-            </button>
-            <button className= "btn btn-danger" onClick={handleTagDelete} value={item.id} key={item.tag_name}>
-              Remove {item.tag_name}{" "}
-            </button>
-            </>
+            <div key={item.id}>
+              {drinkTagsByDrink.data.drink_tags.some(
+                (tag) => tag.tag_id === item.id
+              ) ? (
+                <button
+                  className="btn btn-danger"
+                  onClick={handleTagDelete}
+                  value={item.id}
+                >
+                  Remove {item.tag_name}{" "}
+                </button>
+              ) : (
+                <button
+                  className="btn btn-primary"
+                  onClick={handleButton}
+                  value={item.id}
+                >
+                  {item.tag_name}{" "}
+                </button>
+              )}
+            </div>
           ))}
         <div className="card">
           <img

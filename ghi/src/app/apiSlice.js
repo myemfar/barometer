@@ -168,6 +168,14 @@ export const barometerApi = createApi({
         body: data,
       }),
     }),
+    getDrinkTagsByDrink: builder.query({
+      query: (drink_id) => ({
+        url: `/api/drink_tags/mine/${drink_id}`,
+        method: "GET",
+        credentials: "include",
+      }),
+      transformResponse: (data) => data,
+    }),
     deleteDrinkTag: builder.mutation({
       query: (data) => ({
         url: `/api/drink_tags/mine`,
@@ -199,4 +207,5 @@ export const {
   useDeleteDrinkMutation,
   useUpdateDrinkMutation,
   useDeleteDrinkTagMutation,
+  useGetDrinkTagsByDrinkQuery,
 } = barometerApi;

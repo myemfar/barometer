@@ -56,6 +56,27 @@ class DrinkTagsRepo:
 
                 return result
 
+    def get_by_drink(self, user_id, drink_id):
+        with pool.connection() as conn:
+            with conn.cursor() as db:
+                db.execute(
+                    """
+                    SELECT *
+                    FROM drink_tags
+                    WHERE user_id = %s AND
+                    drink_id = %s;
+                    """,
+                    [user_id, drink_id],
+                )
+                result = []
+
+                for row in db.fetchall():
+                    record = {}
+                    for i, column in enumerate(db.description):
+                        record[column.name] = row[i]
+                    result.append(record)
+                return result
+
     def get(self, user_id):
         with pool.connection() as conn:
             with conn.cursor() as db:

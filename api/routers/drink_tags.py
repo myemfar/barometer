@@ -56,6 +56,16 @@ async def create_drink_tag(
     return DrinkTagsList(drink_tags=drink_tags)
 
 
+@router.get("/api/drink_tags/mine/{drink_id}", response_model=DrinkTagsList)
+def get_drink_tag_by_drink(
+    drink_id: int,
+    repo: DrinkTagsRepo = Depends(),
+    account_data: dict = Depends(authenticator.get_current_account_data),
+):
+    drink_tags = repo.get_by_drink(account_data["id"], drink_id)
+    return DrinkTagsList(drink_tags=drink_tags)
+
+
 @router.delete("/api/drink_tags/mine", response_model=bool)
 def delete_drink_tag(
     info: DrinkTagsIn,
