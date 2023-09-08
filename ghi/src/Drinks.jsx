@@ -6,12 +6,14 @@ import {
   useGetTokenQuery,
 } from "./app/apiSlice";
 import Search from "./Search";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { NavLink } from "react-router-dom";
 import fillupload from "./images/fillupload.gif";
+import { openModal } from "./app/modalSlice";
 import "./Drinks.css";
 
 const Drinks = () => {
+  const dispatch = useDispatch();
   const searchCriteria = useSelector((state) => state.search.value);
   const drinks = useGetDrinkQuery();
   const { data: tokenData, isLoading: tokenDataLoading } = useGetTokenQuery();
@@ -21,6 +23,10 @@ const Drinks = () => {
     }
   );
   const [drinkDelete] = useDeleteDrinkMutation();
+
+  const handleOpenModal = () => {
+    dispatch(openModal());
+  };
 
   const filteredData = () => {
     if (searchCriteria)
@@ -59,6 +65,7 @@ const Drinks = () => {
           className="btn btn-primary mx-2"
           aria-current="page"
           to="/drinks/new"
+          onClick={handleOpenModal}
           style={{
             display: !tokenData ? "none" : "inline-block",
           }}

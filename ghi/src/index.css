@@ -22,6 +22,7 @@ code {
 
 .body-base {
   background-color: tan;
+  background-image: url("images/woodtect.png");
 }
 
 .carousel-wrapper-123custom {
@@ -34,4 +35,12 @@ code {
   height: auto;
   max-height: 600px;
   object-fit: contain;
+}
+
+.centered-spinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
 }

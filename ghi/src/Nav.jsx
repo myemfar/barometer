@@ -2,11 +2,19 @@ import { NavLink } from "react-router-dom";
 import { useGetTokenQuery, useLogOutMutation } from "./app/apiSlice";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
+import { openModal } from "./app/modalSlice";
+import { useDispatch } from "react-redux";
 
 const Nav = () => {
   const { data: account } = useGetTokenQuery();
   const [logOut, logoutResponse] = useLogOutMutation();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const handleOpenModal = () => {
+    dispatch(openModal());
+  };
+
   useEffect(() => {
     if (logoutResponse.data) navigate("/");
   }, [logoutResponse]);
@@ -38,7 +46,12 @@ const Nav = () => {
               </li>
               {account && (
                 <li className="nav-item">
-                  <NavLink className="nav-link" aria-current="page" to="/drinks/new">
+                  <NavLink
+                    className="nav-link"
+                    aria-current="page"
+                    onClick={handleOpenModal}
+                    to="/drinks/new"
+                  >
                     New Drink
                   </NavLink>
                 </li>

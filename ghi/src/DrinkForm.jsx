@@ -1,11 +1,21 @@
 import { useCreateDrinkMutation } from "./app/apiSlice";
 import { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { Modal, Button } from "react-bootstrap";
+import { closeModal } from "./app/modalSlice";
 
 const DrinkForm = () => {
+  const dispatch = useDispatch();
+  const show = useSelector((state) => state.modal.show);
   const [drinks] = useCreateDrinkMutation();
   const [formData, setFormData] = useState();
   const navigate = useNavigate();
+
+  const handleClose = () => {
+    dispatch(closeModal());
+    navigate("/drinks");
+  };
 
   const handleChange = (e) => {
     setFormData({
@@ -25,10 +35,13 @@ const DrinkForm = () => {
   };
 
   return (
-    <div className="card text-bg-light mb-3">
-      <h5 className="card-header">Drink Creation</h5>
-      <div className="card-body">
-        <form onSubmit={handleSubmit}>
+    <Modal show={show} onHide={handleClose} keyboard={false}>
+      <form onSubmit={handleSubmit}>
+        <Modal.Header closeButton>
+          <Modal.Title>Drink Creation</Modal.Title>
+        </Modal.Header>
+
+        <Modal.Body>
           <div className="mb-3">
             <label className="form-label">Name:</label>
             <input
@@ -65,12 +78,18 @@ const DrinkForm = () => {
               onChange={handleChange}
             />
           </div>
-          <div>
-            <input className="btn btn-primary" type="submit" value="create" />
-          </div>
-        </form>
-      </div>
-    </div>
+        </Modal.Body>
+
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Close
+          </Button>
+          <Button className="btn btn-primary" variant="primary" type="submit">
+            Create
+          </Button>
+        </Modal.Footer>
+      </form>
+    </Modal>
   );
 };
 
