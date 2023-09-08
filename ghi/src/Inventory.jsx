@@ -5,6 +5,7 @@ import {
 } from "./app/apiSlice";
 
 import { NavLink } from "react-router-dom";
+import fillupload from "./images/fillupload.gif";
 
 const Inventory = () => {
   const [deleteIngredient] = useDeleteIngredientMutation();
@@ -23,7 +24,14 @@ const Inventory = () => {
 
   const { data: inventory, isLoading } = useGetInventoryByUserQuery();
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) {
+    return (
+      <div className="centered-spinner">
+        <img src={fillupload} />
+        <div>Pouring...</div>
+      </div>
+    );
+  }
 
   return (
     <div className="px-4 py-5 my-5 text-center">

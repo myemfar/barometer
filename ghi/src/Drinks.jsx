@@ -8,6 +8,7 @@ import {
 import Search from "./Search";
 import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
+import fillupload from "./images/fillupload.gif";
 
 const Drinks = () => {
   const searchCriteria = useSelector((state) => state.search.value);
@@ -37,7 +38,14 @@ const Drinks = () => {
         alert("WHY IS THERE ERROR HERE");
       });
   };
-  if (drinkTagsLoading || tokenDataLoading) return <div>Loading..</div>;
+  if (drinkTagsLoading || tokenDataLoading) {
+    return (
+      <div className="centered-spinner">
+        <img src={fillupload} />
+        <div>Pouring...</div>
+      </div>
+    );
+  }
 
   return (
     <div className="px-4 py-5 my-5 text-center">

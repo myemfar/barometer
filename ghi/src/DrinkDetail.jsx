@@ -10,6 +10,8 @@ import {
 } from "./app/apiSlice";
 import { NavLink } from "react-router-dom";
 import { useParams } from "react-router-dom";
+import "./DrinkDetail.css";
+import fillupload from "./images/fillupload.gif";
 
 const DrinkDetail = () => {
   const params = useParams();
@@ -28,6 +30,7 @@ const DrinkDetail = () => {
     params.id
   );
   const [deleteRecipe] = useDeleteRecipeMutation();
+
   if (
     drinksLoading ||
     tagsLoading ||
@@ -35,7 +38,12 @@ const DrinkDetail = () => {
     drinkTagsLoading ||
     tokenDataLoading
   )
-    return <div>Loading..</div>;
+    return (
+      <div className="centered-spinner">
+        <img src={fillupload} />
+        <div>Pouring...</div>
+      </div>
+    );
 
   const handleRecipeDelete = (e) => {
     const drink = params.id;

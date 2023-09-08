@@ -1,6 +1,7 @@
 import { useUpdateDrinkMutation, useGetDrinkByIDQuery } from "./app/apiSlice";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import fillupload from "./images/fillupload.gif";
 
 const DrinkUpdateForm = () => {
   const params = useParams();
@@ -28,7 +29,14 @@ const DrinkUpdateForm = () => {
     }
   };
 
-  if (drinksLoading) return <div>Loading...</div>;
+  if (drinksLoading) {
+    return (
+      <div className="centered-spinner">
+        <img src={fillupload} />
+        <div>Pouring...</div>
+      </div>
+    );
+  }
 
   return (
     <div className="card text-bg-light mb-3">

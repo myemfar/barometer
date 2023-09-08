@@ -3,11 +3,20 @@ import Carousel from "react-bootstrap/Carousel";
 import { useGetDrinkQuery } from "./app/apiSlice";
 import { NavLink } from "react-router-dom";
 import dummyData from "./dummyData";
+import fillupload from "./images/fillupload.gif";
 
 function RandomDrinkCarousel() {
   const { data: drinks, isLoading: drinksLoading } = useGetDrinkQuery();
 
-  if (drinksLoading) return <div>Loading..</div>;
+  if (drinksLoading) {
+    return (
+      <div className="centered-spinner">
+        <img src={fillupload} />
+        <div>Pouring...</div>
+      </div>
+    );
+  }
+
   const drinkSubset = drinks.slice(0, 50);
   function shuffleArray(array) {
     const shuffled = [...array];
