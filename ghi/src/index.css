@@ -23,3 +23,15 @@ code {
 .body-base {
   background-color: tan;
 }
+
+.carousel-wrapper-123custom {
+  width: 75%;
+  margin: 0 auto;
+}
+
+.carousel-wrapper-123custom img {
+  width: 100%;
+  height: auto;
+  max-height: 600px;
+  object-fit: contain;
+}

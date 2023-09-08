@@ -25,19 +25,21 @@ function RandomDrinkCarousel() {
   const random5Drinks = shuffledDrinks.slice(0, 5);
 
   return (
-    <Carousel>
-      {random5Drinks.map((drink, index) => (
-        <Carousel.Item key={index}>
-          <img src={drink.image_url} alt={drink.name} />
-          <Carousel.Caption>
-            <p>{drink.description}</p>
-            <NavLink className="btn btn-secondary" to={`/drinks/${drink.id}`}>
-              {drink.name}
-            </NavLink>
-          </Carousel.Caption>
-        </Carousel.Item>
-      ))}
-    </Carousel>
+    <div className="carousel-wrapper-123custom">
+      <Carousel>
+        {random5Drinks.map((drink, index) => (
+          <Carousel.Item key={index}>
+            <img src={drink.image_url} alt={drink.name} />
+            <Carousel.Caption>
+              <p>{drink.description}</p>
+              <NavLink className="btn btn-secondary" to={`/drinks/${drink.id}`}>
+                {drink.name}
+              </NavLink>
+            </Carousel.Caption>
+          </Carousel.Item>
+        ))}
+      </Carousel>
+    </div>
   );
 }
 
