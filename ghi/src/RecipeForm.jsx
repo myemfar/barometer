@@ -1,6 +1,6 @@
 import { useCreateRecipeMutation } from "./app/apiSlice";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, NavLink } from "react-router-dom";
 import { useGetIngredientsQuery } from "./app/apiSlice";
 import { useGetDrinkQuery } from "./app/apiSlice";
 
@@ -85,6 +85,15 @@ const RecipeForm = () => {
 
           <div>
             <input className="btn btn-primary" type="submit" value="add" />
+          </div>
+          <div>
+            <NavLink
+              className="btn btn-secondary"
+              aria-current="page"
+              to={`/drinks`}
+            >
+              Go back
+            </NavLink>
           </div>
         </form>
       </div>

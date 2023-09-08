@@ -1,4 +1,3 @@
-import React, { useState, useEffect } from "react";
 import {
   useGetDrinkByNameQuery,
   useCreateDrinkTagsMutation,
@@ -9,8 +8,7 @@ import {
   useGetDrinkTagsByDrinkQuery,
 } from "./app/apiSlice";
 import { NavLink } from "react-router-dom";
-import { useGetTokenQuery } from "./app/apiSlice";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 const DrinkDetail = () => {
   const params = useParams();
@@ -21,7 +19,7 @@ const DrinkDetail = () => {
   const { data: drink, isLoading: drinksLoading } = useGetDrinkByNameQuery(
     params.id
   );
-  const navigate = useNavigate();
+
   const { data: tags, isLoading: tagsLoading } = useGetTagsQuery();
   const { data: steps, isLoading: stepsLoading } = useGetRecipeForDrinkQuery(
     params.id
@@ -39,10 +37,10 @@ const DrinkDetail = () => {
     }
     deleteRecipe({ drink_id: drink, recipe_id: recipe })
       .unwrap()
-      .then((result) => {
+      .then(() => {
         alert("Recipe succesfully deleted");
       })
-      .catch((error) => {
+      .catch(() => {
         alert("recipe not deleted");
       });
   };

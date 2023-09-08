@@ -1,5 +1,3 @@
-import { useEffect, useState } from "react";
-import ErrorNotification from "./ErrorNotification";
 import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import LoginForm from "./LoginForm.jsx";
@@ -14,10 +12,13 @@ import DrinkDetail from "./DrinkDetail";
 import InventoryForm from "./InventoryForm";
 import DrinkUpdateForm from "./DrinkUpdateForm";
 
+const domain = /https:\/\/[^/]+/;
+const basename = process.env.PUBLIC_URL.replace(domain, "");
+
 function App() {
   return (
     <div className="body-base">
-      <BrowserRouter>
+      <BrowserRouter basename={basename}>
         <Nav />
         <div>
           <Routes>

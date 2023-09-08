@@ -1,15 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import {
   useGetDrinkQuery,
-  useGetTokenQuery,
-  useGetTagsQuery,
   useDeleteDrinkMutation,
   useGetDrinkTagsQuery,
 } from "./app/apiSlice";
 import Search from "./Search";
 import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
 
 const Drinks = () => {
   const searchCriteria = useSelector((state) => state.search.value);
@@ -17,14 +14,6 @@ const Drinks = () => {
   const { data: drinkTags, isLoading: drinkTagsLoading } =
     useGetDrinkTagsQuery();
   const [drinkDelete] = useDeleteDrinkMutation();
-  const [formData, setFormData] = useState();
-  const navigate = useNavigate();
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
 
   const filteredData = () => {
     if (searchCriteria)
@@ -37,10 +26,10 @@ const Drinks = () => {
     };
     drinkDelete({ drink_id: e.target.value, data: deleteData })
       .unwrap()
-      .then((result) => {
+      .then(() => {
         alert("Drink succesfully deleted");
       })
-      .catch((error) => {
+      .catch(() => {
         alert("WHY IS THERE ERROR HERE");
       });
   };
@@ -69,24 +58,6 @@ const Drinks = () => {
       <div>
         <Search />
       </div>
-      {/* <div>
-        <label className="form-label">Select Tag:</label>
-        <input
-          className="form-control"
-          onChange={handleChange}
-          name="tag_id"
-          placeholder=""
-        />
-        <select name="tags" id="tagDropdown">
-          {" "}
-          {tags.data &&
-            tags.data.map((item) => (
-              <option value={item.id} id={item.id}>
-                {item.tag_name}
-              </option>
-            ))}{" "}
-        </select>
-      </div> */}
       <table className="table table-striped">
         <thead>
           <tr>
