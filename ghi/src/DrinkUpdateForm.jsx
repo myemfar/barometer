@@ -2,6 +2,7 @@ import { useUpdateDrinkMutation, useGetDrinkByIDQuery } from "./app/apiSlice";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import fillupload from "./images/fillupload.gif";
+import "./DrinkUpdateForm.css";
 
 const DrinkUpdateForm = () => {
   const params = useParams();

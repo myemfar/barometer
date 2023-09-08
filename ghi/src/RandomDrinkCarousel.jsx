@@ -4,6 +4,7 @@ import { useGetDrinkQuery } from "./app/apiSlice";
 import { NavLink } from "react-router-dom";
 import dummyData from "./dummyData";
 import fillupload from "./images/fillupload.gif";
+import "./RandomDrinkCarousel.css";
 
 function RandomDrinkCarousel() {
   const { data: drinks, isLoading: drinksLoading } = useGetDrinkQuery();

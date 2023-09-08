@@ -9,6 +9,7 @@ import Search from "./Search";
 import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import fillupload from "./images/fillupload.gif";
+import "./Drinks.css";
 
 const Drinks = () => {
   const searchCriteria = useSelector((state) => state.search.value);

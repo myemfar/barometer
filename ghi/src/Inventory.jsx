@@ -6,6 +6,7 @@ import {
 
 import { NavLink } from "react-router-dom";
 import fillupload from "./images/fillupload.gif";
+import "./Inventory.css";
 
 const Inventory = () => {
   const [deleteIngredient] = useDeleteIngredientMutation();
