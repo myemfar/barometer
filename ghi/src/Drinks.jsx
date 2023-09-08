@@ -12,15 +12,18 @@ import { NavLink } from "react-router-dom";
 const Drinks = () => {
   const searchCriteria = useSelector((state) => state.search.value);
   const drinks = useGetDrinkQuery();
-  const { data: drinkTags, isLoading: drinkTagsLoading } =
-    useGetDrinkTagsQuery();
+  const { data: tokenData, isLoading: tokenDataLoading } = useGetTokenQuery();
+  const { data: drinkTags, isLoading: drinkTagsLoading } = useGetDrinkTagsQuery(
+    {
+      skip: !tokenData,
+    }
+  );
   const [drinkDelete] = useDeleteDrinkMutation();
 
   const filteredData = () => {
     if (searchCriteria)
       return drinks.data.filter((item) => item.name.includes(searchCriteria));
   };
-  const { data: tokenData, isLoading: tokenDataLoading } = useGetTokenQuery();
   const handleDrinkDelete = (e) => {
     const deleteData = {
       id: e.target.value,
@@ -42,21 +45,29 @@ const Drinks = () => {
       <div className="col-lg-6 mx-auto">
         <p className="lead mb-4">BAROMETER: WE HELP U MAKE DRANK</p>
       </div>
-      <NavLink
-        className="btn btn-secondary"
-        aria-current="page"
-        to="/drinks/new"
-      >
-        Create Drink
-      </NavLink>
-      <NavLink
-        className="btn btn-secondary"
-        aria-current="page"
-        to="/drinks/recipes"
-      >
-        Create Recipe
-      </NavLink>
-      <div>
+      <div className="my-3">
+        <NavLink
+          className="btn btn-primary mx-2"
+          aria-current="page"
+          to="/drinks/new"
+          style={{
+            display: !tokenData ? "none" : "inline-block",
+          }}
+        >
+          Create Drink
+        </NavLink>
+        <NavLink
+          className="btn btn-primary mx-2"
+          aria-current="page"
+          to="/drinks/recipes"
+          style={{
+            display: !tokenData ? "none" : "inline-block",
+          }}
+        >
+          Create Recipe
+        </NavLink>
+      </div>
+      <div className="d-flex justify-content-center">
         <Search />
       </div>
       <table className="table table-striped">
@@ -66,7 +77,7 @@ const Drinks = () => {
             <th>Image</th>
             <th>Description</th>
             <th>Instructions</th>
-            <th>Tags</th>
+            {tokenData && <th>Tags</th>}
             <th>Actions</th>
           </tr>
         </thead>
@@ -86,7 +97,7 @@ const Drinks = () => {
                 <td>{item.description}</td>
                 <td>{item.instructions}</td>
                 <td>
-                  {Array.isArray(drinkTags) && drinkTags.length > 0
+                  {tokenData && Array.isArray(drinkTags) && drinkTags.length > 0
                     ? drinkTags
                         .filter((tag) => tag.drink_id === item.id)
                         .map((tag) => (

@@ -13,14 +13,16 @@ import { useParams } from "react-router-dom";
 
 const DrinkDetail = () => {
   const params = useParams();
+  const { data: tokenData, isLoading: tokenDataLoading } = useGetTokenQuery();
   const { data: drinkTagsByDrink, isLoading: drinkTagsLoading } =
-    useGetDrinkTagsByDrinkQuery(params.id);
+    useGetDrinkTagsByDrinkQuery(params.id, {
+      skip: !tokenData,
+    });
   const [deleteDrinkTags] = useDeleteDrinkTagMutation();
   const [createDrinkTags] = useCreateDrinkTagsMutation();
   const { data: drink, isLoading: drinksLoading } = useGetDrinkByIDQuery(
     params.id
   );
-  const { data: tokenData, isLoading: tokenDataLoading } = useGetTokenQuery();
   const { data: tags, isLoading: tagsLoading } = useGetTagsQuery();
   const { data: steps, isLoading: stepsLoading } = useGetRecipeForDrinkQuery(
     params.id
