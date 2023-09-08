@@ -1,28 +1,30 @@
-import React, { useState, useEffect } from "react";
-import { useGetInventoryByUserQuery, useDeleteIngredientMutation } from "./app/apiSlice";
-import { useGetTokenQuery } from "./app/apiSlice";
+import React from "react";
+import {
+  useGetInventoryByUserQuery,
+  useDeleteIngredientMutation,
+} from "./app/apiSlice";
+
 import { NavLink } from "react-router-dom";
 
-
-
 const Inventory = () => {
-
   const [deleteIngredient] = useDeleteIngredientMutation();
 
   const handleIngredientDelete = (e) => {
-    
-    const ingredient = {ingredient_id: e.target.value};
+    const ingredient = { ingredient_id: e.target.value };
     deleteIngredient(ingredient)
       .unwrap()
-      .then((result) => {
+      .then(() => {
         alert("Ingredient succesfully deleted");
       })
-      .catch((error) => {
-        alert("WHY IS THERE ERROR HERE");
+      .catch(() => {
+        alert("Unable to delete ingredient");
       });
   };
 
-  const inventory = useGetInventoryByUserQuery();
+  const { data: inventory, isLoading } = useGetInventoryByUserQuery();
+
+  if (isLoading) return <div>Loading...</div>;
+
   return (
     <div className="px-4 py-5 my-5 text-center">
       <h1 className="display-5 fw-bold">Inventory</h1>
@@ -31,12 +33,12 @@ const Inventory = () => {
       </div>
       <div>
         <NavLink
-        className="btn btn-secondary"
-        aria-current="page"
-        to="/inventory/new"
-      >
-        Add to Inventory
-      </NavLink>
+          className="btn btn-secondary"
+          aria-current="page"
+          to="/inventory/new"
+        >
+          Add to Inventory
+        </NavLink>
         <table className="table table-striped">
           <thead>
             <tr>
@@ -46,8 +48,8 @@ const Inventory = () => {
             </tr>
           </thead>
           <tbody>
-            {inventory.data &&
-              inventory.data.map((item) => (
+            {inventory &&
+              inventory.map((item) => (
                 <tr key={item.name}>
                   <td>{item.name}</td>
                   <td>
@@ -59,15 +61,15 @@ const Inventory = () => {
                   </td>
                   <td>{item.quantity}</td>
                   <td>
-                        <button
-                          onClick={handleIngredientDelete}
-                          value={item.id}
-                          key={item.id}
-                          className="btn btn-secondary"
-                        >
-                          Delete
-                        </button>
-                      </td>
+                    <button
+                      onClick={handleIngredientDelete}
+                      value={item.id}
+                      key={item.id}
+                      className="btn btn-secondary"
+                    >
+                      Delete
+                    </button>
+                  </td>
                 </tr>
               ))}
           </tbody>

@@ -95,8 +95,7 @@ class DrinkTagsRepo:
                     for i, column in enumerate(db.description):
                         record[column.name] = row[i]
                     result.append(record)
-                if result == []:
-                    raise DrinkTagNotFound
+
                 return result
 
     def get_with_name(self, user_id):
@@ -119,8 +118,7 @@ class DrinkTagsRepo:
                     for i, column in enumerate(db.description):
                         record[column.name] = row[i]
                     result.append(record)
-                if result == []:
-                    raise DrinkTagNotFound
+
                 return result
 
     def _get_one(self, user_id, tag_id, drink_id):

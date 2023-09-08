@@ -39,14 +39,7 @@ def get_drink_tag_with_name(
     repo: DrinkTagsRepo = Depends(),
     account_data: dict = Depends(authenticator.get_current_account_data),
 ):
-    try:
-        drink_tags = repo.get_with_name(account_data["id"])
-
-    except DrinkTagNotFound:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="No Drink tags found",
-        )
+    drink_tags = repo.get_with_name(account_data["id"])
 
     return DrinkTagsWithNameList(drink_tags=drink_tags)
 

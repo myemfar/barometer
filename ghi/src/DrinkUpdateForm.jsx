@@ -28,6 +28,8 @@ const DrinkUpdateForm = () => {
     }
   };
 
+  if (drinksLoading) return <div>Loading...</div>;
+
   return (
     <div className="card text-bg-light mb-3">
       <h5 className="card-header">Update Drink</h5>

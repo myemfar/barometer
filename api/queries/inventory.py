@@ -99,8 +99,7 @@ class InventoryRepo:
                     for i, column in enumerate(db.description):
                         record[column.name] = row[i]
                     result.append(record)
-                if result == []:
-                    raise InventoryNotFound
+
                 return result
 
     def delete_ingredient(self, info, user_id):

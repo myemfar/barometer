@@ -1,13 +1,12 @@
 import { useCreateRecipeMutation } from "./app/apiSlice";
 import { useState } from "react";
-import { useNavigate, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { useGetIngredientsQuery } from "./app/apiSlice";
 import { useGetDrinkQuery } from "./app/apiSlice";
 
 const RecipeForm = () => {
   const [recipe] = useCreateRecipeMutation();
   const [formData, setFormData] = useState();
-  const navigate = useNavigate();
   const ingredients = useGetIngredientsQuery();
   const drinks = useGetDrinkQuery();
 
