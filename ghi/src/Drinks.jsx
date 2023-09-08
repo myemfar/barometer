@@ -3,6 +3,7 @@ import {
   useGetDrinkQuery,
   useDeleteDrinkMutation,
   useGetDrinkTagsQuery,
+  useGetTokenQuery,
 } from "./app/apiSlice";
 import Search from "./Search";
 import { useSelector } from "react-redux";
@@ -19,7 +20,7 @@ const Drinks = () => {
     if (searchCriteria)
       return drinks.data.filter((item) => item.name.includes(searchCriteria));
   };
-
+  const { data: tokenData, isLoading: tokenDataLoading } = useGetTokenQuery();
   const handleDrinkDelete = (e) => {
     const deleteData = {
       id: e.target.value,
@@ -33,7 +34,7 @@ const Drinks = () => {
         alert("WHY IS THERE ERROR HERE");
       });
   };
-  if (drinkTagsLoading) return <div>Loading..</div>;
+  if (drinkTagsLoading || tokenDataLoading) return <div>Loading..</div>;
 
   return (
     <div className="px-4 py-5 my-5 text-center">
@@ -106,14 +107,16 @@ const Drinks = () => {
                   >
                     Details
                   </NavLink>
-                  <button
-                    onClick={handleDrinkDelete}
-                    className="btn btn-danger"
-                    value={item.id}
-                    key={item.id}
-                  >
-                    Delete Drink
-                  </button>
+                  {tokenData && item.user_id === tokenData.id ? (
+                    <button
+                      onClick={handleDrinkDelete}
+                      className="btn btn-danger"
+                      value={item.id}
+                      key={item.id}
+                    >
+                      Delete Drink
+                    </button>
+                  ) : null}
                 </td>
               </tr>
             ))}
@@ -153,14 +156,16 @@ const Drinks = () => {
                   >
                     Details
                   </NavLink>
-                  <button
-                    onClick={handleDrinkDelete}
-                    className="btn btn-danger"
-                    value={item.id}
-                    key={item.id}
-                  >
-                    Delete Drink
-                  </button>
+                  {tokenData && item.user_id === tokenData.id ? (
+                    <button
+                      onClick={handleDrinkDelete}
+                      className="btn btn-danger"
+                      value={item.id}
+                      key={item.id}
+                    >
+                      Delete Drink
+                    </button>
+                  ) : null}
                 </td>
               </tr>
             ))}

@@ -1,4 +1,4 @@
-import { useUpdateDrinkMutation, useGetDrinkByNameQuery } from "./app/apiSlice";
+import { useUpdateDrinkMutation, useGetDrinkByIDQuery } from "./app/apiSlice";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -7,7 +7,7 @@ const DrinkUpdateForm = () => {
   const [drinkUpdate] = useUpdateDrinkMutation();
   const [formData, setFormData] = useState();
   const navigate = useNavigate();
-  const { data: drink, isLoading: drinksLoading } = useGetDrinkByNameQuery(
+  const { data: drink, isLoading: drinksLoading } = useGetDrinkByIDQuery(
     params.id
   );
   const handleChange = (e) => {

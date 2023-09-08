@@ -124,7 +124,7 @@ export const barometerApi = createApi({
       providesTags: ["Recipe"],
       transformResponse: (response) => response?.steps || [],
     }),
-    getDrinkByName: builder.query({
+    GetDrinkByID: builder.query({
       query: (id) => ({
         url: `api/drinks/${id}`,
         method: "GET",
@@ -217,7 +217,7 @@ export const {
   useSignUpMutation,
   useGetInventoryByUserQuery,
   useGetDrinkQuery,
-  useGetDrinkByNameQuery,
+  useGetDrinkByIDQuery,
   useCreateDrinkMutation,
   useGetIngredientsQuery,
   useCreateRecipeMutation,

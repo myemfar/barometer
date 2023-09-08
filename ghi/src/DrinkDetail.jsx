@@ -1,11 +1,12 @@
 import {
-  useGetDrinkByNameQuery,
+  useGetDrinkByIDQuery,
   useCreateDrinkTagsMutation,
   useGetTagsQuery,
   useGetRecipeForDrinkQuery,
   useDeleteRecipeMutation,
   useDeleteDrinkTagMutation,
   useGetDrinkTagsByDrinkQuery,
+  useGetTokenQuery,
 } from "./app/apiSlice";
 import { NavLink } from "react-router-dom";
 import { useParams } from "react-router-dom";
@@ -16,16 +17,22 @@ const DrinkDetail = () => {
     useGetDrinkTagsByDrinkQuery(params.id);
   const [deleteDrinkTags] = useDeleteDrinkTagMutation();
   const [createDrinkTags] = useCreateDrinkTagsMutation();
-  const { data: drink, isLoading: drinksLoading } = useGetDrinkByNameQuery(
+  const { data: drink, isLoading: drinksLoading } = useGetDrinkByIDQuery(
     params.id
   );
-
+  const { data: tokenData, isLoading: tokenDataLoading } = useGetTokenQuery();
   const { data: tags, isLoading: tagsLoading } = useGetTagsQuery();
   const { data: steps, isLoading: stepsLoading } = useGetRecipeForDrinkQuery(
     params.id
   );
   const [deleteRecipe] = useDeleteRecipeMutation();
-  if (drinksLoading || tagsLoading || stepsLoading || drinkTagsLoading)
+  if (
+    drinksLoading ||
+    tagsLoading ||
+    stepsLoading ||
+    drinkTagsLoading ||
+    tokenDataLoading
+  )
     return <div>Loading..</div>;
 
   const handleRecipeDelete = (e) => {
@@ -62,10 +69,11 @@ const DrinkDetail = () => {
         <p className="lead mb-4">BAROMETER: WE HELP U MAKE DRANK</p>
       </div>
       <div>
-        {tags &&
+        {tokenData &&
+          tags &&
           tags.map((item) => (
             <div key={item.id}>
-              {drinkTagsByDrink.drink_tags.some(
+              {drinkTagsByDrink?.drink_tags?.some(
                 (tag) => tag.tag_id === item.id
               ) ? (
                 <button
@@ -105,6 +113,12 @@ const DrinkDetail = () => {
               aria-current="page"
               to={`/drinks/${params.id}/update`}
               className="btn btn-primary"
+              style={{
+                display:
+                  !tokenData || tokenData.id !== drink.user_id
+                    ? "none"
+                    : "inline-block",
+              }}
             >
               Update Drink
             </NavLink>
