@@ -7,7 +7,6 @@ from fastapi import (
 from models import (
     InventoryIn,
     InventoryList,
-    UserInventoryOut,
     UserInventoryIn,
     UserInventoryList,
 )

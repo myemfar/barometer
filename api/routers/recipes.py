@@ -9,7 +9,6 @@ from models import (
     RecipesOut,
     RecipesList,
     RecipeDetailsList,
-    RecipesInWithoutQuantity,
 )
 from queries.recipes import RecipesRepo, RecipeNotFound, RecipeAlreadyExists
 from psycopg.errors import ForeignKeyViolation
