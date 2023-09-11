@@ -6,30 +6,11 @@ import {
   useGetTokenQuery,
 } from "./app/apiSlice";
 import Search from "./Search";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import fillupload from "./images/fillupload.gif";
 import { openModal } from "./app/modalSlice";
 import DrinkCard from "./DrinkCard";
-
-const DrinkList = ({ drinks, tokenData, handleDrinkDelete, drinkTags }) => {
-  return (
-    <div className="row">
-      {drinks.data.map((item) => (
-        <DrinkCard
-          key={item.id}
-          item={item}
-          tokenData={tokenData}
-          handleDrinkDelete={handleDrinkDelete}
-          drinkTags={drinkTags}
-        />
-      ))}
-    </div>
-  );
-};
-
-
-
 
 const Drinks = () => {
   const dispatch = useDispatch();
@@ -41,12 +22,14 @@ const Drinks = () => {
     }
   );
   const [drinkDelete] = useDeleteDrinkMutation();
-
+  const searchValue = useSelector((state) => state.search.value);
   const handleOpenModal = () => {
     dispatch(openModal());
   };
-
-
+  const filteredDrinks =
+    drinks.data?.filter((drink) =>
+      drink.name.toLowerCase().includes(searchValue.toLowerCase())
+    ) || [];
   const handleDrinkDelete = (e) => {
     const deleteData = {
       id: e.target.value,
@@ -60,6 +43,22 @@ const Drinks = () => {
         alert("WHY IS THERE ERROR HERE");
       });
   };
+  const renderDrinks = () => {
+    return (
+      <div className="row">
+        {filteredDrinks.map((item) => (
+          <DrinkCard
+            key={item.id}
+            item={item}
+            tokenData={tokenData}
+            handleDrinkDelete={handleDrinkDelete}
+            drinkTags={drinkTags}
+          />
+        ))}
+        ;
+      </div>
+    );
+  };
   if (drinkTagsLoading || tokenDataLoading) {
     return (
       <div className="centered-spinner">
@@ -71,35 +70,27 @@ const Drinks = () => {
 
   return (
     <div className="px-4 py-5 my-5 text-center">
-      <div className= "drink-container drink-font">
-      <h1 className="display-5 fw-bold">Drinks</h1>
-      
-      <div className="my-3">
-        <NavLink
-          className="btn btn-secondary mx-2"
-          aria-current="page"
-          to="/drinks/new"
-          onClick={handleOpenModal}
-          style={{
-            display: !tokenData ? "none" : "inline-block",
-          }}
-        >
-          Create Drink
-        </NavLink>
+      <div className="drink-container drink-font">
+        <h1 className="display-5 fw-bold">Drinks</h1>
+
+        <div className="my-3">
+          <NavLink
+            className="btn btn-secondary mx-2"
+            aria-current="page"
+            to="/drinks/new"
+            onClick={handleOpenModal}
+            style={{
+              display: !tokenData ? "none" : "inline-block",
+            }}
+          >
+            Create Drink
+          </NavLink>
+        </div>
+        <div className="d-flex justify-content-center">
+          <Search />
+        </div>
       </div>
-      <div className="d-flex justify-content-center">
-        <Search />
-      </div>
-      </div>
-      <div className= "card-grid">
-      {drinks.data && (
-        <DrinkList
-          drinks={drinks}
-          tokenData={tokenData}
-          handleDrinkDelete={handleDrinkDelete}
-          drinkTags={drinkTags}
-        />
-      )}</div>
+      <div className="card-grid">{renderDrinks()}</div>
     </div>
   );
 };

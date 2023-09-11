@@ -21,7 +21,6 @@ const RecipeForm = () => {
   const ingredients = useGetIngredientsQuery();
   const drinks = useGetDrinkQuery();
   const navigate = useNavigate();
-  console.log(drinkName);
   const handleChange = (e) => {
     setFormData({
       ...formData,

@@ -77,7 +77,6 @@ const DrinkDetail = () => {
     const tagData = { tag_id: e.target.value, drink_id: params.id };
     createDrinkTags(tagData);
   };
-
   return (
     <div className="drink-detail-container drink-font">
       <div className="drink-container px-4 py-5 my-5 text-center">
@@ -153,7 +152,10 @@ const DrinkDetail = () => {
                 to={`/drinks/recipes/${drink.name}`}
                 onClick={handleOpenModal}
                 style={{
-                  display: !tokenData ? "none" : "inline-block",
+                  display:
+                    !tokenData || tokenData.id !== drink.user_id
+                      ? "none"
+                      : "inline-block",
                 }}
               >
                 Add Ingredients
@@ -164,7 +166,9 @@ const DrinkDetail = () => {
                     <th>Ingredient</th>
                     <th>Picture</th>
                     <th>Amount</th>
-                    <th>Actions</th>
+                    {tokenData && tokenData.id == drink.user_id && (
+                      <th>Actions</th>
+                    )}
                   </tr>
                 </thead>
                 <tbody>
@@ -180,16 +184,18 @@ const DrinkDetail = () => {
                           />
                         </td>
                         <td>{item.quantity}</td>
-                        <td>
-                          <button
-                            onClick={handleRecipeDelete}
-                            value={item.id}
-                            key={item.id}
-                            className="btn btn-danger"
-                          >
-                            Delete
-                          </button>
-                        </td>
+                        {tokenData && tokenData.id == drink.user_id && (
+                          <td>
+                            <button
+                              onClick={handleRecipeDelete}
+                              value={item.id}
+                              key={item.id}
+                              className="btn btn-danger"
+                            >
+                              Delete
+                            </button>
+                          </td>
+                        )}
                       </tr>
                     ))}
                 </tbody>
