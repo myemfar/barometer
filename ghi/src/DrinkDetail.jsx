@@ -10,15 +10,13 @@ import {
 } from "./app/apiSlice";
 import { NavLink } from "react-router-dom";
 import { useParams } from "react-router-dom";
-import "./DrinkDetail.css";
 import fillupload from "./images/fillupload.gif";
 import { openModal } from "./app/modalSlice";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 
 const DrinkDetail = () => {
   const params = useParams();
   const dispatch = useDispatch();
-  const searchCriteria = useSelector((state) => state.search.value);
   const { data: tokenData, isLoading: tokenDataLoading } = useGetTokenQuery();
   const { data: drinkTagsByDrink, isLoading: drinkTagsLoading } =
     useGetDrinkTagsByDrinkQuery(params.id, {
@@ -81,7 +79,7 @@ const DrinkDetail = () => {
   };
 
   return (
-    <div className="drink-detail-container">
+    <div className="drink-detail-container drink-font">
       <div className="drink-container px-4 py-5 my-5 text-center">
         <h1 className="display-5 fw-bold drink-font">{drink.name}</h1>
         <div className="col-lg-6 mx-auto">

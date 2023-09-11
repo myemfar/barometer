@@ -2,7 +2,6 @@ import { useUpdateDrinkMutation, useGetDrinkByIDQuery } from "./app/apiSlice";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import fillupload from "./images/fillupload.gif";
-import "./DrinkUpdateForm.css";
 import { Modal, Button } from "react-bootstrap";
 import { closeModal } from "./app/modalSlice";
 import { useSelector, useDispatch } from "react-redux";
@@ -97,7 +96,7 @@ const DrinkUpdateForm = () => {
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button className="btn btn-primary" variant="primary" type="submit">
+          <Button className="btn btn-secondary" variant="secondary" type="submit">
             Update
           </Button>
         </Modal.Footer>

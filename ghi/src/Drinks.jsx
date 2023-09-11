@@ -6,11 +6,10 @@ import {
   useGetTokenQuery,
 } from "./app/apiSlice";
 import Search from "./Search";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { NavLink } from "react-router-dom";
 import fillupload from "./images/fillupload.gif";
 import { openModal } from "./app/modalSlice";
-import "./Drinks.css";
 import DrinkCard from "./DrinkCard";
 
 const DrinkList = ({ drinks, tokenData, handleDrinkDelete, drinkTags }) => {

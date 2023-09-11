@@ -86,3 +86,11 @@ code {
 .add-padding {
   padding-top: 50px; 
 }
+
+.dark-font {
+  color: black
+}
+
+.transparent-bg {
+    background: rgba(0, 0, 0, 0);
+}

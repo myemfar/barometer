@@ -1,10 +1,9 @@
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useState } from "react";
 import { search, reset } from "./app/drinkSearchSlice";
 
 const Search = () => {
   const [searchInput, setSearchInput] = useState("");
-  const searchCritera = useSelector((state) => state.search.value);
   const dispatch = useDispatch();
 
   const handleSubmit = (e) => {
