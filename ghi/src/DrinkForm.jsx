@@ -81,10 +81,10 @@ const DrinkForm = () => {
         </Modal.Body>
 
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
+          <Button variant="dark" onClick={handleClose}>
             Close
           </Button>
-          <Button className="btn btn-primary" variant="primary" type="submit">
+          <Button className="btn btn-secondary" variant="primary" type="submit">
             Create
           </Button>
         </Modal.Footer>

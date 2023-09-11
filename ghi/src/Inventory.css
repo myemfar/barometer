@@ -6,8 +6,10 @@
   position: relative;
   gap: 20px;
   color: aliceblue;
+  padding-top: 20px;
 }
 
 .inventory-font {
     color: aliceblue;
 }
+

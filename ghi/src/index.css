@@ -78,3 +78,11 @@ code {
   background: rgba(0, 0, 0, 0.5);
   padding: 10px;
 }
+
+.button {
+  background-color: blue;
+}
+
+.add-padding {
+  padding-top: 50px; 
+}

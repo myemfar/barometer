@@ -24,7 +24,7 @@ const Search = () => {
         />
       </div>
       <div className="col">
-        <button className="btn btn-lg btn-success" type="submit">
+        <button className="btn btn-lg btn-light" type="submit">
           Search
         </button>
         <button

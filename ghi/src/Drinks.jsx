@@ -72,13 +72,12 @@ const Drinks = () => {
 
   return (
     <div className="px-4 py-5 my-5 text-center">
-      <h1 className="display-5 fw-bold">Drank</h1>
-      <div className="col-lg-6 mx-auto">
-        <p className="lead mb-4">BAROMETER: WE HELP U MAKE DRANK</p>
-      </div>
+      <div className= "drink-container drink-font">
+      <h1 className="display-5 fw-bold">Drinks</h1>
+      
       <div className="my-3">
         <NavLink
-          className="btn btn-primary mx-2"
+          className="btn btn-secondary mx-2"
           aria-current="page"
           to="/drinks/new"
           onClick={handleOpenModal}
@@ -91,6 +90,7 @@ const Drinks = () => {
       </div>
       <div className="d-flex justify-content-center">
         <Search />
+      </div>
       </div>
       <div className= "card-grid">
       {drinks.data && (
