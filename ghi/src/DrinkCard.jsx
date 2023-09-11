@@ -1,13 +1,8 @@
-import React from 'react';
+import React from "react";
 import { NavLink } from "react-router-dom";
 import "./DrinkCard.css";
 
-
-
 const DrinkCard = ({ item, tokenData, handleDrinkDelete, drinkTags }) => {
-
-
-
   return (
     <div className="col-md-4 mb-4">
       <div className="card card-container">
@@ -24,19 +19,16 @@ const DrinkCard = ({ item, tokenData, handleDrinkDelete, drinkTags }) => {
           </p>
           {tokenData && (
             <div className="card-text">
-              <strong>Tags:</strong>{' '}
+              <strong>Tags:</strong>{" "}
               {Array.isArray(drinkTags) && drinkTags.length > 0
                 ? drinkTags
                     .filter((tag) => tag.drink_id === item.id)
                     .map((tag) => (
-                      <span
-                        key={tag.id}
-                        className="badge bg-secondary me-1"
-                      >
+                      <span key={tag.id} className="badge bg-secondary me-1">
                         {tag.tag_name}
                       </span>
                     ))
-                : 'No tags available'}
+                : "No tags available"}
             </div>
           )}
           <div className="mt-3">

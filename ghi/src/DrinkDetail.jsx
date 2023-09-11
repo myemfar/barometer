@@ -114,7 +114,7 @@ const DrinkDetail = () => {
               ))}
           </div>
 
-          <div className="card">
+          <div className="text-bg-dark mb-3">
             <img
               src={drink.image_url}
               className="card-img-top rounded"
@@ -122,7 +122,7 @@ const DrinkDetail = () => {
               style={{ maxHeight: "500px", maxWidth: "1000px" }}
             />
 
-            <div className="card-body">
+            <div className="card-body text-bg-dark mb-3">
               <div>
                 <p className="card-text">{drink.description}</p>
               </div>
@@ -158,7 +158,7 @@ const DrinkDetail = () => {
               >
                 Add Ingredients
               </NavLink>
-              <table className="table table-striped">
+              <table className="table table-dark add-padding table-striped">
                 <thead>
                   <tr>
                     <th>Ingredient</th>
