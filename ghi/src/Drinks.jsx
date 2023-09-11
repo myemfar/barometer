@@ -72,16 +72,6 @@ const Drinks = () => {
         >
           Create Drink
         </NavLink>
-        {/* <NavLink
-          className="btn btn-primary mx-2"
-          aria-current="page"
-          to="/drinks/recipes"
-          style={{
-            display: !tokenData ? "none" : "inline-block",
-          }}
-        >
-          Create Recipe
-        </NavLink> */}
       </div>
       <div className="d-flex justify-content-center">
         <Search />

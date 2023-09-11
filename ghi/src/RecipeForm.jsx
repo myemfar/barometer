@@ -1,20 +1,31 @@
 import { useCreateRecipeMutation } from "./app/apiSlice";
 import { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useGetIngredientsQuery } from "./app/apiSlice";
+import { useSelector, useDispatch } from "react-redux";
 import { useGetDrinkQuery } from "./app/apiSlice";
+import { Modal, Button } from "react-bootstrap";
+import { closeModal } from "./app/modalSlice";
 
 const RecipeForm = () => {
+  const dispatch = useDispatch();
+  const show = useSelector((state) => state.modal.show);
   const [recipe] = useCreateRecipeMutation();
   const [formData, setFormData] = useState();
   const ingredients = useGetIngredientsQuery();
   const drinks = useGetDrinkQuery();
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
     });
+  };
+
+  const handleClose = () => {
+    dispatch(closeModal());
+    navigate("/drinks");
   };
 
   const handleSubmit = (e) => {
@@ -30,10 +41,12 @@ const RecipeForm = () => {
   };
 
   return (
-    <div className="card text-bg-light mb-3">
-      <h5 className="card-header">Add ingredient to drink</h5>
-      <div className="card-body">
-        <form onSubmit={handleSubmit}>
+    <Modal show={show} onHide={handleClose} keyboard={false}>
+      <form onSubmit={handleSubmit}>
+        <Modal.Header closeButton>
+          <Modal.Title>Recipe Creation</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
           <div className="mb-3">
             <label className="form-label">Select Drink:</label>
             <input
@@ -44,6 +57,8 @@ const RecipeForm = () => {
               id="drinksDataList"
               placeholder="Type to search..."
             />
+          </div>
+          <div className="mb-3">
             <datalist id="datalistOptions">
               {drinks.data &&
                 drinks.data.map((item) => (
@@ -81,22 +96,18 @@ const RecipeForm = () => {
               onChange={handleChange}
             />
           </div>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Close
+          </Button>
 
-          <div>
-            <input className="btn btn-primary" type="submit" value="add" />
-          </div>
-          <div>
-            <NavLink
-              className="btn btn-secondary"
-              aria-current="page"
-              to={`/drinks`}
-            >
-              Go back
-            </NavLink>
-          </div>
-        </form>
-      </div>
-    </div>
+          <Button className="btn btn-primary" variant="primary" type="submit">
+            Add ingredient
+          </Button>
+        </Modal.Footer>
+      </form>
+    </Modal>
   );
 };
 

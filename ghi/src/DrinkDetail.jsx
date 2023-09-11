@@ -12,9 +12,13 @@ import { NavLink } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import "./DrinkDetail.css";
 import fillupload from "./images/fillupload.gif";
+import { openModal } from "./app/modalSlice";
+import { useSelector, useDispatch } from "react-redux";
 
 const DrinkDetail = () => {
   const params = useParams();
+  const dispatch = useDispatch();
+  const searchCriteria = useSelector((state) => state.search.value);
   const { data: tokenData, isLoading: tokenDataLoading } = useGetTokenQuery();
   const { data: drinkTagsByDrink, isLoading: drinkTagsLoading } =
     useGetDrinkTagsByDrinkQuery(params.id, {
@@ -30,6 +34,10 @@ const DrinkDetail = () => {
     params.id
   );
   const [deleteRecipe] = useDeleteRecipeMutation();
+
+  const handleOpenModal = () => {
+    dispatch(openModal());
+  };
 
   if (
     drinksLoading ||
@@ -124,6 +132,7 @@ const DrinkDetail = () => {
                 aria-current="page"
                 to={`/drinks/${params.id}/update`}
                 className="btn btn-primary"
+                onClick={handleOpenModal}
                 style={{
                   display:
                     !tokenData || tokenData.id !== drink.user_id
@@ -144,6 +153,7 @@ const DrinkDetail = () => {
                 className="btn btn-primary mx-2"
                 aria-current="page"
                 to="/drinks/recipes"
+                onClick={handleOpenModal}
                 style={{
                   display: !tokenData ? "none" : "inline-block",
                 }}
