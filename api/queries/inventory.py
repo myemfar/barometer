@@ -1,4 +1,4 @@
-from models import InventoryIn, InventoryInByName
+from models import InventoryInByName
 from queries.pool import pool
 from queries.ingredients import IngredientNotFound
 
