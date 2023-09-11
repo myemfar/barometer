@@ -19,7 +19,7 @@ Barometer is a platform that allows you to view and create drink recipes. You ca
 
 ## API endpoint summary
 
-[Link to API Documentation](API.md)
+[Link to API Documentation](api.md)
 
 
 ## Installation
