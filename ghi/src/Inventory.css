@@ -1,0 +1,13 @@
+.inventory-table {
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.7);
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  gap: 20px;
+  color: aliceblue;
+}
+
+.inventory-font {
+    color: aliceblue;
+}

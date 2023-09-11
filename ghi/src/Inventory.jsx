@@ -43,11 +43,13 @@ const Inventory = () => {
   }
 
   return (
-    <div className="px-4 py-5 my-5 text-center">
+    
+    <div className="px-4 py-5 my-5 text-center inventory-font">
       <h1 className="display-5 fw-bold">Inventory</h1>
       <div className="col-lg-6 mx-auto">
         <p className="lead mb-4">BAROMETER: WE HELP U MAKE DRANK</p>
       </div>
+      
       <div>
         <NavLink
           className="btn btn-secondary"
@@ -57,12 +59,14 @@ const Inventory = () => {
         >
           Add to Inventory
         </NavLink>
-        <table className="table table-striped">
+        {/* <div className= "inventory-table inventory-font"> */}
+        <table className="table table-striped table-dark">
           <thead>
             <tr>
               <th>Ingredient</th>
               <th>Picture</th>
               <th>Amount</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -94,6 +98,7 @@ const Inventory = () => {
         </table>
       </div>
     </div>
+    // </div>
   );
 };
 

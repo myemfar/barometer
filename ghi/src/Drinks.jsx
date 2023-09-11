@@ -11,10 +11,29 @@ import { NavLink } from "react-router-dom";
 import fillupload from "./images/fillupload.gif";
 import { openModal } from "./app/modalSlice";
 import "./Drinks.css";
+import DrinkCard from "./DrinkCard";
+
+const DrinkList = ({ drinks, tokenData, handleDrinkDelete, drinkTags }) => {
+  return (
+    <div className="row">
+      {drinks.data.map((item) => (
+        <DrinkCard
+          key={item.id}
+          item={item}
+          tokenData={tokenData}
+          handleDrinkDelete={handleDrinkDelete}
+          drinkTags={drinkTags}
+        />
+      ))}
+    </div>
+  );
+};
+
+
+
 
 const Drinks = () => {
   const dispatch = useDispatch();
-  const searchCriteria = useSelector((state) => state.search.value);
   const drinks = useGetDrinkQuery();
   const { data: tokenData, isLoading: tokenDataLoading } = useGetTokenQuery();
   const { data: drinkTags, isLoading: drinkTagsLoading } = useGetDrinkTagsQuery(
@@ -28,10 +47,7 @@ const Drinks = () => {
     dispatch(openModal());
   };
 
-  const filteredData = () => {
-    if (searchCriteria)
-      return drinks.data.filter((item) => item.name.includes(searchCriteria));
-  };
+
   const handleDrinkDelete = (e) => {
     const deleteData = {
       id: e.target.value,
@@ -76,118 +92,15 @@ const Drinks = () => {
       <div className="d-flex justify-content-center">
         <Search />
       </div>
-      <table className="table table-striped">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Image</th>
-            <th>Description</th>
-            <th>Instructions</th>
-            {tokenData && <th>Tags</th>}
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {searchCriteria &&
-            drinks.data &&
-            filteredData().map((item) => (
-              <tr key={item.id}>
-                <td>{item.name}</td>
-                <td>
-                  <img
-                    src={item.image_url}
-                    alt={item.name}
-                    style={{ maxHeight: "100px", width: "auto" }}
-                  />
-                </td>
-                <td>{item.description}</td>
-                <td>{item.instructions}</td>
-                <td>
-                  {tokenData && Array.isArray(drinkTags) && drinkTags.length > 0
-                    ? drinkTags
-                        .filter((tag) => tag.drink_id === item.id)
-                        .map((tag) => (
-                          <span
-                            key={tag.id}
-                            className="badge bg-secondary me-1"
-                          >
-                            {tag.tag_name}
-                          </span>
-                        ))
-                    : "No tags available"}
-                </td>
-                <td>
-                  <NavLink
-                    className="btn btn-secondary"
-                    aria-current="page"
-                    to={`/drinks/${item.id}`}
-                  >
-                    Details
-                  </NavLink>
-                  {tokenData && item.user_id === tokenData.id ? (
-                    <button
-                      onClick={handleDrinkDelete}
-                      className="btn btn-danger"
-                      value={item.id}
-                      key={item.id}
-                    >
-                      Delete Drink
-                    </button>
-                  ) : null}
-                </td>
-              </tr>
-            ))}
-          {!searchCriteria &&
-            drinks.data &&
-            drinks.data.map((item) => (
-              <tr key={item.id}>
-                <td>{item.name}</td>
-                <td>
-                  <img
-                    src={item.image_url}
-                    alt={item.name}
-                    style={{ maxHeight: "100px", width: "auto" }}
-                  />
-                </td>
-                <td>{item.description}</td>
-                <td>{item.instructions}</td>
-                <td>
-                  {Array.isArray(drinkTags) && drinkTags.length > 0
-                    ? drinkTags
-                        .filter((tag) => tag.drink_id === item.id)
-                        .map((tag) => (
-                          <span
-                            key={tag.id}
-                            className="badge bg-secondary me-1"
-                          >
-                            {tag.tag_name}
-                          </span>
-                        ))
-                    : "No tags available"}
-                </td>
-                <td>
-                  <NavLink
-                    className="btn btn-secondary"
-                    aria-current="page"
-                    to={`/drinks/${item.id}`}
-                  >
-                    Details
-                  </NavLink>
-                  {tokenData && item.user_id === tokenData.id ? (
-                    <button
-                      onClick={handleDrinkDelete}
-                      className="btn btn-danger"
-                      value={item.id}
-                      key={item.id}
-                    >
-                      Delete Drink
-                    </button>
-                  ) : null}
-                </td>
-              </tr>
-            ))}
-        </tbody>
-      </table>
+      <div className= "card-grid">
+      {drinks.data && (
+        <DrinkList
+          drinks={drinks}
+          tokenData={tokenData}
+          handleDrinkDelete={handleDrinkDelete}
+          drinkTags={drinkTags}
+        />
+      )}</div>
     </div>
   );
 };
