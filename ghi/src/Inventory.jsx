@@ -6,7 +6,7 @@ import {
 import { NavLink } from "react-router-dom";
 import fillupload from "./images/fillupload.gif";
 import { openModal } from "./app/modalSlice";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 
 const Inventory = () => {
   const [deleteIngredient] = useDeleteIngredientMutation();
@@ -40,21 +40,20 @@ const Inventory = () => {
   }
 
   return (
-    
     <div className="px-4 py-5 my-5 text-center drink-font drink-container ">
       <h1 className="display-5 fw-bold">Inventory</h1>
-      
+
       <div>
-        <div className="my-3">       
-        <NavLink
-          className="btn btn-secondary mx-2"
-          aria-current="page"
-          onClick={handleOpenModal}
-          to="/inventory/new"
-        >
-          Add to Inventory
-        </NavLink>
-        </div> 
+        <div className="my-3">
+          <NavLink
+            className="btn btn-secondary mx-2"
+            aria-current="page"
+            onClick={handleOpenModal}
+            to="/inventory/new"
+          >
+            Add to Inventory
+          </NavLink>
+        </div>
         <table className="table table-striped table-dark add-padding">
           <thead>
             <tr>
