@@ -17,6 +17,10 @@ Barometer is a platform that allows you to view and create drink recipes. You ca
 - Redux
 - PostgreSQL
 
+## API endpoint summary
+
+[Link to API Documentation](API.md)
+
 
 ## Installation
 
