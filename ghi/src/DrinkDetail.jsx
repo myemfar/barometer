@@ -150,7 +150,7 @@ const DrinkDetail = () => {
               <NavLink
                 className="btn btn-primary mx-2"
                 aria-current="page"
-                to="/drinks/recipes"
+                to={`/drinks/recipes/${drink.name}`}
                 onClick={handleOpenModal}
                 style={{
                   display: !tokenData ? "none" : "inline-block",

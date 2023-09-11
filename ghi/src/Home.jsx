@@ -8,7 +8,7 @@ const MainPage = () => {
           <div className="row">
             <div className="col-lg-4 mx-auto">
               <div
-                className="text-white p-3 rounded shadow"
+                className="text-white p-3 rounded shadow d-flex justify-content-center align-items-center"
                 style={{ backgroundColor: "rgba(0, 0, 0, 0.8)" }}
               >
                 <h1 className="display-5 fw-bold">Barometer</h1>

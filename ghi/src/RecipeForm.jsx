@@ -6,16 +6,22 @@ import { useSelector, useDispatch } from "react-redux";
 import { useGetDrinkQuery } from "./app/apiSlice";
 import { Modal, Button } from "react-bootstrap";
 import { closeModal } from "./app/modalSlice";
+import { useParams } from "react-router-dom";
 
 const RecipeForm = () => {
   const dispatch = useDispatch();
+  const { drinkName } = useParams();
   const show = useSelector((state) => state.modal.show);
   const [recipe] = useCreateRecipeMutation();
-  const [formData, setFormData] = useState();
+  const [formData, setFormData] = useState({
+    drink_name: drinkName,
+    ingredient_name: "",
+    quantity: "",
+  });
   const ingredients = useGetIngredientsQuery();
   const drinks = useGetDrinkQuery();
   const navigate = useNavigate();
-
+  console.log(drinkName);
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -55,7 +61,7 @@ const RecipeForm = () => {
               name="drink_name"
               list="datalistOptions"
               id="drinksDataList"
-              placeholder="Type to search..."
+              value={formData.drink_name}
             />
           </div>
           <div className="mb-3">
@@ -77,6 +83,7 @@ const RecipeForm = () => {
               list="datalistOptions2"
               id="ingredientsDataList"
               placeholder="Type to search..."
+              value={formData.ingredient_name}
             />
             <datalist id="datalistOptions2">
               {ingredients.data &&
@@ -94,6 +101,7 @@ const RecipeForm = () => {
               type="text"
               className="form-control"
               onChange={handleChange}
+              value={formData.quantity}
             />
           </div>
         </Modal.Body>
