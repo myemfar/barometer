@@ -1,8 +1,13 @@
 import { useLoginMutation } from "./app/apiSlice";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { closeModal } from "./app/modalSlice";
+import { useSelector, useDispatch } from "react-redux";
+import { Modal, Button } from "react-bootstrap";
 
 const LoginForm = () => {
+  const dispatch = useDispatch();
+  const show = useSelector((state) => state.modal.show);
   const [login] = useLoginMutation();
   const [formData, setFormData] = useState();
   const navigate = useNavigate();
@@ -24,11 +29,18 @@ const LoginForm = () => {
     }
   };
 
+  const handleClose = () => {
+    dispatch(closeModal());
+    navigate("/");
+  };
+
   return (
-    <div className="card text-bg-light mb-3">
-      <h5 className="card-header">Login</h5>
-      <div className="card-body">
-        <form onSubmit={handleSubmit}>
+    <Modal show={show} onHide={handleClose} keyboard={false}>
+      <form onSubmit={handleSubmit}>
+        <Modal.Header closeButton>
+          <Modal.Title>Log In</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
           <div className="mb-3">
             <label className="form-label">Username:</label>
             <input
@@ -47,12 +59,22 @@ const LoginForm = () => {
               onChange={handleChange}
             />
           </div>
-          <div>
-            <input className="btn btn-primary" type="submit" value="Login" />
-          </div>
-        </form>
-      </div>
-    </div>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Close
+          </Button>
+          <Button
+            className="btn btn-primary"
+            variant="primary"
+            type="submit"
+            value="Login"
+          >
+            Log In
+          </Button>
+        </Modal.Footer>
+      </form>
+    </Modal>
   );
 };
 

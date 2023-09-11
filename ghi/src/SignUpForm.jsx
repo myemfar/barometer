@@ -1,8 +1,13 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSignUpMutation } from "./app/apiSlice";
+import { closeModal } from "./app/modalSlice";
+import { useSelector, useDispatch } from "react-redux";
+import { Modal, Button } from "react-bootstrap";
 
 const SignUpForm = () => {
+  const dispatch = useDispatch();
+  const show = useSelector((state) => state.modal.show);
   const [signUp] = useSignUpMutation();
   const [formData, setFormData] = useState({});
   const navigate = useNavigate();
@@ -13,6 +18,11 @@ const SignUpForm = () => {
       ...formData,
       [e.target.name]: e.target.value,
     });
+  };
+
+  const handleClose = () => {
+    dispatch(closeModal());
+    navigate("/");
   };
 
   const passConfirmChange = (e) => {
@@ -27,7 +37,7 @@ const SignUpForm = () => {
       if (response.error) {
         alert("Username already exists");
       } else {
-        navigate("/home");
+        navigate("/");
         alert("Account successfully created!");
       }
     } else {
@@ -35,10 +45,12 @@ const SignUpForm = () => {
     }
   };
   return (
-    <div className="card text-bg-light mb-3">
-      <h5 className="card-header">Sign Up</h5>
-      <div className="card-body">
-        <form onSubmit={handleSubmit}>
+    <Modal show={show} onHide={handleClose} keyboard={false}>
+      <form onSubmit={handleSubmit}>
+        <Modal.Header closeButton>
+          <Modal.Title>Sign Up</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
           <div className="mb-3">
             <label className="form-label">Username:</label>
             <input
@@ -66,12 +78,17 @@ const SignUpForm = () => {
               onChange={passConfirmChange}
             />
           </div>
-          <div>
-            <input className="btn btn-primary" type="submit" value="Signup" />
-          </div>
-        </form>
-      </div>
-    </div>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Close
+          </Button>
+          <Button className="btn btn-primary" variant="primary" type="submit">
+            Sign Up
+          </Button>
+        </Modal.Footer>
+      </form>
+    </Modal>
   );
 };
 

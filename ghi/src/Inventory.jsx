@@ -6,10 +6,14 @@ import {
 
 import { NavLink } from "react-router-dom";
 import fillupload from "./images/fillupload.gif";
+import { openModal } from "./app/modalSlice";
+import { useSelector, useDispatch } from "react-redux";
 import "./Inventory.css";
 
 const Inventory = () => {
   const [deleteIngredient] = useDeleteIngredientMutation();
+  const dispatch = useDispatch();
+  const searchCriteria = useSelector((state) => state.search.value);
 
   const handleIngredientDelete = (e) => {
     const ingredient = { ingredient_id: e.target.value };
@@ -21,6 +25,10 @@ const Inventory = () => {
       .catch(() => {
         alert("Unable to delete ingredient");
       });
+  };
+
+  const handleOpenModal = () => {
+    dispatch(openModal());
   };
 
   const { data: inventory, isLoading } = useGetInventoryByUserQuery();
@@ -44,6 +52,7 @@ const Inventory = () => {
         <NavLink
           className="btn btn-secondary"
           aria-current="page"
+          onClick={handleOpenModal}
           to="/inventory/new"
         >
           Add to Inventory

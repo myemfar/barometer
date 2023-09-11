@@ -83,6 +83,7 @@ const Nav = () => {
                 <NavLink
                   className="btn btn-info"
                   aria-current="page"
+                  onClick={handleOpenModal}
                   to="/signUp"
                 >
                   Sign Up
@@ -106,6 +107,7 @@ const Nav = () => {
                 <NavLink
                   className="btn btn-secondary"
                   aria-current="page"
+                  onClick={handleOpenModal}
                   to="/login"
                 >
                   Log in
