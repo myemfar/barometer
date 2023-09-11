@@ -1,4 +1,7 @@
-import { useCreateInventoryMutation, useGetIngredientsQuery } from "./app/apiSlice";
+import {
+  useCreateInventoryMutation,
+  useGetIngredientsQuery,
+} from "./app/apiSlice";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -7,7 +10,6 @@ const InventoryForm = () => {
   const [formData, setFormData] = useState();
   const navigate = useNavigate();
   const ingredients = useGetIngredientsQuery();
-
 
   const handleChange = (e) => {
     setFormData({
@@ -34,24 +36,24 @@ const InventoryForm = () => {
           <div className="mb-3">
             <label className="form-label">Ingredient:</label>
             <div className="mb-3">
-            <label className="form-label">Add ingredient:</label>
-            <input
-              className="form-control"
-              onChange={handleChange}
-              name="ingredient_id"
-              list="datalistOptions2"
-              id="ingredientsDataList"
-              placeholder="Type to search..."
-            />
-            <datalist id="datalistOptions2">
-              {ingredients.data &&
-                ingredients.data.map((item) => (
-                  <option value={item.id} key={item.id}>
-                    {item.name}
-                  </option>
-                ))}
-            </datalist>
-          </div>
+              <label className="form-label">Add ingredient:</label>
+              <input
+                className="form-control"
+                onChange={handleChange}
+                name="name"
+                list="datalistOptions2"
+                id="ingredientsDataList"
+                placeholder="Type to search..."
+              />
+              <datalist id="datalistOptions2">
+                {ingredients.data &&
+                  ingredients.data.map((item) => (
+                    <option value={item.name} key={item.id}>
+                      {item.name}
+                    </option>
+                  ))}
+              </datalist>
+            </div>
           </div>
           <div className="mb-3">
             <label className="form-label">Quantity:</label>

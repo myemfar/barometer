@@ -44,3 +44,37 @@ code {
   justify-content: center;
   height: 100vh;
 }
+
+.button-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  overflow-x: auto;
+  padding: 10px;
+  width: 80%;
+  max-width: 80%;
+  box-sizing: border-box;
+  margin: 0 auto;
+}
+
+.drink-detail-container {
+  background: rgba(0, 0, 0, 0);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  min-height: 100vh;
+}
+
+.instructions {
+  margin-top: 40px;
+}
+
+.drink-font {
+  color: aliceblue;
+}
+
+.drink-container {
+  background: rgba(0, 0, 0, 0.5);
+  padding: 10px;
+}

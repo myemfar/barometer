@@ -1,5 +1,6 @@
 from models import RecipesIn
 from queries.pool import pool
+from queries.ingredients import IngredientNotFound
 
 
 class RecipeNotFound(ValueError):
@@ -30,7 +31,30 @@ class RecipesRepo:
 
                 return result
 
-    def _get_user_id_from_drink(self, drink_id):
+    def _get_user_id_from_drink_id(self, drink_id):
+        with pool.connection() as conn:
+            with conn.cursor() as db:
+                db.execute(
+                    """
+                    SELECT *
+                    FROM drinks
+                    WHERE id = %s;
+                    """,
+                    [drink_id],
+                )
+                record = None
+                row = db.fetchone()
+                if row is None:
+                    raise RecipeNotFound
+                if row is not None:
+                    record = {}
+                    for i, column in enumerate(db.description):
+                        record[column.name] = row[i]
+
+                return record["user_id"]
+
+    def _get_user_id_from_drink(self, drink_name):
+        drink_id = self._get_drink_id_from_name(drink_name)
         with pool.connection() as conn:
             with conn.cursor() as db:
                 db.execute(
@@ -96,7 +120,7 @@ class RecipesRepo:
 
                 return result
 
-    def _get_specific(self, info: RecipesIn):
+    def _get_specific(self, drink_id, ingredient_id):
         with pool.connection() as conn:
             with conn.cursor() as db:
                 db.execute(
@@ -106,7 +130,7 @@ class RecipesRepo:
                     WHERE drink_id = %s AND
                     ingredient_id = %s;
                     """,
-                    [info.drink_id, info.ingredient_id],
+                    [drink_id, ingredient_id],
                 )
                 record = None
                 row = db.fetchone()
@@ -117,7 +141,9 @@ class RecipesRepo:
                 return record
 
     def add_recipe(self, info: RecipesIn):
-        test = self._get_specific(info)
+        drink_id = self._get_drink_id_from_name(info.drink_name)
+        ingredient_id = self._get_ingredient_id_from_name(info.ingredient_name)
+        test = self._get_specific(drink_id, ingredient_id)
         if test is not None:
             raise RecipeAlreadyExists
         with pool.connection() as conn:
@@ -131,8 +157,8 @@ class RecipesRepo:
                     RETURNING id, drink_id, ingredient_id, quantity;
                     """,
                     [
-                        info.drink_id,
-                        info.ingredient_id,
+                        drink_id,
+                        ingredient_id,
                         info.quantity,
                     ],
                 )
@@ -145,8 +171,50 @@ class RecipesRepo:
 
                 return record
 
+    def _get_ingredient_id_from_name(self, ingredient_name):
+        with pool.connection() as conn:
+            with conn.cursor() as db:
+                db.execute(
+                    """
+                    SELECT id FROM ingredients
+                    WHERE name = %s
+                    """,
+                    [ingredient_name],
+                )
+                record = None
+                row = db.fetchone()
+                if row is None:
+                    raise IngredientNotFound
+                if row is not None:
+                    record = {}
+                    for i, column in enumerate(db.description):
+                        record[column.name] = row[i]
+                return record["id"]
+
+    def _get_drink_id_from_name(self, drink_name):
+        with pool.connection() as conn:
+            with conn.cursor() as db:
+                db.execute(
+                    """
+                    SELECT id FROM drinks
+                    WHERE name = %s
+                    """,
+                    [drink_name],
+                )
+                record = None
+                row = db.fetchone()
+                if row is None:
+                    raise IngredientNotFound
+                if row is not None:
+                    record = {}
+                    for i, column in enumerate(db.description):
+                        record[column.name] = row[i]
+                return record["id"]
+
     def update_recipe(self, info: RecipesIn):
-        test = self._get_specific(info)
+        drink_id = self._get_drink_id_from_name(info.drink_name)
+        ingredient_id = self._get_ingredient_id_from_name(info.ingredient_name)
+        test = self._get_specific(drink_id, ingredient_id)
         if test is None:
             raise RecipeNotFound
         with pool.connection() as conn:
@@ -161,8 +229,8 @@ class RecipesRepo:
                     """,
                     [
                         info.quantity,
-                        info.drink_id,
-                        info.ingredient_id,
+                        drink_id,
+                        ingredient_id,
                     ],
                 )
                 record = None

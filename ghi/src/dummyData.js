@@ -31,7 +31,6 @@ const dummyData = [
     description:
       "We don't actually know what Michael drinks, but everyone drinks water!",
   },
-  // Add more dummy drink objects as needed
 ];
 
 export default dummyData;

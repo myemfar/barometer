@@ -31,7 +31,7 @@ const RecipeForm = () => {
 
   return (
     <div className="card text-bg-light mb-3">
-      <h5 className="card-header">Recipe Changes</h5>
+      <h5 className="card-header">Add ingredient to drink</h5>
       <div className="card-body">
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
@@ -39,7 +39,7 @@ const RecipeForm = () => {
             <input
               className="form-control"
               onChange={handleChange}
-              name="drink_id"
+              name="drink_name"
               list="datalistOptions"
               id="drinksDataList"
               placeholder="Type to search..."
@@ -47,7 +47,7 @@ const RecipeForm = () => {
             <datalist id="datalistOptions">
               {drinks.data &&
                 drinks.data.map((item) => (
-                  <option value={item.id} key={item.id}>
+                  <option value={item.name} key={item.id}>
                     {item.name}
                   </option>
                 ))}
@@ -58,7 +58,7 @@ const RecipeForm = () => {
             <input
               className="form-control"
               onChange={handleChange}
-              name="ingredient_id"
+              name="ingredient_name"
               list="datalistOptions2"
               id="ingredientsDataList"
               placeholder="Type to search..."
@@ -66,7 +66,7 @@ const RecipeForm = () => {
             <datalist id="datalistOptions2">
               {ingredients.data &&
                 ingredients.data.map((item) => (
-                  <option value={item.id} key={item.id}>
+                  <option value={item.name} key={item.id}>
                     {item.name}
                   </option>
                 ))}

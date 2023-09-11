@@ -6,6 +6,7 @@ from fastapi import (
 )
 from models import (
     InventoryIn,
+    InventoryInByName,
     InventoryList,
     UserInventoryIn,
     UserInventoryList,
@@ -33,7 +34,7 @@ def get_user_inventory(
 
 @router.post("/api/inventory", response_model=UserInventoryList)
 def create_user_inventory(
-    info: InventoryIn,
+    info: InventoryInByName,
     repo: InventoryRepo = Depends(),
     account_data: dict = Depends(authenticator.get_current_account_data),
 ):

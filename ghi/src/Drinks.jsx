@@ -72,7 +72,7 @@ const Drinks = () => {
         >
           Create Drink
         </NavLink>
-        <NavLink
+        {/* <NavLink
           className="btn btn-primary mx-2"
           aria-current="page"
           to="/drinks/recipes"
@@ -81,7 +81,7 @@ const Drinks = () => {
           }}
         >
           Create Recipe
-        </NavLink>
+        </NavLink> */}
       </div>
       <div className="d-flex justify-content-center">
         <Search />

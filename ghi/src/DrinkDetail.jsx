@@ -73,101 +73,120 @@ const DrinkDetail = () => {
   };
 
   return (
-    <div className="px-4 py-5 my-5 text-center">
-      <h1 className="display-5 fw-bold">Drink Detail</h1>
-      <div className="col-lg-6 mx-auto">
-        <p className="lead mb-4">BAROMETER: WE HELP U MAKE DRANK</p>
-      </div>
-      <div>
-        {tokenData &&
-          tags &&
-          tags.map((item) => (
-            <div key={item.id}>
-              {drinkTagsByDrink?.drink_tags?.some(
-                (tag) => tag.tag_id === item.id
-              ) ? (
-                <button
-                  className="btn btn-danger"
-                  onClick={handleTagDelete}
-                  value={item.id}
-                >
-                  Remove {item.tag_name}{" "}
-                </button>
-              ) : (
-                <button
-                  className="btn btn-primary"
-                  onClick={handleButton}
-                  value={item.id}
-                >
-                  {item.tag_name}{" "}
-                </button>
-              )}
-            </div>
-          ))}
-        <div className="card">
-          <img
-            src={drink.image_url}
-            className="card-img-top rounded mx-auto d-block"
-            alt={drink.name}
-            style={{ maxHeight: "500px", width: "500px" }}
-          />
-
-          <div className="card-body">
-            <h5 className="card-title">{drink.name}</h5>
-            <p className="card-text">{drink.descriptions}</p>
-            <p className="card-text">{drink.instructions}</p>
+    <div className="drink-detail-container">
+      <div className="drink-container px-4 py-5 my-5 text-center">
+        <h1 className="display-5 fw-bold drink-font">{drink.name}</h1>
+        <div className="col-lg-6 mx-auto">
+          <p className="lead mb-4 drink-font">Drink Details</p>
+        </div>
+        <div>
+          <div className="button-container">
+            {tokenData &&
+              tags &&
+              tags.map((item) => (
+                <div key={item.id}>
+                  {drinkTagsByDrink?.drink_tags?.some(
+                    (tag) => tag.tag_id === item.id
+                  ) ? (
+                    <button
+                      className="btn btn-danger"
+                      onClick={handleTagDelete}
+                      value={item.id}
+                    >
+                      Remove {item.tag_name}{" "}
+                    </button>
+                  ) : (
+                    <button
+                      className="btn btn-primary"
+                      onClick={handleButton}
+                      value={item.id}
+                    >
+                      {item.tag_name}{" "}
+                    </button>
+                  )}
+                </div>
+              ))}
           </div>
-          <div>
-            <h3 className="display-5 fw-bold">Recipe</h3>
-            <NavLink
-              aria-current="page"
-              to={`/drinks/${params.id}/update`}
-              className="btn btn-primary"
-              style={{
-                display:
-                  !tokenData || tokenData.id !== drink.user_id
-                    ? "none"
-                    : "inline-block",
-              }}
-            >
-              Update Drink
-            </NavLink>
-            <table className="table table-striped">
-              <thead>
-                <tr>
-                  <th>Ingredient</th>
-                  <th>Picture</th>
-                  <th>Amount</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {steps &&
-                  steps.map((item) => (
-                    <tr key={item.name}>
-                      <td>{item.name}</td>
-                      <td>
-                        <img
-                          src={item.image_url}
-                          alt={item.name}
-                          style={{ maxHeight: "100px", width: "auto" }}
-                        />
-                      </td>
-                      <td>{item.quantity}</td>
-                      <td>
-                        <button
-                          onClick={handleRecipeDelete}
-                          value={item.id}
-                          key={item.id}
-                          className="btn btn-danger"
-                        >
-                          Delete
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-              </tbody>
-            </table>
+
+          <div className="card">
+            <img
+              src={drink.image_url}
+              className="card-img-top rounded"
+              alt={drink.name}
+              style={{ maxHeight: "500px", maxWidth: "1000px" }}
+            />
+
+            <div className="card-body">
+              <div>
+                <p className="card-text">{drink.description}</p>
+              </div>
+              <NavLink
+                aria-current="page"
+                to={`/drinks/${params.id}/update`}
+                className="btn btn-primary"
+                style={{
+                  display:
+                    !tokenData || tokenData.id !== drink.user_id
+                      ? "none"
+                      : "inline-block",
+                }}
+              >
+                Update Drink
+              </NavLink>
+              <div className="instructions">
+                <h5 className="card-text text-left">Instructions</h5>
+                <p className="card-text text-left">{drink.instructions}</p>
+              </div>
+            </div>
+            <div>
+              <h3 className="display-5 fw-bold">Recipe</h3>
+              <NavLink
+                className="btn btn-primary mx-2"
+                aria-current="page"
+                to="/drinks/recipes"
+                style={{
+                  display: !tokenData ? "none" : "inline-block",
+                }}
+              >
+                Add Ingredients
+              </NavLink>
+              <table className="table table-striped">
+                <thead>
+                  <tr>
+                    <th>Ingredient</th>
+                    <th>Picture</th>
+                    <th>Amount</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {steps &&
+                    steps.map((item) => (
+                      <tr key={item.name}>
+                        <td>{item.name}</td>
+                        <td>
+                          <img
+                            src={item.image_url}
+                            alt={item.name}
+                            style={{ maxHeight: "100px", width: "auto" }}
+                          />
+                        </td>
+                        <td>{item.quantity}</td>
+                        <td>
+                          <button
+                            onClick={handleRecipeDelete}
+                            value={item.id}
+                            key={item.id}
+                            className="btn btn-danger"
+                          >
+                            Delete
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>

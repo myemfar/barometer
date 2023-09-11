@@ -80,8 +80,8 @@ class DrinksList(BaseModel):
 
 
 class RecipesIn(BaseModel):
-    drink_id: int
-    ingredient_id: int
+    drink_name: str
+    ingredient_name: str
     quantity: str
 
 
@@ -103,6 +103,11 @@ class RecipesList(BaseModel):
 
 class InventoryIn(BaseModel):
     ingredient_id: int
+    quantity: str
+
+
+class InventoryInByName(BaseModel):
+    name: str
     quantity: str
 
 

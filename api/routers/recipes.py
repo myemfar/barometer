@@ -63,7 +63,7 @@ def add_recipe(
     account_data: dict = Depends(authenticator.get_current_account_data),
 ):
     try:
-        user = repo._get_user_id_from_drink(info.drink_id)
+        user = repo._get_user_id_from_drink(info.drink_name)
         if account_data and user == account_data["id"]:
             added_recipe = repo.add_recipe(info)
         else:
@@ -96,7 +96,7 @@ def update_recipe(
     account_data: dict = Depends(authenticator.get_current_account_data),
 ):
     try:
-        user = repo._get_user_id_from_drink(info.drink_id)
+        user = repo._get_user_id_from_drink(info.drink_name)
         if account_data and user == account_data["id"]:
             updated_recipe = repo.update_recipe(info)
         else:
@@ -120,7 +120,7 @@ def delete_recipe(
     account_data: dict = Depends(authenticator.get_current_account_data),
 ):
     try:
-        user = repo._get_user_id_from_drink(drink_id)
+        user = repo._get_user_id_from_drink_id(drink_id)
         if account_data and user == account_data["id"]:
             repo.delete_recipe(recipe_id)
             return True

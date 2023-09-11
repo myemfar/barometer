@@ -41,7 +41,7 @@ const DrinkUpdateForm = () => {
 
   return (
     <div className="card text-bg-light mb-3">
-      <h5 className="card-header">Update Drink</h5>
+      <h5 className="card-header">Update {drink.name}</h5>
       <div className="card-body">
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
@@ -72,7 +72,7 @@ const DrinkUpdateForm = () => {
             />
           </div>
           <div>
-            <input className="btn btn-primary" type="submit" value="create" />
+            <input className="btn btn-primary" type="submit" value="Update" />
           </div>
         </form>
       </div>

@@ -1,5 +1,6 @@
-from models import InventoryIn
+from models import InventoryIn, InventoryInByName
 from queries.pool import pool
+from queries.ingredients import IngredientNotFound
 
 
 class InventoryNotFound(ValueError):
@@ -15,10 +16,12 @@ class InventoryIngredientNotFound(ValueError):
 
 
 class InventoryRepo:
-    def add_ingredient(self, info: InventoryIn, user_id):
-        ingredient = self._get_specific(user_id, info.ingredient_id)
+    def add_ingredient(self, info: InventoryInByName, user_id):
+        ingredient_id = self._get_id_from_name(info.name)
+        ingredient = self._get_specific(user_id, ingredient_id["id"])
         if ingredient != []:
             raise InventoryIngredientAlreadyExists
+
         with pool.connection() as conn:
             with conn.cursor() as db:
                 db.execute(
@@ -29,7 +32,7 @@ class InventoryRepo:
                         (%s, %s, %s)
                     RETURNING user_id, ingredient_id, quantity;
                     """,
-                    [user_id, info.ingredient_id, info.quantity],
+                    [user_id, ingredient_id["id"], info.quantity],
                 )
                 record = None
                 row = db.fetchone()
@@ -39,7 +42,27 @@ class InventoryRepo:
                         record[column.name] = row[i]
                 return record
 
-    def _get_specific(self, user_id, ingredient_id):
+    def _get_id_from_name(self, ingredient_name):
+        with pool.connection() as conn:
+            with conn.cursor() as db:
+                db.execute(
+                    """
+                    SELECT id FROM ingredients
+                    WHERE name = %s
+                    """,
+                    [ingredient_name],
+                )
+                record = None
+                row = db.fetchone()
+                if row is None:
+                    raise IngredientNotFound
+                if row is not None:
+                    record = {}
+                    for i, column in enumerate(db.description):
+                        record[column.name] = row[i]
+                return record
+
+    def _get_specific(self, user_id, ingredient_name):
         with pool.connection() as conn:
             with conn.cursor() as db:
                 db.execute(
@@ -49,7 +72,7 @@ class InventoryRepo:
                     WHERE user_id = %s AND
                     ingredient_id = %s;
                     """,
-                    [user_id, ingredient_id],
+                    [user_id, ingredient_name],
                 )
                 result = []
                 for row in db.fetchall():
