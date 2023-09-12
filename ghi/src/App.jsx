@@ -11,6 +11,7 @@ import RecipeForm from "./RecipeForm";
 import DrinkDetail from "./DrinkDetail";
 import InventoryForm from "./InventoryForm";
 import DrinkUpdateForm from "./DrinkUpdateForm";
+import RandomDrink from "./RandomDrink";
 
 const domain = /https:\/\/[^/]+/;
 const basename = process.env.PUBLIC_URL.replace(domain, "");
@@ -33,6 +34,7 @@ function App() {
               <Route index element={<Drinks />} />
               <Route path="new" element={<DrinkForm />} />
               <Route path="recipes/:drinkName" element={<RecipeForm />} />
+              <Route path="random" element={<RandomDrink />} />
               <Route path=":id">
                 <Route index element={<DrinkDetail />} />
                 <Route path="update" element={<DrinkUpdateForm />} />

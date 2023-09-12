@@ -72,6 +72,15 @@ const Nav = () => {
                   </NavLink>
                 </li>
               )}
+              <li className="nav-item">
+                <NavLink
+                  className="nav-link"
+                  aria-current="page"
+                  to="/drinks/random"
+                >
+                  Random Drink
+                </NavLink>
+              </li>
             </ul>
           </div>
           <div
