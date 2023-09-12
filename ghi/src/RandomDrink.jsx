@@ -5,17 +5,14 @@ import {
 } from "./app/apiSlice";
 import { useGetRandomCocktailQuery } from "./app/cocktailDBSlice";
 import { NavLink } from "react-router-dom";
-import { useParams } from "react-router-dom";
 import fillupload from "./images/fillupload.gif";
-import { useDispatch } from "react-redux";
 
 const RandomDrink = () => {
-  const params = useParams();
-  const dispatch = useDispatch();
   const { data: tokenData, isLoading: tokenDataLoading } = useGetTokenQuery();
   const { data: randomDrink, isLoading: randomDrinkLoading } =
     useGetRandomCocktailQuery();
-
+  const [drinkadd] = useCreateDrinkMutation();
+  const [recipeadd] = useCreateRecipeMutation();
   if (randomDrinkLoading)
     return (
       <div className="centered-spinner">
@@ -24,20 +21,11 @@ const RandomDrink = () => {
       </div>
     );
   const fetchedDrink = randomDrink.drinks[0];
-  //   const handleButton = (e) => {
-  //     const tagData = { tag_id: e.target.value, drink_id: params.id };
-  //     createDrinkTags(tagData);
-  //  const for drink data to be submitted
-  // const for recipe data to be submitted
-  // createdrink(drink data)
-  // create recipe(for loop iterating over each non-null recipe step)
-  //   };
   const ingredientList = [];
-  console.log(fetchedDrink);
 
   for (let i = 1; i <= 15; i++) {
     const ingredient_name = fetchedDrink[`strIngredient${i}`];
-    const quantity = fetchedDrink[`strMeasure${i}`];
+    let quantity = fetchedDrink[`strMeasure${i}`];
 
     if (ingredient_name) {
       if (!quantity) {
@@ -47,7 +35,32 @@ const RandomDrink = () => {
     }
   }
 
-  console.log(ingredientList);
+  const drinkData = {
+    description: `${fetchedDrink.strAlcoholic} ${fetchedDrink.strCategory} in a ${fetchedDrink.strGlass}`,
+    image_url: fetchedDrink.strDrinkThumb,
+    instructions: fetchedDrink.strInstructions,
+    name: fetchedDrink.strDrink,
+  };
+  const handleButton = async (e) => {
+    try {
+      const drinkResponse = await drinkadd(drinkData);
+
+      if (drinkResponse.data) {
+        for (const item of ingredientList) {
+          const ingredientData = {
+            drink_name: fetchedDrink.strDrink,
+            ingredient_name: item.ingredient_name,
+            quantity: item.quantity || "",
+          };
+          await recipeadd(ingredientData);
+        }
+      } else {
+        console.error("Drink creation failed");
+      }
+    } catch (error) {
+      console.error("An error occurred:", error);
+    }
+  };
   return (
     <div className="drink-detail-container drink-font">
       <div className="drink-container px-4 py-5 my-5 text-center">
@@ -74,6 +87,15 @@ const RandomDrink = () => {
                 </p>
               </div>
               <div className="instructions">
+                {tokenData && (
+                  <button onClick={handleButton} className="btn btn-primary">
+                    Add drink
+                  </button>
+                )}
+                <p>
+                  NOTE: Add drink will only add recipe steps for which
+                  ingredients exist
+                </p>
                 <h5 className="card-text text-left">Instructions</h5>
                 <p className="card-text text-left">
                   {fetchedDrink.strInstructions}
@@ -87,7 +109,6 @@ const RandomDrink = () => {
                   <tr>
                     <th>Ingredient</th>
                     <th>Amount</th>
-                    {tokenData && <th>Actions</th>}
                   </tr>
                 </thead>
                 <tbody>
@@ -96,18 +117,6 @@ const RandomDrink = () => {
                       <tr key={item.ingredient_name}>
                         <td>{item.ingredient_name}</td>
                         <td>{item.quantity}</td>
-                        {/* {tokenData && (
-                          <td>
-                            <button
-                              onClick={handleButton}
-                              value={item.id}
-                              key={item.id}
-                              className="btn btn-primary"
-                            >
-                              Add drink
-                            </button>
-                          </td>
-                        )} */}
                       </tr>
                     ))}
                 </tbody>
