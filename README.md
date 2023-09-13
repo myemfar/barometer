@@ -1,4 +1,5 @@
 ## Barometer
+
 - Kirk Sullivan
 - Daniel Dick
 - Bryan Fischer
@@ -21,7 +22,6 @@ Barometer is a platform that allows you to view and create drink recipes. You ca
 
 [Link to API Documentation](api.md)
 
-
 ## Installation
 
 1. Clone the repository
@@ -34,6 +34,7 @@ Barometer is a platform that allows you to view and create drink recipes. You ca
 ## Initialization
 
 open browser to the following addresses to test functionalities:
+
 1. localhost:3000 to view and test front end
 2. localhost:8000/docs to view the fastAPI automatic documentation of the API and all endpoints
 
@@ -47,5 +48,8 @@ Enjoy using Barometer!
 
 ## Future Plans
 
-- Add the ability to view and add a random cocktail from the cocktail API to drinks.
-- Implement autopopulation of recipes for drinks added from the cocktail API.
+- display ingredients missing from inventory on drink details page if a user is logged in
+
+## Notes
+
+currently api/seed.py loads ingredients from a static file, ingredientSeed.py. With a paid upgrade to the cocktail API, this could be made to keep up to date with the cocktaildb, code example commented out in seed.py

@@ -6,14 +6,34 @@ import {
 import { useGetRandomCocktailQuery } from "./app/cocktailDBSlice";
 import { NavLink } from "react-router-dom";
 import fillupload from "./images/fillupload.gif";
+import { useState } from "react";
 
 const RandomDrink = () => {
   const { data: tokenData, isLoading: tokenDataLoading } = useGetTokenQuery();
-  const { data: randomDrink, isLoading: randomDrinkLoading } =
-    useGetRandomCocktailQuery();
+  const {
+    data: randomDrink,
+    isLoading: randomDrinkLoading,
+    refetch,
+  } = useGetRandomCocktailQuery();
   const [drinkadd] = useCreateDrinkMutation();
   const [recipeadd] = useCreateRecipeMutation();
-  if (randomDrinkLoading)
+
+  const [fetchingNewDrink, setFetchingNewDrink] = useState(false);
+
+  // Function to handle fetching a new random drink
+  const handleFetchNewDrink = async () => {
+    setFetchingNewDrink(true);
+
+    try {
+      // Refetch the random cocktail query
+      await refetch();
+    } catch (error) {
+      console.error("An error occurred:", error);
+    } finally {
+      setFetchingNewDrink(false);
+    }
+  };
+  if (randomDrinkLoading || fetchingNewDrink)
     return (
       <div className="centered-spinner">
         <img src={fillupload} />
@@ -92,6 +112,7 @@ const RandomDrink = () => {
                     Add drink
                   </button>
                 )}
+
                 <p>
                   NOTE: Add drink will only add recipe steps for which
                   ingredients exist
@@ -101,6 +122,9 @@ const RandomDrink = () => {
                   {fetchedDrink.strInstructions}
                 </p>
               </div>
+              <button className="btn btn-primary" onClick={handleFetchNewDrink}>
+                Pour New Drink
+              </button>
             </div>
             <div>
               <h3 className="display-5 fw-bold">Recipe</h3>
