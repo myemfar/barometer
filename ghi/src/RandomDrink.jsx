@@ -4,7 +4,6 @@ import {
   useCreateRecipeMutation,
 } from "./app/apiSlice";
 import { useGetRandomCocktailQuery } from "./app/cocktailDBSlice";
-import { NavLink } from "react-router-dom";
 import fillupload from "./images/fillupload.gif";
 import { useState } from "react";
 
@@ -33,10 +32,10 @@ const RandomDrink = () => {
       setFetchingNewDrink(false);
     }
   };
-  if (randomDrinkLoading || fetchingNewDrink)
+  if (randomDrinkLoading || fetchingNewDrink || tokenDataLoading)
     return (
       <div className="centered-spinner">
-        <img src={fillupload} />
+        <img src={fillupload} alt="spinner" />
         <div>Pouring...</div>
       </div>
     );

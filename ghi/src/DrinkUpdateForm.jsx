@@ -48,7 +48,7 @@ const DrinkUpdateForm = () => {
   if (drinksLoading) {
     return (
       <div className="centered-spinner">
-        <img src={fillupload} />
+        <img src={fillupload} alt="spinner" />
         <div>Pouring...</div>
       </div>
     );
@@ -96,7 +96,11 @@ const DrinkUpdateForm = () => {
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button className="btn btn-secondary" variant="secondary" type="submit">
+          <Button
+            className="btn btn-secondary"
+            variant="secondary"
+            type="submit"
+          >
             Update
           </Button>
         </Modal.Footer>

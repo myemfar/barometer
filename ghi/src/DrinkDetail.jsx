@@ -46,7 +46,7 @@ const DrinkDetail = () => {
   )
     return (
       <div className="centered-spinner">
-        <img src={fillupload} />
+        <img src={fillupload} alt="spinner" />
         <div>Pouring...</div>
       </div>
     );
@@ -166,7 +166,7 @@ const DrinkDetail = () => {
                     <th>Ingredient</th>
                     <th>Picture</th>
                     <th>Amount</th>
-                    {tokenData && tokenData.id == drink.user_id && (
+                    {tokenData && tokenData.id === drink.user_id && (
                       <th>Actions</th>
                     )}
                   </tr>
@@ -184,7 +184,7 @@ const DrinkDetail = () => {
                           />
                         </td>
                         <td>{item.quantity}</td>
-                        {tokenData && tokenData.id == drink.user_id && (
+                        {tokenData && tokenData.id === drink.user_id && (
                           <td>
                             <button
                               onClick={handleRecipeDelete}

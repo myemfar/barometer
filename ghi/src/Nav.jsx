@@ -17,7 +17,7 @@ const Nav = () => {
 
   useEffect(() => {
     if (logoutResponse.data) navigate("/");
-  }, [logoutResponse]);
+  }, [logoutResponse, navigate]);
 
   return (
     <header>

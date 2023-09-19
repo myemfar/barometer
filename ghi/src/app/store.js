@@ -1,4 +1,4 @@
-import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
+import { configureStore } from "@reduxjs/toolkit";
 import { externalApi } from "./cocktailDBSlice.js";
 import { barometerApi } from "./apiSlice.js";
 import searchReducer from "./drinkSearchSlice.js";

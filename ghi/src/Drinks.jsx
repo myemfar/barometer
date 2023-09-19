@@ -62,7 +62,7 @@ const Drinks = () => {
   if (drinkTagsLoading || tokenDataLoading) {
     return (
       <div className="centered-spinner">
-        <img src={fillupload} />
+        <img src={fillupload} alt="spinner" />
         <div>Pouring...</div>
       </div>
     );
