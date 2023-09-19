@@ -1,13 +1,16 @@
 from queries.pool import pool
-import requests
-import json
+
+# import requests
+# import json
 from ingredientSeed import ingredients
 
 
 def api_populate():
     data = []
-    # NOTE: the following can/should be uncommented if an API key is paid for long term
-    # otherwise, use the ingredientSeed instead. swap ingredients on line 12 with 'json.loads(response)' if so
+    # NOTE: the following can/should be uncommented
+    # if an API key is paid for long term
+    # otherwise, use the ingredientSeed instead. swap ingredients
+    # on line 12 with 'json.loads(response)' if so
     # url = "http://www.thecocktaildb.com/api/json/v2/{API_KEY}/list.php?i=list"
     # response = requests.get(url)
     fetched_items = ingredients
