@@ -17,7 +17,7 @@ function RandomDrinkCarousel() {
     );
   }
 
-  const drinkSubset = drinks.slice(0, 50);
+  const drinkSubset = drinks ? drinks.slice(0, 50) : dummyData;
   function shuffleArray(array) {
     const shuffled = [...array];
     for (let i = shuffled.length - 1; i > 0; i--) {
