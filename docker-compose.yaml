@@ -11,7 +11,7 @@ services:
     environment:
       POSTGRES_PASSWORD: secret
       POSTGRES_USER: example_user
-      POSTGRES_DB: example_db
+      POSTGRES_DB: _db
     ports:
       - 15432:5432
   pg-admin:

@@ -89,7 +89,7 @@ def add_recipe(
     return added_recipe
 
 
-@router.put("/api/recipes/", response_model=RecipesOut)
+@router.put("/api/recipes", response_model=RecipesOut)
 def update_recipe(
     info: RecipesIn,
     repo: RecipesRepo = Depends(),
