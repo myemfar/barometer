@@ -18,6 +18,10 @@ lint-test-job:
 api-unit-tests-job:
   image: python:3-bullseye
   stage: test
+  variables:
+    POSTGRES_DB: example_db
+    POSTGRES_USER: example_user
+    POSTGRES_PASSWORD: secret
   needs:
     - lint-test-job
   script:
