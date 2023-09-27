@@ -18,15 +18,9 @@ lint-test-job:
 api-unit-tests-job:
   image: python:3-bullseye
   stage: test
-  variables:
-    POSTGRES_DB: example_db
-    POSTGRES_USER: example_user
-    POSTGRES_PASSWORD: secret
   needs:
     - lint-test-job
   script:
-    - echo $SIGNING_KEY
-    - export DATABASE_URL=postgresql://example_user:secret@postgres/example_db
     - cd api
     - pip install -r requirements.txt
     - python -m pytest
