@@ -25,6 +25,7 @@ api-unit-tests-job:
   needs:
     - lint-test-job
   script:
+    - echo $SIGNING_KEY
     - export DATABASE_URL=postgresql://example_user:secret@postgres/example_db
     - cd api
     - pip install -r requirements.txt
