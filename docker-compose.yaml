@@ -37,13 +37,13 @@ services:
       HOST_OS: ${OS}
       NODE_ENV: development
       HOST: "0.0.0.0"
-      PUBLIC_URL: https://discovery-channel1.gitlab.io/barometer
+      PUBLIC_URL: ${PUBLIC_URL}
       REACT_APP_API_HOST: ${REACT_APP_API_HOST}
 
   fastapi:
     environment:
-      CORS_HOST: https://discovery-channel1.gitlab.io
-      DATABASE_URL: postgresql://example_user:secret@may-14-ct-authdata-service.default.svc.cluster.local/example_db
+      CORS_HOST: ${CORS_HOST}
+      DATABASE_URL: ${DATABASE_URL}
       SIGNING_KEY: ${SIGNING_KEY}
     build:
       context: api
