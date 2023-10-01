@@ -42,12 +42,12 @@ services:
 
   fastapi:
     environment:
-      CORS_HOST: http://localhost:3000
-      DATABASE_URL: postgresql://example_user:secret@postgres/example_db
+      CORS_HOST: https://discovery-channel1.gitlab.io
+      DATABASE_URL: postgresql://example_user:secret@may-14-ct-authdata-service.default.svc.cluster.local/example_db
       SIGNING_KEY: ${SIGNING_KEY}
     build:
       context: api
-      dockerfile: Dockerfile.dev
+      dockerfile: Dockerfile
     ports:
       - 8000:8000
     volumes:
