@@ -18,6 +18,10 @@ lint-test-job:
 api-unit-tests-job:
   image: python:3-bullseye
   stage: test
+  variables:
+    CORS_HOST: doesnotmatter
+    DATABASE_URL: doesnotmatter
+    SIGNING_KEY: doesnotmatter
   needs:
     - lint-test-job
   script:
